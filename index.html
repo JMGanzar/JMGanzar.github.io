@@ -637,35 +637,68 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    // Reemplazar NaN por null antes de parsear
+                    // Reemplazar TODOS los casos de NaN por null
                     let jsonText = e.target.result;
-                    jsonText = jsonText.replace(/:\s*NaN/g, ': null');
+                    
+                    // Reemplazar NaN sin comillas por null
+                    jsonText = jsonText.replace(/:\s*NaN\s*([,\}])/g, ': null$1');
+                    jsonText = jsonText.replace(/NaN/g, 'null');
+                    
+                    // También manejar valores undefined
+                    jsonText = jsonText.replace(/:\s*undefined\s*([,\}])/g, ': null$1');
                     
                     const json = JSON.parse(jsonText);
                     let imported = json.biblioteca || json;
                     
                     if (!Array.isArray(imported)) {
-                        throw new Error('Formato no válido');
+                        throw new Error('Formato no válido. Debe ser un array o tener una propiedad "biblioteca"');
                     }
                     
+                    // Procesar cada manga limpiando los datos
                     mangas = imported.map(manga => ({
-                        ...manga,
-                        en_mihon: manga.en_mihon || false,
-                        capitulo_actual: (manga.capitulo_actual === null || isNaN(manga.capitulo_actual)) ? 0 : Number(manga.capitulo_actual),
-                        capitulo_total: (manga.capitulo_total === null || isNaN(manga.capitulo_total)) ? 0 : Number(manga.capitulo_total),
-                        puntuacion: (manga.puntuacion === null || isNaN(manga.puntuacion)) ? 0 : Number(manga.puntuacion),
+                        url: manga.url || '',
+                        manga_id: manga.manga_id || Date.now().toString(),
+                        tipo: manga.tipo || 'MANGA',
+                        cover_image: manga.cover_image || `https://via.placeholder.com/300x400/667eea/ffffff?text=Manga`,
+                        titulo: manga.titulo || 'Sin título',
+                        titulo_display: manga.titulo_display || manga.titulo || 'Sin título',
+                        puntuacion: parseFloat(manga.puntuacion) || 0,
+                        demografia: manga.demografia || '',
+                        capitulo_actual: parseInt(manga.capitulo_actual) || 0,
+                        capitulo_total: parseInt(manga.capitulo_total) || 0,
+                        capitulos_pendientes: parseInt(manga.capitulos_pendientes) || 0,
+                        progreso_porcentaje: parseFloat(manga.progreso_porcentaje) || 0,
                         completado: manga.completado || false,
-                        demografia: manga.demografia || ''
+                        en_mihon: manga.en_mihon || false
                     }));
+                    
+                    // Filtrar mangas duplicados por URL
+                    const seen = new Set();
+                    mangas = mangas.filter(manga => {
+                        const key = manga.url + manga.manga_id;
+                        if (seen.has(key)) return false;
+                        seen.add(key);
+                        return true;
+                    });
                     
                     saveToStorage();
                     applyFilters();
-                    alert(`✅ ${mangas.length} mangas importados correctamente`);
+                    alert(`✅ ${mangas.length} mangas importados correctamente (duplicados eliminados)`);
+                    
+                    // Resetear el input
+                    event.target.value = '';
                 } catch (error) {
                     console.error('Error completo:', error);
-                    alert('❌ Error al importar: ' + error.message);
+                    alert('❌ Error al importar el JSON:\n\n' + error.message + '\n\nRevisa que el archivo sea un JSON válido.');
+                    event.target.value = '';
                 }
             };
+            
+            reader.onerror = function() {
+                alert('❌ Error al leer el archivo');
+                event.target.value = '';
+            };
+            
             reader.readAsText(file);
         }
         
