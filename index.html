@@ -637,7 +637,11 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const json = JSON.parse(e.target.result);
+                    // Reemplazar NaN por null antes de parsear
+                    let jsonText = e.target.result;
+                    jsonText = jsonText.replace(/:\s*NaN/g, ': null');
+                    
+                    const json = JSON.parse(jsonText);
                     let imported = json.biblioteca || json;
                     
                     if (!Array.isArray(imported)) {
@@ -647,16 +651,18 @@
                     mangas = imported.map(manga => ({
                         ...manga,
                         en_mihon: manga.en_mihon || false,
-                        capitulo_actual: isNaN(manga.capitulo_actual) ? 0 : manga.capitulo_actual,
-                        capitulo_total: isNaN(manga.capitulo_total) ? 0 : manga.capitulo_total,
-                        puntuacion: isNaN(manga.puntuacion) ? 0 : manga.puntuacion,
-                        completado: manga.completado || false
+                        capitulo_actual: (manga.capitulo_actual === null || isNaN(manga.capitulo_actual)) ? 0 : Number(manga.capitulo_actual),
+                        capitulo_total: (manga.capitulo_total === null || isNaN(manga.capitulo_total)) ? 0 : Number(manga.capitulo_total),
+                        puntuacion: (manga.puntuacion === null || isNaN(manga.puntuacion)) ? 0 : Number(manga.puntuacion),
+                        completado: manga.completado || false,
+                        demografia: manga.demografia || ''
                     }));
                     
                     saveToStorage();
                     applyFilters();
                     alert(`✅ ${mangas.length} mangas importados correctamente`);
                 } catch (error) {
+                    console.error('Error completo:', error);
                     alert('❌ Error al importar: ' + error.message);
                 }
             };
