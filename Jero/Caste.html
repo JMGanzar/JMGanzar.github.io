@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Estudio: Neoclasicismo y Romanticismo</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos base que no usan @apply y son difíciles de gestionar con clases */
+        body {
+            font-family: 'Georgia', serif;
+        }
+        h1, h2, header p, nav h3 {
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Clases personalizadas para autores y obras */
+        .author-name {
+            color: #78350f; /* text-amber-900 */
+        }
+        .work-title {
+            color: #78350f; /* text-amber-900 */
+            font-weight: 600; /* semibold */
+        }
+        strong.work-title {
+            font-weight: 700; /* bold */
+        }
+        em.work-title {
+            font-style: italic;
+        }
+        
+        /* Estilos para tablas de IA (el resto de tablas usan clases directas) */
+        .comparison-table th {
+            background-color: #4b5563; /* bg-stone-600 */
+            color: white;
+            padding: 0.75rem; /* p-3 */
+            text-align: center;
+        }
+        .comparison-table td {
+            border: 1px solid #d4d4d8; /* border-stone-300 */
+            padding: 0.75rem; /* p-3 */
+            text-align: center;
+        }
+        
+        /* Estilos específicos para la respuesta de Gemini */
+        .gemini-answer {
+            padding: 1.25rem; /* p-5 */
+            background-color: #eff6ff; /* bg-blue-50 */
+            border: 1px solid #bfdbfe; /* border-blue-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            margin-top: 1.5rem; /* mt-6 */
+            text-align: left;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow */
+        }
+         .gemini-answer h4 {
+            font-weight: 700; /* font-bold */
+            font-size: 1.125rem; /* text-lg */
+            margin-bottom: 0.75rem; /* mb-3 */
+            color: #1e40af; /* text-blue-800 */
+            text-align: left;
+            font-family: 'Times New Roman', serif;
+         }
+        .gemini-answer pre {
+            background-color: white;
+            padding: 0.75rem; /* p-3 */
+            border-radius: 0.375rem; /* rounded */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            font-size: 0.875rem; /* text-sm */
+            text-align: left;
+            white-space: pre-wrap; /* Mantenido de tu original */
+            overflow-x: auto;
+        }
+        .gemini-answer button {
+            background-color: #4b5563; /* bg-gray-600 */
+            color: white;
+            font-weight: 700; /* font-bold */
+            padding-top: 0.5rem; /* py-2 */
+            padding-bottom: 0.5rem;
+            padding-left: 0.75rem; /* px-3 */
+            padding-right: 0.75rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            transition-property: background-color;
+            transition-duration: 200ms;
+            font-size: 0.75rem; /* text-xs */
+            margin-top: 0.75rem; /* mt-3 */
+        }
+        .gemini-answer button:hover {
+            background-color: #374151; /* hover:bg-gray-700 */
+        }
+
+    </style>
+</head>
+<body class="bg-amber-50 leading-relaxed text-stone-800 text-base p-5">
+
+    <!-- Contenedor Principal -->
+    <div class="container mx-auto max-w-4xl p-6 md:p-12 bg-white shadow-xl rounded-lg border border-amber-200">
+
+        <!-- Encabezado -->
+        <header class="mb-12 text-center">
+             
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-900 mb-3 text-center">Guía de Estudio: Neoclasicismo y Romanticismo</h1>
+            <p class="text-lg text-stone-600 mt-3 text-center">Un recorrido narrativo por la literatura española del Siglo de las Luces y la era del sentimiento.</p>
+        </header>
+
+        <!-- Menú de Navegación Rápida -->
+        <nav class="bg-amber-100 border-b-2 border-amber-400 p-5 rounded-lg shadow-lg mb-12 sticky top-4 z-10">
+            <h3 class="font-bold text-xl mb-4 text-amber-900 text-center">Índice Temático</h3>
+            <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-center text-sm">
+                <li><a href="#neoclasicismo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">1. El Siglo de las Luces</a></li>
+                <li><a href="#prosa-neo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">2. La Prosa Ilustrada</a></li>
+                <li><a href="#poesia-teatro-neo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">3. Verso y Escena Neoclásicos</a></li>
+                <li><a href="#romanticismo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">4. El Clamor Romántico</a></li>
+                <li><a href="#poesia-rom" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">5. La Lira Romántica</a></li>
+                <li><a href="#prosa-teatro-rom" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">6. Narrativa y Drama Romántico</a></li>
+                <li><a href="#textos" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">7. Claves de Análisis Textual</a></li>
+                <li><a href="#gemini-assistant" class="block p-2 rounded text-purple-700 hover:bg-white transition duration-200 font-bold">✨ Asistente IA</a></li>
+                <li><a href="#podcast-generator-section" class="block p-2 rounded text-green-700 hover:bg-white transition duration-200 font-bold">🎧 Podcast de Estudio</a></li>
+            </ul>
+        </nav>
+
+        <!-- SECCIÓN 1: NEOCLASICISMO -->
+        <section id="neoclasicismo" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 1: El Neoclasicismo y el Siglo de las Luces (XVIII)</h2>
+             
+            <p class="text-left mb-6 text-base text-stone-700">Nos adentramos en el siglo XVIII, una centuria definida en Europa por la <strong>Ilustración</strong>. Este fue un influyente movimiento cultural e intelectual cuyo propósito fundamental era disipar las sombras de la ignorancia y la superstición mediante la claridad del <strong>conocimiento</strong> y, de manera central, de la <strong>razón humana</strong>. Los ilustrados albergaban la firme convicción de que las reformas impulsadas en los ámbitos científico, económico, político y social desembocarían en un futuro mejor para la humanidad, fundamentado en los pilares del <strong>progreso</strong>, la <strong>justicia</strong> y la <strong>libertad</strong>. Precisamente por esta aspiración luminosa, al siglo XVIII se le conoce comúnmente como el <strong>Siglo de las Luces</strong>.</p>
+            <p class="text-left mb-6 text-base text-stone-700">En España, si bien la nación experimentaba un periodo de cierta decadencia política y económica, las ideas ilustradas encontraron terreno fértil. Florecieron pensadores de notable calibre y se establecieron instituciones culturales de gran trascendencia, algunas de las cuales son hoy pilares de nuestra cultura, como la <strong>Real Academia Española (RAE)</strong>, además de las Reales Academias de la Historia y de Medicina. Estas fundaciones son un claro reflejo del impulso ilustrado por sistematizar, depurar y difundir el saber.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Las Raíces Filosóficas de la Ilustración</h4>
+            <p class="text-left mb-6 text-base text-stone-700">El edificio intelectual de la Ilustración se asentó sobre dos grandes corrientes filosóficas que dialogaron y, a veces, polemizaron durante la época.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Por un lado, encontramos el <strong>Racionalismo</strong>, con Descartes como figura emblemática, que proclamaba la supremacía de la <strong>razón</strong> como origen y garante del conocimiento verdadero; para los racionalistas, todo saber heredado o percibido debía someterse al escrutinio implacable de la duda y la lógica antes de ser aceptado.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Por otro lado, se desarrolló el <strong>Empirismo</strong>, principalmente en Gran Bretaña, que argumentaba, por el contrario, que la fuente última de todo conocimiento reside en la <strong>experiencia sensible</strong>. Según esta visión, la <strong>observación</strong> de los fenómenos naturales permitía formular hipótesis, y la <strong>experimentación</strong> rigurosa era el método para verificarlas, de modo que solo lo demostrable empíricamente podía considerarse conocimiento cierto.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Principios Fundamentales del Pensamiento Ilustrado</h4>
+            <p class="text-left mb-6 text-base text-stone-700">La amalgama de estas corrientes, unida al espíritu reformista y optimista del siglo, cristalizó en los principios que definen el pensamiento ilustrado.</p>
+             <p class="text-left mb-6 text-base text-stone-700">En primer lugar, existía una confianza profunda, casi ilimitada, en la <strong>capacidad de la razón humana</strong> no solo para comprender el funcionamiento del universo, sino también para guiar la conducta humana y organizar la sociedad de forma más justa y eficiente.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Ligado a esto, se manifestaba la firme creencia en que la <strong>ciencia</strong>, con su método basado en la observación, la experimentación y la lógica, constituía la vía regia hacia el <strong>progreso</strong> material y moral de la humanidad.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Otro pilar fue el ideal del <strong>Enciclopedismo</strong>: el magno proyecto de compilar y organizar sistemáticamente todo el saber humano acumulado hasta la fecha, a través de obras monumentales como la Enciclopedia dirigida por Diderot y D'Alembert, con el objetivo de hacer el conocimiento accesible para erradicar la ignorancia.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Además, se consideraba que la <strong>cultura y la educación</strong> eran motores indispensables para el progreso y la emancipación de la humanidad.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Finalmente, en el ámbito político, predominó el modelo del <strong>Despotismo Ilustrado</strong>, bajo el cual los monarcas absolutos asumían la responsabilidad de promover reformas y buscar el bienestar de sus súbditos ("Todo para el pueblo"), pero sin permitir su participación activa en el gobierno ("pero sin el pueblo").</p>
+
+             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">La Estética Neoclásica en la Literatura</h4>
+            <p class="text-left mb-6 text-base text-stone-700">Este conjunto de ideas y valores se manifestó en el arte y la literatura a través del estilo <strong>Neoclásico</strong>. Sus preceptos estéticos se definieron en gran medida por oposición a la exuberancia y complejidad del Barroco del siglo anterior, y por su fidelidad a los principios de orden, claridad y utilidad emanados de la razón.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Una característica central fue el propugnar un <strong>retorno a los modelos de la Antigüedad clásica grecolatina</strong>, vistos como el canon insuperable de belleza, perfección formal y equilibrio; de hecho, la <strong>imitación</strong> de estos modelos se convirtió en un principio rector, valorándose más la maestría en seguir las reglas que la originalidad desenfrenada.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Se consideraba que la <strong>razón debía prevalecer sobre los sentimientos y la imaginación</strong>, lo que llevó a un cierto desdén por la poesía lírica, considerada demasiado subjetiva, y al establecimiento de <strong>normas y preceptivas estrictas</strong> que dictaban cómo debían escribirse las obras, especialmente géneros como la tragedia o la comedia.</p>
+            <p class="text-left mb-6 text-base text-stone-700">En consecuencia, se rechazaba todo aquello que fuera <strong>imaginativo, fantástico o inverosímil</strong>, pues las obras debían aspirar a la <strong>verosimilitud</strong>, es decir, debían presentar acciones y personajes creíbles, ajustados a las leyes de la naturaleza y la lógica racional.</p>
+            <p class="text-left mb-6 text-base text-stone-700">La literatura adquirió también una clara <strong>finalidad didáctica y moralizante</strong>: más allá del placer estético, se buscaba que las obras fueran <strong>útiles</strong> para la sociedad, instruyendo al público, criticando los vicios y promoviendo las virtudes cívicas.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Todo ello se englobaba en el ideal estético del <strong>"buen gusto"</strong>, que se traducía en la búsqueda de la claridad expositiva, el orden compositivo, la proporción, el equilibrio, la armonía formal y la contención expresiva, evitando todo aquello que pudiera considerarse vulgar, exagerado o de mal gusto.</p>
+
+             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Evolución del Neoclasicismo en España</h4>
+            <p class="text-left mb-6 text-base text-stone-700">La asimilación del Neoclasicismo en las letras españolas no fue inmediata ni uniforme, sino que siguió un proceso que puede dividirse en tres fases principales.</p>
+             <p class="text-left mb-6 text-base text-stone-700">La primera fue la <strong>Reacción Antibarroca (Primera mitad del s. XVIII)</strong>, etapa en la que se observa una crítica creciente a los excesos formales y conceptuales del Barroco tardío, a la vez que comienzan a penetrar las influencias del Neoclasicismo francés; el género predominante aquí es el ensayo crítico y satírico, con figuras destacadas como <strong>Fray Benito Jerónimo Feijoo</strong> y el <strong>Padre Isla</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Posteriormente, llegó la <strong>Plenitud Neoclásica (Desde mediados hasta finales del s. XVIII)</strong>, periodo en que las normas y los ideals estéticos del Neoclasicismo se imponen de manera más clara y generalizada, poniendo la literatura decididamente al servicio de la razón y las ideas ilustradas; en este momento producen sus obras más significativas autores como el ensayista y político <strong>Gaspar Melchor de Jovellanos</strong>, el poeta <strong>Juan Meléndez Valdés</strong>, el dramaturgo <strong>Leandro Fernández de Moratín</strong>, y los fabulistas <strong>Tomás de Iriarte</strong> y <strong>Félix María Samaniego</strong>, además de parte de la obra de <strong>José Cadalso</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Finalmente, hacia las <strong>Últimas décadas del s. XVIII</strong>, se entra en el <strong>Prerromanticismo</strong>, donde empieza a percibirse un cierto agotamiento de la rigidez neoclásica y aparecen obras que, aun dentro del marco ilustrado, muestran una mayor sensibilidad, melancolía y exploración del sentimiento individual, anticipando así la sensibilidad romántica que eclosionará en el siglo siguiente. La figura de <strong>José Cadalso</strong>, especialmente con sus <em class="work-title">Noches Lúgubres</em>, es fundamental para entender esta transición.</p>
+        </section>
+
+        <!-- SECCIÓN 2: PROSA NEOCLÁSICA -->
+        <section id="prosa-neo" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 2: La Prosa al Servicio de las Luces</h2>
+             
+            <p class="text-left mb-6 text-base text-stone-700">La prosa se erigió como el vehículo predilecto de los ilustrados para exponer sus ideas, criticar la sociedad y divulgar el conocimiento que propugnaba el movimiento. Dentro de ella, el <strong>ensayo</strong> brilló con luz propia.</p>
+
+            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">Fray Benito Jerónimo Feijoo</span> (1676-1764)</h3>
+            <p class="text-left mb-6 text-base text-stone-700">Considerado uno de los máximos exponentes de la Ilustración temprana en España, Feijoo dedicó su extensa obra a la "desilusión de errores comunes". Su propósito era modernizar el pensamiento español, combatiendo supersticiones, prejuicios y saberes anticuados con las armas de la <strong>razón</strong> y la <strong>experiencia</strong>.</p>
+            <blockquote class="border-l-4 border-stone-400 pl-5 italic text-stone-600 my-6 text-lg">"Persiguiendo errores y supersticiones y fomentando la filosofía y la ciencia."</blockquote>
+            <p class="text-left mb-6 text-base text-stone-700">Consciente de su misión divulgadora, Feijoo adoptó un estilo deliberadamente <strong>sencillo y claro</strong>, alejado de la complejidad barroca, para poder llegar a un público amplio y no necesariamente especializado. Sus dos grandes colecciones de ensayos, el <strong class="work-title">Teatro Crítico Universal</strong> y las <strong class="work-title">Cartas eruditas y curiosas</strong>, abordan una diversidad enciclopédica de temas —desde la ciencia y la medicina hasta la historia, la filosofía, la teología o las costumbres— siempre desde una perspectiva crítica, basada en una sólida documentation y en la búsqueda honesta de la verdad.</p>
+
+            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">Gaspar Melchor de Jovellanos</span> (1744-1811)</h3>
+            <p class="text-left mb-6 text-base text-stone-700">Figura polifacética de la Ilustración tardía —jurista, político, economista y escritor—, Jovellanos encarnó el ideal del intelectual comprometido con la reforma y el progreso de su país. Su obra refleja una profunda preocupación por los problemas de España, especialmente los económicos y sociales.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Convencido de que la agricultura era la base de la riqueza nacional, dedicó uno de sus ensayos más influyentes, el <strong class="work-title">Informe sobre la Ley Agraria</strong>, a analizar los problemas del campo español y proponer soluciones basadas en los principios de la fisiocracia y el liberalismo económico emergente. Su prosa se caracteriza por la solidez argumentativa, la elegancia y una clara vocación de servicio público.</p>
+
+            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">José Cadalso</span> (1741-1782): La Mirada Crítica y la Sensibilidad Emergente</h3>
+            <p class="text-left mb-6 text-base text-stone-700">Cadalso ocupa un lugar singular, a caballo entre la plena Ilustración y los albores del Romanticismo. Su obra refleja tanto la mentalidad crítica y reformista de la Ilustración como una nueva sensibilidad melancólica y sentimental que anticipa el movimiento posterior.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Sus <strong class="work-title">Cartas Marruecas</strong> son un claro ejemplo de prosa ilustrada con fines críticos. Mediante el recurso de la perspectiva externa —la mirada de un viajero marroquí, Gazel, sobre España—, Cadalso ofrece un panorama de la España de su tiempo, analizando sus costumbres, instituciones y mentalidad desde una perspectiva supuestamente externa y objetiva. Esta técnica le permite criticar con agudeza aspectos como la corrupción, el atraso científico, la vanidad nobiliaria o el patriotismo mal entendido, siempre con un afán reformista.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Sin embargo, en <strong class="work-title">Noches Lúgubres</strong>, Cadalso se adentra en un territorio emocional muy diferente. El tono sombrío, la ambientación nocturna y sepulcral, y la desesperación del protagonista, Tediato, que busca desenterrar a su amada, rompen con la contención neoclásica y exploran el dolor, la muerte y lo macabro de una manera que prefigura claramente la estética romántica. Esta obra, por su intensidad sentimental y su atmósfera lúgubre, es considerada una de las piezas clave del <strong>Prerromanticismo</strong> español.</p>
+        </section>
+
+        <!-- SECCIÓN 3: POESÍA Y TEATRO NEOCLÁSICO -->
+        <section id="poesia-teatro-neo" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 3: El Verso Didáctico y la Escena Racional</h2>
+             
+            <p class="text-left mb-6 text-base text-stone-700">La poesía y el teatro del siglo XVIII también se vieron profundamente influidos por los ideals neoclásicos, adoptando formas y propósitos acordes con el espíritu de la Ilustración.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">La Poesía Neoclásica: Razón Rimada y Enseñanza Moral</h4>
+            <p class="text-left mb-6 text-base text-stone-700">Dado el predominio de la razón sobre el sentimiento, la poesía lírica tuvo un desarrollo limitado durante el Neoclasicismo. La función principal asignada a la poesía fue, una vez más, la de <strong>educar y criticar los vicios</strong>, huyendo de la expresión íntima.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Dentro de esta orientación, destacó especialmente la <strong>Fábula</strong>. Este antiguo género, que utiliza breves narraciones protagonizadas por animales para transmitir una enseñanza moral (la moraleja), encajaba perfectamente con el afán didáctico de la época.</p>
+             <p class="text-left mb-6 text-base text-stone-700">En España, dos autores sobresalieron en su revitalización: por un lado, <strong>Tomás de Iriarte</strong>, con sus originales <strong class="work-title">Fábulas literarias</strong>, que a menudo utilizaban la alegoría animal para reflexionar sobre preceptos literarios y criticar los malos hábitos de los escritores; por otro, <strong>Félix María de Samaniego</strong>, cuyas <strong class="work-title">Fábulas en verso castellano</strong> adaptaban con gracia y sencillez las historias de los fabulistas clásicos (Esopo, Fedro) y modernos (La Fontaine), logrando una enorme difusión popular.</p>
+             
+            <p class="text-left mb-6 text-base text-stone-700">Además de la fábula, pervivió una corriente de <strong>poesía bucólica o anacreóntica</strong>, que cantaba de forma idealizada los placeres sencillos de la vida campestre o el amor galante, siguiendo modelos clásicos y renacentistas, aunque a menudo teñida de una suave melancolía ilustrada. <strong>Juan Meléndez Valdés</strong> fue el principal representante de esta tendencia.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Teatro Neoclásico: Orden y Razón sobre el Escenario</h4>
+            <p class="text-left mb-6 text-base text-stone-700">Los ilustrados consideraban el teatro como una "escuela de costumbres", un medio privilegiado para educar al pueblo y difundir los valores de la razón y la virtud. Por ello, se esforzaron en "limpiar" la escena de los excesos y la libertad formal del teatro barroco, imponiendo un modelo teatral basado en la razón, la verosimilitud y las normas clásicas.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Las <strong>características</strong> principales de este teatro normativo fueron varias:</p>
+            <p class="text-left mb-6 text-base text-stone-700">Buscaba una clara <strong>intención didáctica y moralizante</strong>.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Se basaba en la <strong>imitación de los modelos grecolatinos</strong> y de los neoclásicos franceses (como Molière o Racine).</p>
+            <p class="text-left mb-6 text-base text-stone-700">Exigía el riguroso <strong>respeto a la Regla de las Tres Unidades</strong> aristotélicas (unidad de <strong>acción</strong>, de <strong>tiempo</strong> y de <strong>lugar</strong>).</p>
+            <p class="text-left mb-6 text-base text-stone-700">Imponía la estricta <strong>separación de géneros</strong> (tragedia para lo grave, comedia para lo cotidiano).</p>
+            <p class="text-left mb-6 text-base text-stone-700">Perseguía constantemente la <strong>verosimilitud</strong> y el <strong>decoro</strong>, asegurando que las acciones fueran creíbles, el lenguaje ajustado a los personajes y evitando escenas violentas o indecorosas en el escenario.</p>
+
+            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">Leandro Fernández de Moratín</span> (1760-1828)</h3>
+            <p class="text-left mb-6 text-base text-stone-700">Moratín es, sin lugar a dudas, la figura cumbre del teatro neoclásico español. Supo asimilar las reglas académicas y combinarlas con una aguda observación de la sociedad de su tiempo, creando comedias que, bajo una apariencia amable, encerraban una profunda crítica social y moral.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Entre sus obras más conocidas figuran <strong class="work-title">El viejo y la niña</strong>, <strong class="work-title">La comedia nueva o El café</strong> (una sátira sobre el mal teatro de su época) y, especialmente, <strong class="work-title">El sí de las niñas</strong>.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Estrenada en 1806 con enorme éxito, <strong class="work-title">El sí de las niñas</strong> es un modelo de comedia neoclásica. Respetando a la perfección las tres unidades (la acción transcurre en una posada en menos de diez horas), Moratín critica duramente la costumbre de los <strong>matrimonios concertados</strong> por los padres sin tener en cuenta los sentimientos de los hijos, y defiende la importancia de una educación basada en la sinceridad frente a la hipocresía social. La joven Doña Francisca (Paquita), obligada por su madre a casarse con el maduro y bondadoso Don Diego, representa la víctima de un sistema educativo represivo, mientras que la sensatez y bondad final de Don Diego encarnan el ideal ilustrado de la razón y la virtud triunfando sobre el interés y la autoridad mal entendida.</p>
+        </section>
+
+        <!-- SECCIÓN 4: ROMANTICISMO -->
+        <section id="romanticismo" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 4: El Clamor Romántico (Primera Mitad Siglo XIX)</h2>
+             
+            <p class="text-left mb-6 text-base text-stone-700">Como un péndulo que oscila en reacción al extremo anterior, el <strong>Romanticismo</strong> surge a finales del siglo XVIII y triunfa en la primera mitad del XIX como una contestación radical al espíritu racionalista, ordenado y normativo del Neoclasicismo. Si la Ilustración entronizó la Razón, el Romanticismo exaltará el <strong>Sentimiento</strong>; si aquella buscó reglas universales, este proclamará la <strong>Libertad</strong> individual; si una aspiraba a la claridad didáctica, el otro explorará los misterios del <strong>Yo</strong> y la fuerza de la <strong>Imaginación</strong>.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Un Despertar Tardío en España</h4>
+            <p class="text-left mb-6 text-base text-stone-700">La implantación del Romanticismo en España fue más tardía y accidentada que en otros países europeos, debido en gran parte a la convulsa situación histórica de principios del siglo XIX. Acontecimientos como la <strong>invasión napoleónica</strong> (1808), la lucha por la independencia, la esperanza liberal encarnada en la <strong>Constitución de Cádiz de 1812 ("La Pepa")</strong>, y el posterior retorno al <strong>absolutismo</strong> bajo Fernando VII (con periodos como la ominosa Década de 1823-1833, que forzó al <strong>exilio</strong> a muchos intelectuales), crearon un caldo de cultivo de frustración y anhelo de libertad. Por ello, el triunfo definitivo del Romanticismo en España se suele situar alrededor de <strong>1833</strong>, coincidiendo con la muerte del rey y el <strong>regreso de los exiliados liberales</strong>, quienes trajeron consigo las nuevas ideas estéticas europeas.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Las Señas de Identidad del Espíritu Romántico</h4>
+            <p class="text-left mb-6 text-base text-stone-700">El Romanticismo es, ante todo, una actitud vital, una nueva forma de sentir y de ver el mundo, que se refleja en una serie de características literarias y artísticas inconfundibles.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Destaca un <strong>Subjetivismo Radical y Culto al "Yo"</strong>, donde el mundo interior del individuo (emociones, pasiones, sueños, angustias) se convierte en el centro y la medida de todas las cosas.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Con ello va unida un <strong>Ansia Infinita de Libertad</strong>, que implica el rechazo de todas las ataduras sociales, morales y artísticas, llevando a la <strong>ruptura con las reglas neoclásicas</strong>, la búsqueda de la <strong>originalidad</strong> y la <strong>mezcla</strong> audaz de géneros, tonos y formas.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Se observa también un <strong>Individualismo Exacerbado</strong> que convive con un incipiente <strong>Sentimiento Nacionalista</strong>, lo que genera interés por el "espíritu del pueblo", las <strong>tradiciones</strong>, el <strong>folclore</strong>, las <strong>leyendas</strong> y la <strong>historia nacional</strong>, especialmente la <strong>Edad Media</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">El choque entre los ideals elevados y la cruda realidad produce una profunda <strong>Insatisfacción, Angustia y Desengaño</strong>, conocido como el <strong>"Mal del Siglo"</strong>, que genera <strong>frustración, melancolía</strong> y pesimismo.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Como respuesta a esta insatisfacción vital surgen <strong>Actitudes de Rebeldía y Evasión</strong>, ya sea mediante la <strong>rebeldía</strong> contra las normas o la <strong>evasión</strong> hacia el pasado, lo exótico o lo sobrenatural.</p>
+             <p class="text-left mb-6 text-base text-stone-700">La <strong>Naturaleza</strong> adquiere una nueva visión, convirtiéndose en un espejo del alma atormentada, prefiriéndose paisajes <strong>agreste, salvajes, dinámicos y misteriosos</strong> como tormentas, noches o ruinas.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Finalmente, se produce una <strong>Exaltación del Genio Creador</strong>, valorando al artista como un ser inspirado, dotado de sensibilidad, <strong>imaginación</strong> y <strong>pasión</strong> excepcionales.</p>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-900 p-5 rounded-md my-8 shadow-sm text-left text-base">
+                 <h4 class="text-xl font-semibold text-stone-700 mt-0 mb-4 text-left pt-0 border-t-0">Contraste Neoclasicismo vs. Romanticismo</h4>
+                 <p class="text-left mb-6 text-base text-yellow-900">Es fundamental entender el Romanticismo como una reacción directa al Neoclasicismo. Donde uno ponía <strong>razón</strong>, el otro pone <strong>sentimiento</strong>. Donde uno buscaba <strong>normas universales</strong>, el otro clama por <strong>libertad individual</strong>. Si el Neoclasicismo aspiraba a <strong>educar</strong> con claridad, el Romanticismo busca <strong>conmover</strong> con intensidad. El optimismo ilustrado da paso al <strong>pesimismo</strong> y desengaño romántico. El ensayo cede protagonismo a la <strong>lírica</strong> y al <strong>drama</strong>.</p>
+                 <table class="min-w-full rounded-lg overflow-hidden my-6 border border-amber-300 shadow">
+                     <thead>
+                        <tr>
+                            <th class="p-4 border border-amber-200 text-center align-middle text-sm bg-amber-800 text-white font-semibold uppercase tracking-wider">Neoclasicismo (s. XVIII)</th>
+                            <th class="p-4 border border-amber-200 text-center align-middle text-sm bg-amber-800 text-white font-semibold uppercase tracking-wider">Romanticismo (s. XIX)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-amber-50">
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Razón</td>
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Sentimiento / Intuición</td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Normas, Reglas (3 unidades)</td>
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Libertad, Mezcla</td>
+                        </tr>
+                        <tr class="bg-amber-50">
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Didactismo (Educar)</td>
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Emoción (Conmover)</td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Claridad, Buen Gusto</td>
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Subjetividad, Contrastes (Bello/Grotesco)</td>
+                        </tr>
+                        <tr class="bg-amber-50">
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Optimismo, Confianza</td>
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Pesimismo, Desengaño</td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Ensayo</td>
+                            <td class="p-4 border border-amber-200 text-center align-middle text-sm">Lírica, Teatro (Drama)</td>
+                        </tr>
+                    </tbody>
+                 </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: POESÍA ROMÁNTICA -->
+        <section id="poesia-rom" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 5: La Lira Romántica: Expresión del Alma</h2>
+            <p class="text-left mb-6 text-base text-stone-700">La poesía se convirtió en el cauce natural para la expresión del torrente de sentimientos que caracterizó al Romanticismo. La subjetividad, la emoción y la búsqueda de nuevas formas encontraron en el verso su vehículo ideal.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Rasgos Generales</h4>
+            <p class="text-left mb-6 text-base text-stone-700">La poesía romántica española comparte las características generales del movimiento.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Se caracteriza por una fuerte <strong>subjetividad</strong> y un tono marcadamente <strong>emotivo</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Los temas recurrentes giran en torno al <strong>amor apasionado</strong>, a menudo imposible o trágico, la exaltación de la <strong>libertad</strong>, la <strong>rebeldía</strong> contra la sociedad, la <strong>angustia existencial</strong>, la <strong>soledad</strong> del individuo incomprendido, y la presencia obsesiva de la <strong>muerte</strong>, aunque a veces también incluye la <strong>crítica social</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Es habitual la presencia de <strong>escenarios típicamente románticos</strong>, como noches lúgubres, cementerios, ruinas o paisajes naturales salvajes (mar, montañas, tormentas), que se identifican con el estado anímico del poeta.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Formalmente, se busca la <strong>libertad métrica</strong>: se rompen las estructuras clásicas y se utiliza la <strong>polimetría</strong> (combinación de diferentes tipos de versos y estrofas) para lograr mayor expresividad y adecuación al sentimiento.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Además, abundan los <strong>recursos efectistas</strong> para intensificar la emoción, como exclamaciones, interrogaciones retóricas y apóstrofes (invocaciones directas), junto con el uso frecuente de <strong>figuras retóricas</strong> como anáforas, paralelismos, antítesis, comparaciones e imágenes simbólicas.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Corrientes y Poetas Esenciales</h4>
+            <p class="text-left mb-6 text-base text-stone-700">Dentro de la lírica romántica española, podemos distinguir dos momentos o sensibilidades principales:</p>
+            
+            <h5 class="text-lg font-semibold text-stone-800 mt-8 mb-3 text-left">1. Primer Romanticismo (Poesía Exaltada y Narrativa)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">Corresponde a la fase más combativa y extrovertida del movimiento (aprox. 1833-1844). La poesía es a menudo grandilocuente, enérgica, con un fuerte componente narrativo (poemas largos que cuentan historias) y centrada en temas históricos, legendarios o en la exaltación de la libertad a través de figuras heroicas o rebeldes.</p>
+            
+            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">José de Espronceda</span> (1808-1842)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">Es la figura paradigmática de esta etapa. Poeta de vida turbulenta y compromiso liberal, encarnó el ideal del "genio" romántico. Son famosas sus <strong>Canciones</strong>, donde idealiza a <strong>personajes marginales</strong> (el pirata, el cosaco, el mendigo, el reo de muerte, el verdugo) como símbolos de la libertad absoluta frente a las convenciones sociales. La <strong class="work-title">"Canción del Pirata"</strong> es un icono de esta actitud. También cultivó el poema narrativo extenso de corte legendario (<strong class="work-title">El estudiante de Salamanca</strong>) y filosófico (<strong class="work-title">El diablo mundo</strong>).</p>
+            
+
+            <h5 class="text-lg font-semibold text-stone-800 mt-8 mb-3 text-left">2. Romanticismo Tardío o Postromanticismo (Poesía Intimista)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">A partir de mediados de siglo, la poesía se vuelve más <strong>contenida, introspectiva y sentimental</strong>. Los poemas se vuelven más breves, la forma más sencilla y musical, y el enfoque se centra en la exploración delicada de los sentimientos íntimos y las reflexiones existenciales. Los grandes nombres de esta etapa son:</p>
+
+            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Gustavo Adolfo Bécquer</span> (1836-1870)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">Figura clave, considerado el puente hacia la poesía contemporánea. Sus <strong class="work-title">Rimas</strong> son poemas cortos, de lenguaje transparente y gran musicalidad, que indagan con extrema sensibilidad en la experiencia amorosa (desde el anhelo a la pérdida), la fugacidad de la belleza, el misterio de la creación poética y la angustia ante la soledad y la muerte.</p>
+            
+
+            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Rosalía de Castro</span> (1837-1885)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">Voz esencial, tanto en gallego como en castellano. Su poesía está teñida de una profunda melancolía ("saudade"), dolor personal, preocupación por la injusticia social (especialmente la emigración) y una mirada femenina singularmente moderna y reivindicativa. Obras cumbre son <strong class="work-title">Cantares gallegos</strong>, <strong class="work-title">Follas novas</strong> (ambas en gallego) y <strong class="work-title">En las orillas del Sar</strong> (en castellano).</p>
+            
+
+        </section>
+
+        <!-- SECCIÓN 6: PROSA Y TEATRO ROMÁNTICO -->
+        <section id="prosa-teatro-rom" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 6: La Narrativa Comprometida y el Drama Apasionado</h2>
+            
+            <p class="text-left mb-6 text-base text-stone-700">El espíritu romántico también encontró expresión en la prosa, especialmente a través del periodismo crítico y la evocación del pasado, y revitalizó la escena teatral con el drama apasionado.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">La Prosa en el Romanticismo</h4>
+            <p class="text-left mb-6 text-base text-stone-700">Si bien la novela no alcanzaría su apogeo hasta el Realismo, el Romanticismo español cultivó diversas formas narrativas.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Una de ellas fue la <strong>Novela Histórica</strong>, reflejo de la evasión hacia el pasado medieval idealizado, con ejemplos como <strong class="work-title">Sancho Saldaña</strong> de Espronceda o <strong class="work-title">El doncel de don Enrique el Doliente</strong> de Larra.</p>
+             <p class="text-left mb-6 text-base text-stone-700">También florecieron las <strong>Leyendas</strong>, narraciones breves con elementos de misterio y sobrenaturales, donde Bécquer destacó como maestro con sus <strong class="work-title">Leyendas</strong>.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Finalmente, el <strong>Periodismo de Costumbres (Costumbrismo)</strong> se convirtió en un vehículo importante para la crítica social y política.</p>
+
+            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Mariano José de Larra ("Fígaro")</span> (1809-1837)</h5>
+             
+            <p class="text-left mb-6 text-base text-stone-700">Larra es la figura central de la prosa romántica española, un <strong>periodista excepcional</strong> y precursor del periodismo moderno.</p>
+            <p class="text-left mb-6 text-base text-stone-700">A través de sus <strong>artículos</strong>, firmados con seudónimos como "Fígaro", Larra diseccionó con <strong>agudeza e implacable ironía</strong> la realidad española de su tiempo: la política, la sociedad, las costumbres, la literatura... Su perspectiva era la de un liberal progresista, frustrado por el atraso, la apatía y la hipocresía que veía a su alrededor. Su estilo, <strong>claro, directo y mordaz</strong>, y la vigencia de muchos de sus temas hacen que sus artículos (como <strong class="work-title">"Vuelva usted mañana"</strong> o <strong class="work-title">"El castellano viejo"</strong>) sigan siendo leídos hoy. Su trágico suicidio a temprana edad lo convirtió en un mito romántico.</p>
+
+            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Teatro Romántico: La Libertad Irrumpe en Escena</h4>
+            <p class="text-left mb-6 text-base text-stone-700">El teatro fue, posiblemente, el género que vivió una transformación más espectacular y exitosa con el Romanticismo. Supuso una <strong>rebelión contra las frías normas neoclásicas</strong> y una vuelta a la libertad y la emoción del teatro barroco español, aunque con una sensibilidad diferente.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Las <strong>claves</strong> de esta revolución teatral fueron varias y rompieron drásticamente con lo anterior.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Se produjo un <strong>rechazo total de las reglas neoclásicas</strong>: se abandonó la <strong>regla de las tres unidades</strong>, se <strong>mezclaron géneros</strong> (dando lugar al <strong>Drama</strong>), se combinó el <strong>verso y la prosa</strong>, y se utilizó la <strong>polimetría</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Las obras pasaron a estructurarse en <strong>cinco actos</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">En cuanto a la <strong>temática</strong>, predominaron los <strong>amores apasionados y prohibidos</strong>, el <strong>honor</strong>, la <strong>venganza</strong>, la <strong>fatalidad</strong> y la lucha por la <strong>libertad</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">Los <strong>personajes</strong> eran típicamente <strong>heroicos, rebeldes</strong>, marcados por un destino trágico, que vivían sus pasiones al límite y desafiaban al mundo; las heroínas también eran apasionadas y decididas, y el final solía ser <strong>trágico</strong>.</p>
+             <p class="text-left mb-6 text-base text-stone-700">La <strong>escenografía</strong> buscaba el impacto, con ambientes nocturnos, lúgubres o sobrenaturales.</p>
+             <p class="text-left mb-6 text-base text-stone-700">La <strong>finalidad</strong> principal ya no era educar, sino emocionar y <strong>conmover</strong> al espectador.</p>
+
+            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Duque de Rivas (Ángel de Saavedra)</span> (1791-1865)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">El estreno de su drama <strong class="work-title">Don Álvaro o la fuerza del sino</strong> en 1835 marcó el triunfo definitivo del teatro romántico en España. Esta obra es un compendio de todos los rasgos del género, centrado en el tema de la <strong>fatalidad</strong>: el héroe no puede escapar a su destino trágico.</p>
+
+            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">José Zorrilla</span> (1817-1893)</h5>
+            <p class="text-left mb-6 text-base text-stone-700">Fue el dramaturgo más popular de su tiempo, y su <strong class="work-title">Don Juan Tenorio</strong> (1844) se convirtió en un fenómeno teatral.</p>
+            <p class="text-left mb-6 text-base text-stone-700">Zorrilla retoma el mito del "burlador", pero crea un Don Juan plenamente romántico: rebelde, vitalista, desafiante, pero capaz de enamorarse sinceramente de la pura Doña Inés. La obra combina aventura, lirismo y elementos sobrenaturales. Lo más significativo es el desenlace: este Don Juan <strong>se salva gracias al amor redentor de Doña Inés</strong>, un final acorde con la sensibilidad romántica.</p>
+             
+        </section>
+
+         <!-- SECCIÓN 7: ANÁLISIS TEXTUAL -->
+         <section id="textos" class="mb-16 scroll-mt-24">
+             <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 7: Claves para el Análisis de Textos</h2>
+              
+             <p class="text-left mb-6 text-base text-stone-700">Comprender cómo se organiza un texto y cuál es su intención es fundamental, ya sea un texto expositivo ilustrado o uno expresivo romántico.</p>
+
+             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Comprensión de Textos Expositivos</h4>
+             <p class="text-left mb-6 text-base text-stone-700">Recordemos que los textos expositivos buscan <strong>informar</strong> de manera <strong>objetiva</strong>, <strong>clara</strong> y <strong>precisa</strong>. Pueden ser <strong>divulgativos</strong>, si se dirigen a un público general, o <strong>especializados</strong>, si emplean terminología técnica para expertos. Habitualmente, siguen una estructura de <strong>introducción, desarrollo y conclusión</strong>.</p>
+
+             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Análisis de la Coherencia: Desentrañando el Sentido</h4>
+             <p class="text-left mb-6 text-base text-stone-700">Analizar la coherencia implica entender la unidad de significado del texto.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Para ello, debemos <strong>identificar el Tema</strong>, es decir, la <strong>idea central</strong>, formulándola de forma concisa (unas 10-12 palabras), precisa y nominalizada (por ejemplo: <em>"La influencia de las ideas ilustradas en la reforma agraria española."</em>).</p>
+              <p class="text-left mb-6 text-base text-stone-700">También es crucial <strong>elaborar un Resumen</strong>, sintetizando el contenido <strong>esencial</strong> (aproximadamente 1/4 del original), <strong>con nuestras propias palabras</strong>, en <strong>tercera persona</strong> y de forma <strong>objetiva</strong>, omitiendo detalles secundarios.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Finalmente, hay que <strong>describir la Estructura</strong>, o cómo se organizan las ideas. Esto incluye la estructura <strong>externa</strong> (división en <strong>párrafos</strong>) y la <strong>interna</strong> (disposición lógica, identificando partes como Introducción, Desarrollo, Conclusión, así como las <strong>ideas principales y secundarias</strong>). Dentro de la estructura interna, es útil analizarla <strong>según la Tesis</strong>: puede ser <strong>analizante/deductiva</strong> (tesis al <strong>principio</strong>), <strong>sintetizante/inductiva</strong> (tesis <strong>al final</strong>) o <strong>encuadrada</strong> (tesis al principio y al final).</p>
+
+             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Las Marcas Lingüísticas de la Objetividad (Textos Expositivos)</h4>
+             <p class="text-left mb-6 text-base text-stone-700">Estos textos suelen emplear recursos lingüísticos específicos para mantener la objetividad.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Es común encontrar oraciones <strong>enunciativas</strong>, predominando la función <strong>referencial</strong> del lenguaje.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Se utiliza habitualmente la <strong>tercera persona</strong> gramatical y el modo <strong>indicativo</strong>.</p>
+              <p class="text-left mb-6 text-base text-stone-700">El léxico tiende a ser <strong>denotativo</strong> (sentido literal), <strong>preciso</strong>, e incluye <strong>tecnicismos</strong> si el texto es especializado.</p>
+              <p class="text-left mb-6 text-base text-stone-700">Además, se apoyan en <strong>conectores</strong> lógicos para estructurar las ideas y a menudo incorporan <strong>datos</strong>, <strong>cifras</strong> o <strong>citas</strong> para respaldar la información.</p>
+
+             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Recordatorio: Modalidades y Funciones</h4>
+             <p class="text-left mb-6 text-base text-stone-700">Como conceptos básicos de comunicación, recordemos las <strong>Modalidades</strong> oracionales, que reflejan la actitud del hablante (Enunciativa, Interrogativa, Exclamativa, Imperativa, Desiderativa, Dubitativa), y las <strong>Funciones</strong> del lenguaje, que indican la intención comunicativa (Referencial, Expresiva, Conativa, Fática, Metalingüística, Poética).</p>
+         </section>
+
+
+        <!-- SECCIÓN ASISTENTE IA (Sin cambios en contenido) -->
+        <section id="gemini-assistant" class="bg-stone-50 border border-stone-200 p-6 rounded-lg shadow-md mb-12 scroll-mt-24">
+             <h2 class="text-3xl font-bold text-amber-900 mb-6 border-b-2 pb-3 border-amber-200 text-center">✨ Asistente de Estudio IA</h2>
+            <p class="mb-6 text-stone-600 text-left">Utiliza la inteligencia artificial para profundizar en el Neoclasicismo y el Romanticismo.</p>
+            <div class="space-y-8">
+                 <div>
+                    <label for="gemini-prompt" class="font-semibold text-stone-700 block mb-2 text-lg text-left">Concepto / Autor / Obra:</label>
+                    <textarea id="gemini-prompt" class="w-full p-4 border border-amber-300 rounded-lg mt-1 shadow-inner text-base bg-white" rows="4" placeholder="Ej: 'Características del Romanticismo', 'Larra', 'El sí de las niñas', 'Diferencias entre Feijoo y Cadalso'"></textarea>
+                    <div class="flex flex-wrap gap-3 mt-4">
+                        <button id="btn-explain" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-blue-700 hover:bg-blue-800">Explicar Concepto</button>
+                        <button id="btn-quiz" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-green-700 hover:bg-green-800">Generar Test</button>
+                        <button id="btn-analysis" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-purple-700 hover:bg-purple-800">Pedir Análisis Literario</button>
+                        <button id="btn-tts" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-gray-700 hover:bg-gray-600">Leer Texto en Voz Alta</button>
+                        <button id="btn-visualize" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-pink-700 hover:bg-pink-800">Visualizar Época/Estilo</button>
+                        <button id="btn-analogy" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-orange-600 hover:bg-orange-700">Crear Analogía</button>
+                    </div>
+                 </div>
+                 <div class="border-t border-amber-200 pt-8">
+                    <label for="file-upload" class="font-semibold text-stone-700 block mb-2 text-lg text-left">Tu Imagen (Cuadro, Portada...):</label>
+                    <div class="flex flex-wrap gap-3 mt-1">
+                        <input type="file" id="file-upload" accept="image/*" class="flex-1 basis-full sm:basis-auto p-3 border border-amber-300 rounded-lg text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200">
+                        <button id="btn-explain-image" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-teal-700 hover:bg-teal-800">Explicar mi Imagen</button>
+                    </div>
+                 </div>
+                 <div class="border-t border-amber-200 pt-8">
+                    <label class="font-semibold text-stone-700 block mb-2 text-lg text-left">Comparador de Conceptos:</label>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-1">
+                        <input type="text" id="prompt-concept-1" placeholder="Concepto 1 (ej. Neoclasicismo)" class="flex-1 p-3 border border-amber-300 rounded-lg shadow-inner bg-white">
+                        <input type="text" id="prompt-concept-2" placeholder="Concepto 2 (ej. Romanticismo)" class="flex-1 p-3 border border-amber-300 rounded-lg shadow-inner bg-white">
+                    </div>
+                    <button id="btn-compare" class="w-full mt-3 flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-indigo-700 hover:bg-indigo-800">Comparar Conceptos</button>
+                 </div>
+                 <div class="border-t border-amber-200 pt-8">
+                    <h3 class="text-2xl font-semibold text-amber-800 mb-4 text-center">Resultados del Asistente</h3>
+                 </div>
+            </div>
+            <div id="gemini-loading" class="text-center p-5 mt-6 hidden rounded-lg bg-stone-100 border border-stone-200"><p class="text-lg text-stone-700 font-semibold">Procesando...</p><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600 mx-auto mt-3"></div></div>
+            <audio id="audio-player" controls class="w-full mt-6 hidden"></audio>
+            <div id="image-preview-container" class="mt-6 text-center my-6"></div>
+            <div id="image-result-container" class="mt-6 text-center my-6"></div>
+            <div id="gemini-results" class="mt-6"></div>
+        </section>
+
+        <!-- SECCIÓN PODCAST (Sin cambios en contenido) -->
+        <section id="podcast-generator-section" class="bg-stone-50 border border-stone-200 p-6 rounded-lg shadow-md mb-12 scroll-mt-24">
+             <h2 class="text-3xl font-bold text-amber-900 mb-6 border-b-2 pb-3 border-amber-200 text-center">🎧 Generador de Podcast Completo</h2>
+            <p class="mb-6 text-stone-600 text-left">Genera y descarga un <strong>único archivo de audio WAV</strong> con la narración completa de esta guía de estudio. Ideal para escuchar mientras viajas o haces otras tareas.</p>
+            <button id="btn-generate-full-podcast" class="flex-1 basis-full sm:basis-auto text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm bg-purple-800 hover:bg-purple-900 w-full text-center text-base">🔊 Generar y Descargar Audio Completo</button>
+            <div id="podcast-status" class="text-center text-stone-600 mt-3 font-semibold"></div>
+            <div id="podcast-controls" class="bg-stone-100 p-5 rounded-lg shadow-inner mt-5 hidden border border-stone-200 text-center">
+                 <p class="text-green-700 font-bold mb-4 text-lg">✅ ¡Audio Listo!</p>
+                 <audio id="full-podcast-player" controls class="w-full mb-4 rounded-lg shadow"></audio>
+                 <a id="download-podcast-link" class="inline-block bg-blue-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-800 transition duration-300 shadow-md text-base" download="literatura_podcast_completo.wav">
+                     💾 Descargar Podcast (.wav)
+                 </a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Script para Gemini API (SIN CAMBIOS) -->
+    <script>
+        // --- Guion del Podcast (Adaptado a Literatura y con Parte 7) ---
+        // Se extrae el texto de las secciones para el podcast.
+        function getPodcastScript() {
+            const sections = [
+                { id: 'neoclasicismo', title: 'Parte 1: Neoclasicismo' },
+                { id: 'prosa-neo', title: 'Parte 2: Prosa Neoclásica' },
+                { id: 'poesia-teatro-neo', title: 'Parte 3: Poesía y Teatro Neoclásico' },
+                { id: 'romanticismo', title: 'Parte 4: Romanticismo - Contexto y Características' },
+                { id: 'poesia-rom', title: 'Parte 5: Poesía Romántica' },
+                { id: 'prosa-teatro-rom', title: 'Parte 6: Prosa y Teatro Romántico' },
+                { id: 'textos', title: 'Parte 7: Análisis Textual' }
+            ];
+            
+            const chunks = {};
+            
+            sections.forEach(section => {
+                const el = document.getElementById(section.id);
+                if (el) {
+                    // Obtener texto, reemplazar múltiples espacios/nuevas líneas con uno solo.
+                    let text = el.innerText || el.textContent || "";
+                    text = text.replace(/(\r\n|\n|\r)/gm, " ").replace(/\s\s+/g, ' ').trim();
+                    // Usar el título de la sección + el texto limpiado
+                    chunks[section.title] = `${section.title}. ${text}`;
+                } else {
+                    chunks[section.title] = `${section.title}. Contenido no encontrado.`;
+                }
+            });
+            // console.log("Podcast Script Generated:", chunks); // Para depuración
+            return chunks;
+        }
+        
+        let podcastChunks = {}; // Se llenará al cargar la página
+
+        // --- DOM Elements, API Config, State ---
+        const btnExplain = document.getElementById('btn-explain');
+        const btnQuiz = document.getElementById('btn-quiz');
+        const btnAnalysis = document.getElementById('btn-analysis');
+        const btnTts = document.getElementById('btn-tts');
+        const btnVisualize = document.getElementById('btn-visualize');
+        const btnExplainImage = document.getElementById('btn-explain-image');
+        const fileUpload = document.getElementById('file-upload');
+        const btnAnalogy = document.getElementById('btn-analogy');
+        const btnCompare = document.getElementById('btn-compare');
+        const btnGenerateFullPodcast = document.getElementById('btn-generate-full-podcast');
+        const podcastControls = document.getElementById('podcast-controls');
+        const fullPodcastPlayer = document.getElementById('full-podcast-player');
+        const downloadPodcastLink = document.getElementById('download-podcast-link');
+        const podcastStatus = document.getElementById('podcast-status');
+        const promptText = document.getElementById('gemini-prompt');
+        const promptConcept1 = document.getElementById('prompt-concept-1');
+        const promptConcept2 = document.getElementById('prompt-concept-2');
+        const loadingEl = document.getElementById('gemini-loading');
+        const resultsEl = document.getElementById('gemini-results');
+        const audioPlayer = document.getElementById('audio-player');
+        const imagePreviewContainer = document.getElementById('image-preview-container');
+        const imageResultContainer = document.getElementById('image-result-container');
+        
+        const API_KEY = ""; // No se necesita clave para los modelos flash o imagen 3
+        const API_URL_GENERATE = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
+        const API_URL_TTS = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
+        const API_URL_IMAGEN = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
+        
+        let uploadedImageBase64 = null;
+        let uploadedMimeType = null;
+        let chatHistory = [];
+
+
+        // --- UI Functions ---
+        function showLoading(message = "Procesando...") {
+            if (loadingEl) {
+                loadingEl.querySelector('p').textContent = message;
+                loadingEl.classList.remove('hidden');
+            }
+            if(resultsEl) resultsEl.innerHTML = '';
+            if(resultsEl) resultsEl.classList.add('hidden');
+            if(audioPlayer) audioPlayer.classList.add('hidden');
+            if(audioPlayer) audioPlayer.src = '';
+            if(imageResultContainer) imageResultContainer.innerHTML = '';
+            if(imageResultContainer) imageResultContainer.classList.add('hidden');
+            if(podcastControls) podcastControls.classList.add('hidden');
+            if(fullPodcastPlayer) fullPodcastPlayer.src = '';
+            if(downloadPodcastLink) downloadPodcastLink.href = '#';
+            if(podcastStatus) podcastStatus.textContent = '';
+        }
+        function hideLoading() {
+            if(loadingEl) loadingEl.classList.add('hidden');
+        }
+
+        // --- Core Functions (Pcm/Wav/Fetch/FollowUp/addFollowUpUI) ---
+        function base64ToArrayBuffer(b64){try{const bS=window.atob(b64); const l=bS.length; const b=new Uint8Array(l); for(let i=0; i<l; i++){ b[i]=bS.charCodeAt(i); } return b.buffer;}catch(e){console.error("Error Base64:", e); return new ArrayBuffer(0);}}
+        function writeString(v,o,s){for(let i=0; i<s.length; i++){ v.setUint8(o+i, s.charCodeAt(i));}}
+        function pcmToWav(pcmData,sR){const nC=1; const bPS=16; const bR=sR*nC*bPS/8; const bA=nC*bPS/8; let dS; let pB; if(pcmData instanceof Int16Array){ pB=pcmData.buffer; dS=pcmData.byteLength;} else if(pcmData instanceof ArrayBuffer){ pB=pcmData; dS=pcmData.byteLength;} else { console.error("Bad PCM"); return null;} if(dS===0){ console.error("Empty PCM"); return null;} const bf=new ArrayBuffer(44+dS); const v=new DataView(bf); writeString(v,0,'RIFF'); v.setUint32(4,36+dS,true); writeString(v,8,'WAVE'); writeString(v,12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,nC,true); v.setUint32(24,sR,true); v.setUint32(28,bR,true); v.setUint16(32,bA,true); v.setUint16(34,bPS,true); writeString(v,36,'data'); v.setUint32(40,dS,true); try {const pV=new Int16Array(pB); const dV=new Int16Array(bf,44); dV.set(pV); return new Blob([v],{type:'audio/wav'});} catch(e) { console.error("Error creating WAV DataView:", e); return null; } }
+        async function fetchWithBackoff(url,options,retries=5,delay=1000){try{const r=await fetch(url,options); if(!r.ok){let eB; try { eB = await r.json(); } catch(e) { eB = await r.text(); } console.error(`HTTP err ${r.status}`, eB); if((r.status===429||r.status>=500)&&retries>0){ await new Promise(ok=>setTimeout(ok,delay)); return fetchWithBackoff(url,options,retries-1,delay*2);} throw new Error(`HTTP ${r.status}: ${JSON.stringify(eB)}`);} return r.json();} catch(e){console.error("Fetch/JSON err:",e); if(retries>0){ await new Promise(ok=>setTimeout(ok,delay)); return fetchWithBackoff(url,options,retries-1,delay*2);} else { console.error("Max retries."); throw e;}}}
+        
+        function addFollowUpUI(c){if(!c) return; const o=c.querySelector('.f'); if(o)o.remove(); const fC=document.createElement('div'); fC.className='follow-up-container f mt-5 p-4 bg-stone-100 rounded-lg shadow-inner border border-stone-200'; fC.innerHTML=`<label for="f-i" class="block text-sm font-medium text-stone-700 text-left">Pregunta de seguimiento:</label><textarea id="f-i" class="w-full p-2 border border-stone-300 rounded-lg mt-1 bg-white" rows="2"></textarea><button id="b-f" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-lg transition duration-300 shadow-md text-sm">Enviar Seguimiento</button>`; const btn = fC.querySelector('#b-f'); if(btn) btn.addEventListener('click',handleFollowUp); c.appendChild(fC); c.classList.remove('hidden');}
+        
+        async function handleFollowUp(){
+            const fI=document.getElementById('f-i'); 
+            if(!fI) return;
+            const uP=fI.value; 
+            if(!uP.trim()) return; // No uses alert
+            const fB=document.getElementById('b-f'); 
+            if(!fB) return;
+
+            fI.disabled=true; 
+            fB.disabled=true; 
+            fB.textContent="Pensando...";
+            
+            const uMD=document.createElement('div'); 
+            uMD.className='mt-4 p-3 bg-stone-200 rounded text-left'; 
+            uMD.innerHTML=`<strong>Tú:</strong><pre class="bg-stone-200 p-2 rounded whitespace-pre-wrap font-mono">${uP}</pre>`; 
+            if(resultsEl) resultsEl.appendChild(uMD);
+            
+            chatHistory.push({role:"user",parts:[{text:uP}]});
+            
+            const cFUI=resultsEl ? resultsEl.querySelector('.f') : null; 
+            if(cFUI)cFUI.remove();
+            
+            const sE=chatHistory.find(e=>e.role==='system'); 
+            const sPT=sE?sE.parts[0].text:"Eres un tutor útil.";
+            const pL={contents:chatHistory.filter(m=>m.role!=='system'),systemInstruction:{parts:[{text:sPT}]}}; 
+            const op={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pL)}; 
+            
+            try{
+                const rs=await fetchWithBackoff(API_URL_GENERATE,op); 
+                const t=rs.candidates?.[0]?.content?.parts?.[0]?.text; 
+                chatHistory.push({role:"model",parts:[{text:t||"(Sin resp.)"}]}); 
+                
+                const mMD=document.createElement('div'); 
+                mMD.className='mt-4 p-3 bg-blue-100 rounded text-left gemini-answer'; 
+                mMD.innerHTML=`<strong>Tutor:</strong><pre class="bg-blue-100 p-2 rounded whitespace-pre-wrap">${t||"(Sin resp.)"}</pre>`; 
+                if(resultsEl) resultsEl.appendChild(mMD);
+            } catch(e){
+                const eMD=document.createElement('div'); 
+                eMD.className='mt-4 p-3 bg-red-100 rounded text-left'; 
+                eMD.innerHTML=`<strong>Error:</strong><pre class="bg-red-100 p-2 rounded whitespace-pre-wrap">${e.message}</pre>`; 
+                if(resultsEl) resultsEl.appendChild(eMD);
+            } finally {
+                if(resultsEl) addFollowUpUI(resultsEl);
+                if(resultsEl) resultsEl.classList.remove('hidden');
+                if(resultsEl) resultsEl.scrollTop=resultsEl.scrollHeight;
+            }
+        }
+
+        // --- Manejador de Podcast Completo ---
+        async function getSingleAudioChunk(text, voiceName = "Vindemiatrix") {
+            const payload = { contents: [{ parts: [{ text: text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName } } } }, model: "gemini-2.5-flash-preview-tts" };
+            const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+            const result = await fetchWithBackoff(API_URL_TTS, options);
+            const part = result?.candidates?.[0]?.content?.parts?.[0];
+            const audioData = part?.inlineData?.data;
+            const mimeType = part?.inlineData?.mimeType;
+            if (audioData && mimeType?.startsWith("audio/")) {
+                const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                const pcmBuffer = base64ToArrayBuffer(audioData);
+                if (pcmBuffer.byteLength === 0) {
+                    console.warn("Received empty PCM buffer");
+                    return { pcmBuffer: new ArrayBuffer(0), sampleRate };
+                }
+                return { pcmBuffer, sampleRate };
+            }
+            console.error("Invalid audio chunk received:", result);
+            throw new Error(`No se recibió un chunk de audio válido`);
+        }
+        
+        if (btnGenerateFullPodcast) {
+            btnGenerateFullPodcast.addEventListener('click', async () => {
+                const button = btnGenerateFullPodcast;
+                const originalText = button.textContent;
+                button.disabled = true;
+                if(podcastStatus) podcastStatus.textContent = "Iniciando generación...";
+                if(podcastControls) podcastControls.classList.add('hidden');
+                if(fullPodcastPlayer) fullPodcastPlayer.src = '';
+                if(downloadPodcastLink) downloadPodcastLink.href = '#';
+                
+                let allPcmBuffers = [];
+                let sampleRate = 0;
+                let totalLength = 0;
+                // Asegurarse que el script está cargado
+                if (Object.keys(podcastChunks).length === 0) {
+                     podcastChunks = getPodcastScript();
+                }
+                const chunkEntries = Object.entries(podcastChunks);
+                
+                try {
+                    for (let i = 0; i < chunkEntries.length; i++) {
+                        const [title, text] = chunkEntries[i];
+                        if(podcastStatus) podcastStatus.textContent = `Generando ${i + 1}/${chunkEntries.length}: ${title}...`;
+                        const chunk = await getSingleAudioChunk(`Voz profesor, lee claro: ${text}`, "Vindemiatrix");
+                        if (sampleRate === 0 && chunk.pcmBuffer.byteLength > 0) {
+                            sampleRate = chunk.sampleRate;
+                        } else if (chunk.sampleRate !== sampleRate && chunk.pcmBuffer.byteLength > 0) {
+                            throw new Error("Tasa de muestreo inconsistente.");
+                        }
+                        if (chunk.pcmBuffer.byteLength > 0) {
+                            allPcmBuffers.push(chunk.pcmBuffer);
+                            totalLength += chunk.pcmBuffer.byteLength;
+                        } else {
+                            console.warn(`Skipping empty chunk: ${title}`);
+                        }
+                    }
+                    if (totalLength === 0 || sampleRate === 0) {
+                        throw new Error("No se generó audio válido.");
+                    }
+                    if(podcastStatus) podcastStatus.textContent = "Concatenando y empaquetando...";
+                    const finalPcmBuffer = new ArrayBuffer(totalLength);
+                    const finalPcmView = new Uint8Array(finalPcmBuffer);
+                    let offset = 0;
+                    for (const buffer of allPcmBuffers) {
+                        finalPcmView.set(new Uint8Array(buffer), offset);
+                        offset += buffer.byteLength;
+                    }
+                    const finalInt16Array = new Int16Array(finalPcmBuffer);
+                    const finalWavBlob = pcmToWav(finalInt16Array, sampleRate);
+                    if (!finalWavBlob) throw new Error("Fallo al crear WAV.");
+                    
+                    const audioUrl = URL.createObjectURL(finalWavBlob);
+                    if(fullPodcastPlayer) fullPodcastPlayer.src = audioUrl;
+                    if(downloadPodcastLink) downloadPodcastLink.href = audioUrl;
+                    if(downloadPodcastLink) downloadPodcastLink.download = "literatura_podcast_completo.wav";
+                    if(podcastControls) podcastControls.classList.remove('hidden');
+                    if(podcastStatus) podcastStatus.textContent = '';
+                } catch (error) {
+                    if(podcastStatus) podcastStatus.textContent = `Error: ${error.message}`;
+                    console.error("PODCAST ERROR:", error);
+                } finally {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }
+            });
+        }
+
+
+        // --- Manejadores de Eventos (Asistente IA) ---
+        async function startTextGeneration(systemPrompt, userPrompt, outputContainer, isFollowUp=false) {
+            if (!isFollowUp) {
+                showLoading();
+                if (!(systemPrompt.includes("Analizas la imagen"))) {
+                    chatHistory = [];
+                }
+            }
+            let currentCallHistory = [];
+            if (chatHistory.length === 0 || !isFollowUp) {
+                currentCallHistory = [{ role: "user", parts: [{ text: userPrompt }] }];
+                chatHistory = [{ role: "system", parts: [{ text: systemPrompt }] }, ...currentCallHistory];
+            } else {
+                chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
+                currentCallHistory = chatHistory;
+            }
+            const payload = {
+                contents: currentCallHistory.filter(m => m.role !== 'system'),
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+            const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+            
+            try {
+                const result = await fetchWithBackoff(API_URL_GENERATE, options);
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                const modelResponse = { role: "model", parts: [{ text: text || "(No se generó respuesta)" }] };
+                if (!isFollowUp || chatHistory[chatHistory.length - 1]?.role !== 'model') {
+                    chatHistory.push(modelResponse);
+                }
+                return text || "(No se generó respuesta)";
+            } catch (error) {
+                console.error("Error in startTextGeneration:", error);
+                return `Error: ${error.message}`;
+            } finally {
+                if (!isFollowUp) {
+                    hideLoading();
+                    if(outputContainer) outputContainer.classList.remove('hidden');
+                }
+            }
+        }
+        
+        if (btnExplain) {
+            btnExplain.addEventListener('click', async () => {
+                const userPrompt = promptText.value;
+                if (!userPrompt.trim()) return;
+                const systemPrompt = "Eres un profesor experto en literatura española (Neoclasicismo y Romanticismo). Explicas conceptos, autores u obras de forma clara y concisa para un estudiante que prepara un examen tipo test, basándote en el contexto del material proporcionado.";
+                const fullUserPrompt = `Explica esto relacionado con Neoclasicismo/Romanticismo español: "${userPrompt}"`;
+                const text = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl);
+                if(resultsEl) resultsEl.innerHTML = `<div class="gemini-answer"><h4>Explicación:</h4><pre>${text}</pre></div>`;
+                addFollowUpUI(resultsEl);
+            });
+        }
+
+        if (btnAnalogy) {
+            btnAnalogy.addEventListener('click', async () => {
+                const userPrompt = promptText.value;
+                if (!userPrompt.trim()) return;
+                const systemPrompt = "Eres un profesor de literatura creativo. Explica el concepto literario (Neoclasicismo/Romanticismo) que te da el usuario usando una analogía simple y fácil de recordar. Sé breve y claro, en español.";
+                const fullUserPrompt = `Dame una analogía para "${userPrompt}"`;
+                const text = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl);
+                if(resultsEl) resultsEl.innerHTML = `<div class="gemini-answer"><h4>Analogía:</h4><pre>${text}</pre></div>`;
+                addFollowUpUI(resultsEl);
+            });
+        }
+
+        if (btnCompare) {
+            btnCompare.addEventListener('click', async () => {
+                const c1 = promptConcept1.value;
+                const c2 = promptConcept2.value;
+                if (!c1.trim() || !c2.trim()) return;
+                chatHistory = [];
+                showLoading("Comparando...");
+                const systemPrompt = `Eres un profesor experto en literatura (Neoclasicismo/Romanticismo). Compara dos conceptos/autores/obras. Responde *únicamente* con una tabla HTML completa (<table class='comparison-table w-full'>...</table>). Columnas: 'Característica', '${c1}', '${c2}'.`;
+                const fullUserPrompt = `Compara "${c1}" con "${c2}".`;
+                const payload = { contents: [{ parts: [{ text: fullUserPrompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, };
+                const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+                try {
+                    const result = await fetchWithBackoff(API_URL_GENERATE, options);
+                    const htmlTable = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (htmlTable && htmlTable.trim().startsWith('<table') && htmlTable.trim().endsWith('</table>')) {
+                        if(resultsEl) resultsEl.innerHTML = `<h4>Comparativa: ${c1} vs. ${c2}</h4>${htmlTable}`;
+                    } else {
+                        console.warn("Invalid HTML table:", htmlTable);
+                        if(resultsEl) resultsEl.innerHTML = `<h4>Comparativa: ${c1} vs. ${c2}</h4><p>Error: Respuesta no válida.</p><pre>${htmlTable || '(Vacía)'}</pre>`;
+                    }
+                } catch (error) {
+                    if(resultsEl) resultsEl.innerHTML = `<h4>Error:</h4><pre>${error.message}</pre>`;
+                } finally {
+                    hideLoading();
+                    if(resultsEl) resultsEl.classList.remove('hidden');
+                }
+            });
+        }
+
+        if (btnQuiz) {
+            btnQuiz.addEventListener('click', async () => {
+                const userPrompt = promptText.value;
+                if (!userPrompt.trim()) return;
+                const systemPrompt = "Eres un creador de exámenes de literatura española (Neoclasicismo/Romanticismo). Creas 5 preguntas tipo test (A, B, C, D) realistas sobre el tema dado. Formato *exacto*: 'PREGUNTA #: [Texto]\nA) ...\nB) ...\nC) ...\nD) ...\nRESPUESTA: [Letra]\n---'.";
+                const fullUserPrompt = `Genera 5 preguntas tipo test sobre: "${userPrompt}"`;
+                const resultText = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl);
+                const questions = resultText.split('---');
+                let quizHtml = '<h4>Preguntas Tipo Test:</h4>';
+                questions.forEach((q, index) => {
+                    const parts = q.trim().split(/\nRESPUESTA:/);
+                    const questionBlock = parts[0];
+                    const answer = parts[1] ? parts[1].trim() : "N/A";
+                    if(questionBlock) {
+                        quizHtml += `<div class="mt-4 p-4 bg-white rounded shadow border border-gray-200 gemini-answer"><pre class="bg-white">${questionBlock}</pre><div id="answer-${index}" class="hidden mt-3 p-2 bg-green-100 border border-green-300 rounded text-sm"><strong>Respuesta:</strong> ${answer}</div><button onclick="toggleAnswer('answer-${index}')">Mostrar/Ocultar Respuesta</button></div>`;
+                    }
+                });
+                if(resultsEl) resultsEl.innerHTML = quizHtml;
+                addFollowUpUI(resultsEl);
+            });
+        }
+
+        if (btnAnalysis) {
+            btnAnalysis.addEventListener('click', async () => {
+                const userPrompt = promptText.value;
+                if (!userPrompt.trim()) return;
+                const systemPrompt = "Eres un crítico literario experto en Neoclasicismo y Romanticismo español. Analizas la obra, autor o fragmento proporcionado, destacando características del movimiento, temas, estilo, o respondiendo a una pregunta específica si se incluye. Usa un lenguaje académico pero accesible. Formato: 'ANÁLISIS: [Tu análisis detallado]\n---\nCONCLUSIÓN: [Resumen corto de los puntos clave]'";
+                const fullUserPrompt = `Realiza un análisis literario (características del movimiento, temas, estilo) de: "${userPrompt}"`;
+                const resultText = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl);
+                const parts = resultText.split('---');
+                const analysisBlock = parts[0] ? parts[0].replace('ANÁLISIS:', '').trim() : "No generado.";
+                const conclusionBlock = parts[1] ? parts[1].replace('CONCLUSIÓN:', '').trim() : "";
+                let analysisHtml = `<div class="gemini-answer"><h4>Análisis Literario:</h4><pre>${analysisBlock}</pre>${conclusionBlock ? `<div class="mt-3 pt-3 border-t border-gray-200"><pre><strong>CONCLUSIÓN:</strong>\n${conclusionBlock}</pre></div>` : ''}</div>`;
+                if(resultsEl) resultsEl.innerHTML = analysisHtml;
+                addFollowUpUI(resultsEl);
+            });
+        }
+        
+        if (btnTts) {
+            btnTts.addEventListener('click', async () => {
+                const userPrompt = promptText.value;
+                if (!userPrompt.trim()) return;
+                showLoading("Generando audio...");
+                chatHistory = [];
+                const payload = { contents: [{ parts: [{ text: `Voz profesor, lee español: ${userPrompt}` }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Vindemiatrix" } } } }, model: "gemini-2.5-flash-preview-tts" };
+                const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+                try {
+                    const result = await fetchWithBackoff(API_URL_TTS, options);
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType;
+                    if (audioData && mimeType?.startsWith("audio/")) {
+                        const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                        const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                        const pcmBuffer = base64ToArrayBuffer(audioData);
+                        if (pcmBuffer.byteLength === 0) throw new Error("PCM vacío.");
+                        const pcm16 = new Int16Array(pcmBuffer);
+                        const wavBlob = pcmToWav(pcm16, sampleRate);
+                        if (!wavBlob) throw new Error("Fallo WAV.");
+                        const audioUrl = URL.createObjectURL(wavBlob);
+                        if(audioPlayer) audioPlayer.src = audioUrl;
+                        if(audioPlayer) audioPlayer.classList.remove('hidden');
+                        if(audioPlayer) audioPlayer.play();
+                    } else {
+                        throw new Error(`Respuesta TTS inválida: ${JSON.stringify(result)}`);
+                    }
+                } catch (error) {
+                    console.error("TTS Error:", error);
+                    if(resultsEl) resultsEl.innerHTML = `<h4>Error Audio:</h4><pre>${error.message}</pre>`;
+                    if(resultsEl) resultsEl.classList.remove('hidden');
+                } finally {
+                    hideLoading();
+                }
+            });
+        }
+
+        if (btnVisualize) {
+            btnVisualize.addEventListener('click', async () => {
+                const userPrompt = promptText.value;
+                if (!userPrompt.trim()) return;
+                showLoading("Generando imagen...");
+                chatHistory = [];
+                const fullPrompt = `Ilustración artística evocadora, estilo grabado o pintura óleo S.XVIII-XIX, representando: "${userPrompt}" (Neoclasicismo/Romanticismo español).`;
+                const payload = { instances: [{ prompt: fullPrompt }], parameters: { "sampleCount": 1 } };
+                const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+                try {
+                    const result = await fetchWithBackoff(API_URL_IMAGEN, options);
+                    const base64Data = result.predictions?.[0]?.bytesBase64Encoded;
+                    if (base64Data) {
+                        const imageUrl = `data:image/png;base64,${base64Data}`;
+                        if(imageResultContainer) imageResultContainer.innerHTML = `<h4>Visualización:</h4><img src="${imageUrl}" alt="Visualización para ${userPrompt}" class="w-full max-w-md h-auto rounded-lg shadow-lg mx-auto border-2 border-amber-200">`;
+                        if(imageResultContainer) imageResultContainer.classList.remove('hidden');
+                    } else {
+                        throw new Error(`Respuesta Imagen inválida: ${JSON.stringify(result)}`);
+                    }
+                } catch (error) {
+                    console.error("Visualize Error:", error);
+                    if(resultsEl) resultsEl.innerHTML = `<h4>Error Imagen:</h4><pre>${error.message}</pre>`;
+                    if(resultsEl) resultsEl.classList.remove('hidden');
+                } finally {
+                    hideLoading();
+                }
+            });
+        }
+
+        if (fileUpload) {
+            fileUpload.addEventListener('change', () => {
+                const file = fileUpload.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const dataUrl = reader.result;
+                    uploadedMimeType = dataUrl.substring(dataUrl.indexOf(':')+1, dataUrl.indexOf(';'));
+                    uploadedImageBase64 = dataUrl.substring(dataUrl.indexOf(',')+1);
+                    if(imagePreviewContainer) imagePreviewContainer.innerHTML = `<h4>Vista Previa:</h4><img src="${dataUrl}" alt="Vista previa" class="w-full max-w-md h-auto rounded-lg shadow-lg mx-auto border-2 border-amber-200">`;
+                    if(imagePreviewContainer) imagePreviewContainer.classList.remove('hidden');
+                    if(resultsEl) resultsEl.innerHTML = '';
+                    if(resultsEl) resultsEl.classList.add('hidden');
+                    if(imageResultContainer) imageResultContainer.innerHTML = '';
+                    if(imageResultContainer) imageResultContainer.classList.add('hidden');
+                    if(audioPlayer) audioPlayer.classList.add('hidden');
+                    if(audioPlayer) audioPlayer.src = '';
+                    if(podcastControls) podcastControls.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (btnExplainImage) {
+            btnExplainImage.addEventListener('click', async () => {
+                if (!uploadedImageBase64) return;
+                const userPrompt = promptText.value.trim() || "Analiza esta imagen (Neoclasicismo/Romanticismo español).";
+                const systemPrompt = "Eres historiador del arte/crítico literario experto en Neoclasicismo/Romanticismo español. Analizas la imagen (cuadro, portada...) explicando su relación con el movimiento, estilo, temas o autor.";
+                const imagePrompt = { role: "user", parts: [ { text: userPrompt }, { inlineData: { mimeType: uploadedMimeType || "image/jpeg", data: uploadedImageBase64 } } ] };
+                showLoading("Analizando imagen...");
+                chatHistory = [ { role: "system", parts: [{ text: systemPrompt }] }, imagePrompt ];
+                const payload = { contents: chatHistory.filter(m => m.role === 'user'), systemInstruction: { parts: [{ text: systemPrompt }] }, };
+                const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+                try {
+                    const result = await fetchWithBackoff(API_URL_GENERATE, options);
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if(text) chatHistory.push({ role: "model", parts: [{ text }] });
+                    if(resultsEl) resultsEl.innerHTML = `<div class="gemini-answer"><h4>Análisis de Imagen:</h4><pre>${text || "No se pudo."}</pre></div>`;
+                    if(resultsEl) resultsEl.classList.remove('hidden');
+                    addFollowUpUI(resultsEl);
+                } catch (error) {
+                    if(resultsEl) resultsEl.innerHTML = `<h4>Error:</h4><pre>${error.message}</pre>`;
+                    if(resultsEl) resultsEl.classList.remove('hidden');
+                } finally {
+                    hideLoading();
+                    if(imagePreviewContainer) imagePreviewContainer.classList.remove('hidden');
+                }
+            });
+        }
+
+        // --- Función global toggleAnswer ---
+        window.toggleAnswer = function(id) {
+            const answerEl = document.getElementById(id);
+            if (answerEl) answerEl.classList.toggle('hidden');
+        }
+        
+        // --- Cargar script del podcast al inicio ---
+        window.addEventListener('DOMContentLoaded', () => {
+            podcastChunks = getPodcastScript();
+        });
+
+    </script>
+</body>
+</html>
+
