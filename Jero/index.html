@@ -1,556 +1,648 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía de Estudio: Neoclasicismo y Romanticismo (4º ESO)</title>
-    <!-- Carga de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Card Sorting - Ingeniería de la Usabilidad</title>
+    
+    <!-- Fuentes: Inter (para todo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        /* Estilos base */
-        body { font-family: 'Georgia', serif; }
-        h1, h2, header p, nav h3 { font-family: 'Times New Roman', serif; }
-        /* Clases personalizadas */
-        .author-name { color: #78350f; }
-        .work-title { color: #78350f; font-weight: 600; }
-        strong.work-title { font-weight: 700; }
-        em.work-title { font-style: italic; }
-        /* Tablas Comparativas IA */
-        .comparison-table th { background-color: #4b5563; color: white; padding: 0.75rem; text-align: center; }
-        .comparison-table td { border: 1px solid #d4d4d8; padding: 0.75rem; text-align: center; }
-        /* Respuestas Gemini */
-        .gemini-answer { padding: 1.25rem; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; margin-top: 1.5rem; text-align: left; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
-        .gemini-answer h4 { font-weight: 700; font-size: 1.125rem; margin-bottom: 0.75rem; color: #1e40af; text-align: left; font-family: 'Times New Roman', serif; }
-        .gemini-answer pre { background-color: white; padding: 0.75rem; border-radius: 0.375rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); border: 1px solid #e5e7eb; font-size: 0.875rem; text-align: left; white-space: pre-wrap; overflow-x: auto; }
-        .gemini-answer button { background-color: #4b5563; color: white; font-weight: 700; padding: 0.5rem 0.75rem; border-radius: 0.5rem; transition: background-color 200ms; font-size: 0.75rem; margin-top: 0.75rem; }
-        .gemini-answer button:hover { background-color: #374151; }
-        /* Estilo para mensaje API Key */
-        .api-key-message { background-color: #fefce8; border: 1px solid #fef08a; color: #a16207; }
+        /* --- 1. CONFIGURACIÓN (TEMA LIMPIO/CORPORATIVO) --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f1f5f9; /* Fondo de la página (Gris muy claro) */
+            display: grid;
+            gap: 20px;
+            place-items: center;
+            padding: 20px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff; /* Fondo de diapositiva (Blanco) */
+            color: #334155; /* Texto principal (Gris oscuro) */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #cbd5e1;
+        }
+
+        .slide-container .slide-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 52px;
+            font-weight: 700;
+            color: #2563eb; /* Azul (Acento) */
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            width: calc(100% - 120px);
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e2e8f0; /* Gris claro */
+        }
+
+        .slide-container .content-area {
+            display: flex;
+            width: calc(100% - 120px);
+            height: calc(100% - 160px); /* Altura - Título */
+            margin-top: 100px; /* Espacio para el título */
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+        
+        .slide-container .notes {
+            position: absolute;
+            bottom: 10px;
+            left: 60px;
+            font-size: 12px;
+            color: #94a3b8; /* Gris */
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- 2. TIPOGRAFÍA --- */
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+        
+        p, li {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #334155;
+        }
+        
+        li {
+            margin-bottom: 12px;
+        }
+
+        /* --- 3. DISEÑOS (LAYOUTS) --- */
+
+        /* Layout: Portada (Title_Slide) */
+        .title-layout {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 100px;
+            background: #ffffff;
+        }
+        .title-layout h1 {
+            font-size: 84px;
+            color: #1e3a8a; /* Azul oscuro */
+            margin-bottom: 10px;
+        }
+        .title-layout .subtitle {
+            font-size: 32px;
+            color: #475569;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+        }
+        .title-layout .presenter {
+            font-size: 24px;
+            color: #334155;
+            margin-top: 50px;
+            font-family: 'Inter', sans-serif;
+            border-top: 3px solid #2563eb;
+            padding-top: 20px;
+        }
+
+        /* Layout: Índice (Section_Title) */
+        .section-title-layout {
+            text-align: left;
+            width: 100%;
+        }
+        .section-title-layout ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .section-title-layout li {
+            font-size: 36px;
+            color: #475569;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        .section-title-layout li::before {
+            content: '>';
+            font-weight: 700;
+            color: #2563eb;
+            margin-right: 20px;
+        }
+
+        /* Layout: Columna Izquierda Texto, Columna Derecha Imagen */
+        .image-right-text-left {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* Más espacio para el texto */
+            gap: 50px;
+            align-items: center;
+        }
+        .image-right-text-left ul {
+            padding-left: 40px;
+        }
+        .image-wrapper {
+            width: 100%;
+            height: 450px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Layout: Columnas de Texto (Tiled Text) */
+        .two-column-text {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        .two-column-text h3 {
+            font-size: 30px;
+            text-align: center;
+        }
+        .two-column-text ul {
+            padding-left: 40px;
+            margin-top: 15px;
+        }
+         .two-column-text li {
+            font-size: 20px;
+            color: #475569;
+        }
+        .two-column-text .icon {
+            font-size: 40px;
+            color: #2563eb;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Layout: Cita */
+        .quote-layout {
+            width: 90%;
+            text-align: center;
+        }
+        .quote-layout blockquote {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 48px;
+            color: #1e3a8a;
+            line-height: 1.5;
+            border-left: 5px solid #2563eb;
+            padding-left: 30px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .quote-layout cite {
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #475569;
+        }
+
+        /* Layout: Números Destacados */
+        .highlight-numbers-layout {
+            display: grid;
+            grid-template-columns: 35% 65%;
+            gap: 50px;
+            width: 100%;
+            align-items: center;
+        }
+        .highlight-numbers-layout .number-side {
+            text-align: center;
+            border-right: 2px solid #e2e8f0;
+            padding-right: 50px;
+        }
+        .highlight-numbers-layout .number {
+            font-size: 150px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            color: #2563eb;
+            line-height: 1;
+        }
+        .highlight-numbers-layout .number-label {
+            font-size: 32px;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            margin-top: 10px;
+        }
+        .highlight-numbers-layout ul {
+            padding-left: 30px;
+        }
+        
+        /* Layout: Timeline */
+        .timeline-layout {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            width: 100%;
+            padding-top: 20px;
+        }
+        .timeline-layout .timeline-line {
+            position: absolute;
+            top: 50px; /* Centro del icono */
+            left: 5%;
+            width: 90%;
+            height: 4px;
+            background-color: #cbd5e1;
+            z-index: 1;
+        }
+        .timeline-item {
+            width: 30%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .timeline-item .icon {
+            font-size: 30px;
+            color: #ffffff;
+            background-color: #2563eb;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border: 4px solid #ffffff;
+            margin: 20px auto;
+        }
+        .timeline-item h3 {
+            font-size: 24px;
+            color: #1e3a8a;
+        }
+        .timeline-item p {
+            font-size: 20px;
+        }
+
+        /* Layout: Cierre / Bibliografía */
+        .final-layout {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .final-layout h2 {
+            font-size: 80px;
+            margin: 0;
+            text-align: center;
+            color: #1e3a8a;
+        }
+        .final-layout .bibliografia {
+            text-align: left;
+            font-size: 14px;
+            padding-right: 60px; /* ARREGLADO: Separación del margen derecho */
+        }
+        .final-layout .bibliografia p {
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            color: #475569;
+        }
+         .final-layout .bibliografia p strong {
+            color: #334155;
+        }
+         .final-layout .bibliografia hr {
+            border-color: #e2e8f0;
+            margin: 10px 0;
+         }
+
     </style>
 </head>
-<body class="bg-amber-50 leading-relaxed text-stone-800 text-base p-5">
+<body>
 
-    <!-- Contenedor Principal -->
-    <div class="container mx-auto max-w-4xl p-6 md:p-12 bg-white shadow-xl rounded-lg border border-amber-200">
-
-        <!-- Encabezado -->
-        <header class="mb-12 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-amber-900 mb-3 text-center">Guía de Estudio: Neoclasicismo y Romanticismo</h1>
-            <p class="text-lg text-stone-600 mt-3 text-center">Un viaje por la literatura española del Siglo de las Luces y la época de los sentimientos.</p>
-        </header>
-
-        <!-- Menú de Navegación Rápida -->
-        <nav class="bg-amber-100 border-b-2 border-amber-400 p-5 rounded-lg shadow-lg mb-12 sticky top-4 z-10">
-            <h3 class="font-bold text-xl mb-4 text-amber-900 text-center">Índice Temático</h3>
-            <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 text-center text-sm">
-                <li><a href="#neoclasicismo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">1. El Siglo de las Luces</a></li>
-                <li><a href="#prosa-neo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">2. La Prosa Ilustrada</a></li>
-                <li><a href="#poesia-teatro-neo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">3. Poesía y Teatro Neoclásicos</a></li>
-                <li><a href="#romanticismo" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">4. La Llegada del Romanticismo</a></li>
-                <li><a href="#poesia-rom" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">5. La Poesía Romántica</a></li>
-                <li><a href="#prosa-teatro-rom" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">6. Prosa y Teatro Romántico</a></li>
-                <li><a href="#textos" class="block p-2 rounded text-amber-900 hover:bg-white transition duration-200 font-semibold">7. Analizar Textos</a></li>
-                <li><a href="#gemini-assistant" class="block p-2 rounded text-purple-700 hover:bg-white transition duration-200 font-bold">✨ Asistente IA</a></li>
-                <li><a href="#podcast-generator-section" class="block p-2 rounded text-green-700 hover:bg-white transition duration-200 font-bold">🎧 Podcast de Estudio</a></li>
-            </ul>
-        </nav>
-
-        <!-- SECCIÓN 1: NEOCLASICISMO -->
-        <section id="neoclasicismo" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 1: El Neoclasicismo y el Siglo de las Luces (Siglo XVIII)</h2>
-            <p class="text-left mb-6 text-base text-stone-700">Vamos a hablar del siglo XVIII. En Europa, esta época estuvo marcada por la <strong>Ilustración</strong>. Fue un movimiento cultural muy importante que quería acabar con la ignorancia usando el <strong>conocimiento</strong> y, sobre todo, la <strong>Razón</strong> (la capacidad de pensar lógicamente). La gente de la Ilustración pensaba que si se hacían cambios en la ciencia, la economía, la política y la sociedad, se podría conseguir un futuro mejor, con más <strong>progreso</strong>, <strong>justicia</strong> y <strong>libertad</strong>. Por eso, al siglo XVIII se le llama el <strong>Siglo de las Luces</strong>.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Aunque España no pasaba por su mejor momento, las ideas de la Ilustración también llegaron aquí. Hubo pensadores importantes y se crearon instituciones culturales que todavía existen, como la <strong>Real Academia Española (RAE)</strong>, la Real Academia de la Historia y la de Medicina. Esto muestra las ganas que tenían los ilustrados de organizar y compartir el saber.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">¿De dónde venían las ideas de la Ilustración?</h4>
-            <p class="text-left mb-6 text-base text-stone-700">La Ilustración se basó en dos formas principales de pensar:</p>
-            <p class="text-left mb-6 text-base text-stone-700">Por un lado, el <strong>Racionalismo</strong>, que decía que la <strong>Razón</strong> era la base de todo conocimiento verdadero. Pensaban que había que dudar de todo y analizarlo con lógica antes de aceptarlo.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Por otro lado, el <strong>Empirismo</strong>, que defendía que todo conocimiento viene de la <strong>experiencia</strong>, de lo que vemos y tocamos. Creían que había que <strong>observar</strong> las cosas, pensar una explicación (hipótesis) y luego hacer <strong>experimentos</strong> para comprobar si era verdad. Solo lo que se puede probar así es conocimiento real.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Ideas Principales de la Ilustración</h4>
-            <p class="text-left mb-6 text-base text-stone-700">Juntando estas ideas y las ganas de mejorar las cosas, la Ilustración se caracterizó por:</p>
-             <p class="text-left mb-6 text-base text-stone-700">Confiar mucho en la <strong>Razón humana</strong> para entender el mundo y organizar la sociedad de forma más justa.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Creer que la <strong>ciencia</strong>, con sus métodos de observar y experimentar, era el camino para el <strong>progreso</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700">El <strong>Enciclopedismo</strong>: la idea de reunir todo el saber humano en grandes libros (como la Enciclopedia) para que la gente aprendiera y dejara de ser ignorante.</p>
-              <p class="text-left mb-6 text-base text-stone-700">Pensar que la <strong>cultura y la educación</strong> eran súper importantes para que la gente mejorara y fuera más libre.</p>
-              <p class="text-left mb-6 text-base text-stone-700">En política, se dio el <strong>Despotismo Ilustrado</strong>: los reyes tenían todo el poder y hacían reformas para ayudar al pueblo, pero sin dejar que el pueblo participara en las decisiones ("Todo para el pueblo, pero sin el pueblo").</p>
-
-             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Arte y la Literatura: El Neoclasicismo</h4>
-            <p class="text-left mb-6 text-base text-stone-700">Todas estas ideas se reflejaron en el arte y la literatura con un estilo llamado <strong>Neoclasicismo</strong>. Era muy diferente al estilo exagerado del Barroco (la época anterior) y seguía las ideas de orden y utilidad de la Razón.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Se buscó volver a <strong>imitar a los autores clásicos</strong> de Grecia y Roma, porque se pensaba que ellos habían alcanzado la perfección. Se valoraba más seguir las reglas que ser original.</p>
-            <p class="text-left mb-6 text-base text-stone-700">La <strong>Razón estaba por encima de los sentimientos</strong>. Por eso, no se escribió mucha poesía que expresara emociones personales. Se crearon <strong>normas estrictas</strong> sobre cómo escribir, sobre todo en el teatro.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Se <strong>rechazaba la fantasía y la imaginación</strong>. Las obras tenían que ser <strong>verosímiles</strong>, es decir, creíbles, lógicas.</p>
-            <p class="text-left mb-6 text-base text-stone-700">La literatura tenía que ser <strong>útil</strong> para la sociedad, tener una <strong>finalidad didáctica</strong> (enseñar algo) y moral (mostrar lo que estaba bien y mal).</p>
-            <p class="text-left mb-6 text-base text-stone-700">Se buscaba el <strong>"buen gusto"</strong>: claridad, orden, equilibrio, armonía, sin exageraciones ni cosas vulgares.</p>
-
-             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Neoclasicismo en España: Por Etapas</h4>
-            <p class="text-left mb-6 text-base text-stone-700">El Neoclasicismo no llegó a España de golpe, sino poco a poco:</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Reacción contra el Barroco (Primera mitad s. XVIII):</strong> Se empezó a criticar lo exagerado del Barroco y llegaron ideas de Francia. Se escribían sobre todo ensayos críticos. Destacan <strong>Fray Benito Jerónimo Feijoo</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Triunfo del Neoclasicismo (Mediados a finales s. XVIII):</strong> Las normas neoclásicas se imponen. La literatura busca enseñar usando la razón. Escriben autores importantes como <strong>Gaspar Melchor de Jovellanos</strong>, <strong>Leandro Fernández de Moratín</strong>, los fabulistas <strong>Tomás de Iriarte</strong> y <strong>Félix María Samaniego</strong>, y también <strong>José Cadalso</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Prerromanticismo (Finales s. XVIII):</strong> La gente empieza a cansarse de tantas reglas. Aparecen obras que muestran más sentimientos y melancolía, preparando el camino para el Romanticismo. <strong>José Cadalso</strong>, con <em class="work-title">Noches Lúgubres</em>, es clave en esta etapa.</p>
-        </section>
-
-        <!-- SECCIÓN 2: PROSA NEOCLÁSICA -->
-        <section id="prosa-neo" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 2: La Prosa para Enseñar</h2>
-            <p class="text-left mb-6 text-base text-stone-700">La prosa, especialmente el <strong>ensayo</strong> (escritos donde se reflexiona sobre un tema), fue la forma preferida por los ilustrados para explicar sus ideas, criticar la sociedad y enseñar.</p>
-
-            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">Fray Benito Jerónimo Feijoo</span> (1676-1764)</h3>
-            <p class="text-left mb-6 text-base text-stone-700">Fue uno de los ilustrados más importantes de España al principio. Quería modernizar el país luchando contra las supersticiones y las ideas anticuadas usando la <strong>Razón</strong> y la <strong>experiencia</strong>.</p>
-            <blockquote class="border-l-4 border-stone-400 pl-5 italic text-stone-600 my-6 text-lg">Quería perseguir errores y supersticiones y fomentar la filosofía y la ciencia.</blockquote>
-            <p class="text-left mb-6 text-base text-stone-700">Escribía de forma <strong>sencilla y clara</strong> para que mucha gente pudiera entenderle. Sus libros más famosos son el <strong class="work-title">Teatro Crítico Universal</strong> y las <strong class="work-title">Cartas eruditas y curiosas</strong>. En ellos habla de muchísimos temas (ciencia, historia, costumbres...) siempre buscando la verdad y usando la lógica.</p>
-
-            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">Gaspar Melchor de Jovellanos</span> (1744-1811)</h3>
-            <p class="text-left mb-6 text-base text-stone-700">Jovellanos fue un intelectual muy completo (escritor, político, economista...) que se preocupó mucho por los problemas de España, sobre todo los económicos.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Pensaba que la agricultura era muy importante para la riqueza del país. En su <strong class="work-title">Informe sobre la Ley Agraria</strong>, explicó los problemas del campo y propuso soluciones. Escribía de forma seria, elegante y con la intención de ayudar a mejorar España.</p>
-
-            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">José Cadalso</span> (1741-1782): Crítico y Sentimental</h3>
-            <p class="text-left mb-6 text-base text-stone-700">Cadalso está entre la Ilustración y el Romanticismo. En sus obras se ve la crítica de la Ilustración, pero también una nueva forma de sentir, más triste y personal, que anuncia lo que vendrá después.</p>
-            <p class="text-left mb-6 text-base text-stone-700">En las <strong class="work-title">Cartas Marruecas</strong>, usa un truco: imagina que un viajero de Marruecos (Gazel) escribe cartas contando lo que ve en España. Así, Cadalso puede criticar las costumbres, la política o el atraso del país como si lo viera alguien de fuera, buscando siempre que las cosas mejoren.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Pero en <strong class="work-title">Noches Lúgubres</strong>, Cadalso habla de sentimientos muy distintos. El ambiente es oscuro (noches, tumbas), y el protagonista (Tediato) está desesperado porque quiere desenterrar a su amada muerta. Explora el dolor y la muerte de una forma muy intensa, que ya no es neoclásica, sino que adelanta el <strong>Prerromanticismo</strong>.</p>
-        </section>
-
-        <!-- SECCIÓN 3: POESÍA Y TEATRO NEOCLÁSICO -->
-        <section id="poesia-teatro-neo" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 3: La Poesía y el Teatro Neoclásicos</h2>
-            <p class="text-left mb-6 text-base text-stone-700">La poesía y el teatro del siglo XVIII también siguieron las ideas neoclásicas de orden y enseñanza.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">La Poesía Neoclásica: Para Enseñar</h4>
-            <p class="text-left mb-6 text-base text-stone-700">Como se daba más importancia a la razón que a los sentimientos, la poesía que expresaba emociones personales no fue muy popular. La poesía neoclásica servía sobre todo para <strong>educar y criticar los vicios</strong>.</p>
-            <p class="text-left mb-6 text-base text-stone-700">El tipo de poesía que más encajaba con esto era la <strong>Fábula</strong>. Son historias cortas, normalmente con animales que hablan, que terminan con una enseñanza moral (la moraleja). Eran perfectas para el afán didáctico de la época.</p>
-             <p class="text-left mb-6 text-base text-stone-700">En España destacaron dos autores de fábulas: <strong>Tomás de Iriarte</strong> (con sus <strong class="work-title">Fábulas literarias</strong>, que a veces hablaban sobre cómo escribir bien) y <strong>Félix María de Samaniego</strong> (con sus <strong class="work-title">Fábulas en verso castellano</strong>, que adaptaban historias clásicas y se hicieron muy populares).</p>
-            <p class="text-left mb-6 text-base text-stone-700">También hubo algo de poesía que hablaba de forma idealizada de la vida sencilla en el campo o del amor cortés, con un toque de melancolía.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Teatro Neoclásico: Orden en el Escenario</h4>
-            <p class="text-left mb-6 text-base text-stone-700">Los ilustrados pensaban que el teatro era como una escuela para enseñar al pueblo buenos valores. Por eso, quisieron quitarle lo exagerado y desordenado del teatro barroco e impusieron un teatro basado en la razón y las normas clásicas.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Las <strong>características</strong> principales de este teatro eran:</p>
-            <p class="text-left mb-6 text-base text-stone-700">Tener una clara <strong>intención didáctica</strong> (enseñar algo moral).</p>
-            <p class="text-left mb-6 text-base text-stone-700"><strong>Imitar a los autores clásicos</strong> griegos, romanos y franceses.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Respetar la <strong>Regla de las Tres Unidades</strong>: una sola <strong>acción</strong> (historia principal), que ocurriera en un <strong>tiempo</strong> corto (un día más o menos) y en un solo <strong>lugar</strong> (escenario).</p>
-            <p class="text-left mb-6 text-base text-stone-700"><strong>Separar los géneros</strong>: la tragedia para temas serios y personajes importantes, la comedia para temas normales y gente común, sin mezclarlos.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Buscar la <strong>verosimilitud</strong> (que fuera creíble) y el <strong>decoro</strong> (que fuera apropiado, sin violencia ni cosas feas en escena).</p>
-
-            <h3 class="text-2xl font-semibold text-amber-800 mt-12 mb-5 text-left pt-8 border-t border-amber-300"><span class="author-name">Leandro Fernández de Moratín</span> (1760-1828)</h3>
-            <p class="text-left mb-6 text-base text-stone-700">Moratín es el autor más importante del teatro neoclásico español. Supo seguir las reglas, pero también observar y criticar la sociedad de su época en sus comedias.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Sus obras más famosas son <strong class="work-title">La comedia nueva o El café</strong> (que se reía del mal teatro) y, sobre todo, <strong class="work-title">El sí de las niñas</strong>.</p>
-            <p class="text-left mb-6 text-base text-stone-700"><strong class="work-title">El sí de las niñas</strong> es un ejemplo perfecto de comedia neoclásica. Cumple las tres unidades (todo pasa en una posada en menos de un día). La obra critica los <strong>matrimonios concertados</strong>, donde los padres casaban a sus hijas sin preguntarles si querían, y defiende que la educación debe basarse en la sinceridad. La protagonista, Doña Francisca (Paquita), es obligada a casarse con un hombre mayor (Don Diego), pero ella está enamorada de otro (Don Carlos, que resulta ser sobrino de Don Diego). Al final, la sensatez de Don Diego representa el triunfo de la razón ilustrada.</p>
-        </section>
-
-        <!-- SECCIÓN 4: ROMANTICISMO -->
-        <section id="romanticismo" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 4: La Llegada del Romanticismo (Primera Mitad Siglo XIX)</h2>
-            <p class="text-left mb-6 text-base text-stone-700">El <strong>Romanticismo</strong> aparece como una reacción contra el Neoclasicismo. Si el Neoclasicismo se basaba en la Razón, el Romanticismo se centrará en el <strong>Sentimiento</strong>. Si uno buscaba reglas, el otro buscará la <strong>Libertad</strong>. Si uno quería enseñar con claridad, el otro explorará los misterios del <strong>"Yo"</strong> (la propia persona) y la fuerza de la <strong>Imaginación</strong>.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Romanticismo Tarda en Llegar a España</h4>
-            <p class="text-left mb-6 text-base text-stone-700">En España, el Romanticismo llegó más tarde que en otros sitios por la complicada situación del país a principios del siglo XIX: la <strong>guerra contra Napoleón</strong> (desde 1808), la lucha por la independencia, la creación de la <strong>Constitución de Cádiz de 1812 ("La Pepa")</strong> que trajo ideas liberales, y luego la vuelta al <strong>poder absoluto</strong> del rey Fernando VII. Este rey persiguió a los liberales, y muchos tuvieron que irse al <strong>exilio</strong> (la "Década Ominosa"). El Romanticismo triunfó en España sobre <strong>1833</strong>, cuando murió el rey y <strong>volvieron los exiliados</strong>, trayendo las nuevas ideas de Europa.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">¿Cómo Eran los Románticos?</h4>
-            <p class="text-left mb-6 text-base text-stone-700">El Romanticismo es una forma de sentir y ver la vida, que se nota en el arte y la literatura por estas características:</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Subjetivismo y culto al "Yo":</strong> Lo más importante es lo que siente y piensa cada persona: sus emociones, sueños, miedos...</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Ansia de Libertad:</strong> Querían ser libres de todas las normas: sociales, morales y artísticas. Por eso, <strong>rompieron con las reglas neoclásicas</strong>, buscaron ser <strong>originales</strong> y <strong>mezclaron</strong> géneros y estilos sin miedo.</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Individualismo y Nacionalismo:</strong> Se interesaron por lo propio de cada pueblo: sus <strong>tradiciones</strong>, su <strong>historia</strong> (sobre todo la <strong>Edad Media</strong>), sus <strong>leyendas</strong>...</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Tristeza y Desengaño ("Mal del Siglo"):</strong> Sentían que sus ideales chocaban con la realidad, y eso les causaba <strong>frustración, melancolía</strong> y pesimismo.</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Rebeldía o Evasión:</strong> Para escapar de esa tristeza, se rebelaban contra las normas o se "escapaban" (<strong>evasión</strong>) imaginando el pasado, lugares exóticos o cosas sobrenaturales.</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Nueva Visión de la Naturaleza:</strong> Veían la naturaleza como un reflejo de sus sentimientos. Preferían paisajes <strong>salvajes, misteriosos</strong>, como tormentas, noches, ruinas...</p>
-              <p class="text-left mb-6 text-base text-stone-700"><strong>El Artista como Genio:</strong> Pensaban que el artista era alguien especial, con mucha sensibilidad, <strong>imaginación</strong> y <strong>pasión</strong>.</p>
-
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-900 p-5 rounded-md my-8 shadow-sm text-left text-base">
-                 <h4 class="text-xl font-semibold text-stone-700 mt-0 mb-4 text-left pt-0 border-t-0">Neoclasicismo vs. Romanticismo: Las Diferencias Clave</h4>
-                 <p class="text-left mb-6 text-base text-yellow-900">El Romanticismo es lo contrario al Neoclasicismo. Donde uno ponía <strong>Razón</strong>, el otro pone <strong>Sentimiento</strong>. Donde uno ponía <strong>Normas</strong>, el otro pone <strong>Libertad</strong>. Si uno quería <strong>Educar</strong>, el otro busca <strong>Emocionar</strong>. La confianza neoclásica se convierte en <strong>Pesimismo</strong> romántico. El ensayo deja paso a la <strong>Poesía</strong> y al <strong>Teatro (drama)</strong>.</p>
-                 <table class="min-w-full rounded-lg overflow-hidden my-6 border border-amber-300 shadow">
-                     <thead>
-                        <tr>
-                            <th class="p-4 border border-amber-200 text-center align-middle text-sm bg-amber-800 text-white font-semibold uppercase tracking-wider">Neoclasicismo (s. XVIII)</th>
-                            <th class="p-4 border border-amber-200 text-center align-middle text-sm bg-amber-800 text-white font-semibold uppercase tracking-wider">Romanticismo (s. XIX)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-amber-50"><td class="p-4 border border-amber-200 text-center align-middle text-sm">Razón</td><td class="p-4 border border-amber-200 text-center align-middle text-sm">Sentimiento / Intuición</td></tr>
-                        <tr class="bg-white"><td class="p-4 border border-amber-200 text-center align-middle text-sm">Normas, Reglas (3 unidades)</td><td class="p-4 border border-amber-200 text-center align-middle text-sm">Libertad, Mezcla</td></tr>
-                        <tr class="bg-amber-50"><td class="p-4 border border-amber-200 text-center align-middle text-sm">Didactismo (Educar)</td><td class="p-4 border border-amber-200 text-center align-middle text-sm">Emoción (Conmover)</td></tr>
-                        <tr class="bg-white"><td class="p-4 border border-amber-200 text-center align-middle text-sm">Claridad, Buen Gusto</td><td class="p-4 border border-amber-200 text-center align-middle text-sm">Subjetividad, Contrastes (Bello/Grotesco)</td></tr>
-                        <tr class="bg-amber-50"><td class="p-4 border border-amber-200 text-center align-middle text-sm">Optimismo, Confianza</td><td class="p-4 border border-amber-200 text-center align-middle text-sm">Pesimismo, Desengaño</td></tr>
-                        <tr class="bg-white"><td class="p-4 border border-amber-200 text-center align-middle text-sm">Ensayo</td><td class="p-4 border border-amber-200 text-center align-middle text-sm">Poesía, Teatro (Drama)</td></tr>
-                    </tbody>
-                 </table>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 5: POESÍA ROMÁNTICA -->
-        <section id="poesia-rom" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 5: La Poesía Romántica: El Corazón Habla</h2>
-            <p class="text-left mb-6 text-base text-stone-700">La poesía fue la forma perfecta para que los románticos expresaran todos sus sentimientos. La importancia del "yo", la emoción y las ganas de probar cosas nuevas encajaban muy bien con el verso.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Características Generales</h4>
-            <p class="text-left mb-6 text-base text-stone-700">La poesía romántica española es muy personal y emotiva.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Los temas más comunes son: el <strong>amor apasionado</strong> (que muchas veces acaba mal), la <strong>libertad</strong>, la <strong>rebeldía</strong>, la <strong>angustia</strong> por la vida, la <strong>soledad</strong>, la <strong>muerte</strong>, y a veces la <strong>crítica social</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Aparecen <strong>escenarios típicamente románticos</strong>: noches oscuras, cementerios, ruinas, paisajes naturales salvajes (mar, montañas, tormentas...) que reflejan cómo se siente el poeta.</p>
-             <p class="text-left mb-6 text-base text-stone-700">En la forma, buscaban la <strong>libertad</strong>: rompían las reglas de la métrica clásica y usaban la <strong>polimetría</strong> (mezclar distintos tipos de versos y estrofas) para expresarse mejor.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Usaban muchos <strong>recursos para crear emoción</strong>: exclamaciones (¡!), interrogaciones (¿?), llamadas directas a alguien (apóstrofes).</p>
-             <p class="text-left mb-6 text-base text-stone-700">También usaban figuras como repeticiones (anáforas), frases parecidas (paralelismos), contrarios (antítesis), comparaciones e imágenes con significado simbólico.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Tipos de Poesía Romántica y Poetas Clave</h4>
-            <p class="text-left mb-6 text-base text-stone-700">Podemos distinguir dos etapas o tipos:</p>
-            
-            <h5 class="text-lg font-semibold text-stone-800 mt-8 mb-3 text-left">1. Primer Romanticismo (Poesía Exaltada y que Cuenta Historias)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Es la poesía más exagerada y enérgica (hacia 1833-1844). A menudo cuenta historias largas (poesía narrativa) sobre temas históricos, leyendas o sobre la libertad, usando personajes rebeldes.</p>
-            
-            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">José de Espronceda</span> (1808-1842)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Es el poeta más representativo de esta etapa. Vivió una vida intensa y defendió las ideas liberales. En sus famosas <strong>Canciones</strong>, presenta a <strong>personajes marginados</strong> (pirata, mendigo, condenado a muerte...) como símbolos de libertad total contra las normas sociales. La <strong class="work-title">"Canción del Pirata"</strong> es un ejemplo perfecto. También escribió poemas largos como <strong class="work-title">El estudiante de Salamanca</strong> (leyenda) y <strong class="work-title">El diablo mundo</strong> (más filosófico).</p>
-            
-
-            <h5 class="text-lg font-semibold text-stone-800 mt-8 mb-3 text-left">2. Romanticismo Tardío o Postromanticismo (Poesía Íntima)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">A partir de mitad de siglo, la poesía se vuelve más <strong>tranquila, personal y sentimental</strong>. Los poemas son más cortos, sencillos y musicales, y hablan de los sentimientos más íntimos.</p>
-
-            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Gustavo Adolfo Bécquer</span> (1836-1870)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Es súper importante, considerado el primer poeta moderno español. Sus <strong class="work-title">Rimas</strong> son poemas cortos, claros y muy musicales. Hablan con mucha sensibilidad del amor (desde las ganas hasta la pérdida), de lo rápido que pasa la belleza, del misterio de escribir poesía y de la angustia por la soledad y la muerte.</p>
-            
-
-            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Rosalía de Castro</span> (1837-1885)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Una poeta fundamental, escribió en gallego y en castellano. Su poesía está llena de tristeza ("saudade"), dolor personal, preocupación por las injusticias (como la gente que tenía que irse de Galicia a buscar trabajo) y tiene una visión femenina muy moderna. Sus obras más importantes son <strong class="work-title">Cantares gallegos</strong>, <strong class="work-title">Follas novas</strong> (en gallego) y <strong class="work-title">En las orillas del Sar</strong> (en castellano).</p>
-            
-
-        </section>
-
-        <!-- SECCIÓN 6: PROSA Y TEATRO ROMÁNTICO -->
-        <section id="prosa-teatro-rom" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 6: La Prosa Crítica y el Teatro Apasionado</h2>
-            <p class="text-left mb-6 text-base text-stone-700">El espíritu romántico también se vio en la prosa, sobre todo en el periodismo crítico y en las historias sobre el pasado. Además, el teatro cambió por completo con dramas llenos de pasión.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">La Prosa Romántica</h4>
-            <p class="text-left mb-6 text-base text-stone-700">Aunque la novela triunfaría más tarde (con el Realismo), en el Romanticismo se escribieron:</p>
-            <p class="text-left mb-6 text-base text-stone-700"><strong>Novela Histórica:</strong> Historias ambientadas en la Edad Media, vista de forma idealizada. Ejemplos: <strong class="work-title">El doncel de don Enrique el Doliente</strong> (Larra).</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Leyendas:</strong> Historias cortas con misterio y elementos sobrenaturales. Bécquer fue el maestro con sus <strong class="work-title">Leyendas</strong>.</p>
-              <p class="text-left mb-6 text-base text-stone-700"><strong>Periodismo de Costumbres (Costumbrismo):</strong> Artículos que describían y criticaban la forma de vida, la sociedad y la política.</p>
-
-            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Mariano José de Larra ("Fígaro")</span> (1809-1837)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Larra es la figura más importante de la prosa romántica, un <strong>periodista increíble</strong>, considerado el precursor del periodismo moderno.</p>
-            <p class="text-left mb-6 text-base text-stone-700">En sus <strong>artículos</strong> (firmados como "Fígaro"), analizó con <strong>inteligencia y mucha ironía</strong> (burla fina) la España de su época: la política, la sociedad, las costumbres... Era un liberal que se sentía frustrado por el atraso y la falsedad que veía. Escribía de forma <strong>clara, directa y crítica</strong>. Muchos de sus artículos, como <strong class="work-title">"Vuelva usted mañana"</strong> o <strong class="work-title">"El castellano viejo"</strong>, siguen siendo actuales. Se suicidó muy joven, lo que lo convirtió en una figura mítica del Romanticismo.</p>
-
-            <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">El Teatro Romántico: ¡Libertad en Escena!</h4>
-            <p class="text-left mb-6 text-base text-stone-700">El teatro fue el género que más cambió con el Romanticismo. Fue una <strong>rebelión contra las reglas frías del Neoclasicismo</strong> y una vuelta a la libertad y la emoción del teatro barroco, pero con un toque diferente.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Las <strong>claves</strong> de este nuevo teatro fueron:</p>
-             <p class="text-left mb-6 text-base text-stone-700"><strong>Rechazo total de las reglas neoclásicas:</strong> No más <strong>regla de las tres unidades</strong>, se <strong>mezclaban géneros</strong> (nació el <strong>Drama</strong>, que mezcla tragedia y comedia), se combinaba <strong>verso y prosa</strong>, y se usaba la <strong>polimetría</strong> (versos de distintas medidas).</p>
-             <p class="text-left mb-6 text-base text-stone-700">Las obras se dividían en <strong>cinco actos</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Los <strong>temas</strong> principales eran <strong>amores apasionados y prohibidos</strong>, el <strong>honor</strong>, la <strong>venganza</strong>, el <strong>destino trágico</strong> (fatalidad) y la lucha por la <strong>libertad</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700">Los <strong>personajes</strong> eran <strong>héroes rebeldes</strong>, marcados por un destino triste, que vivían sus pasiones al máximo y desafiaban a todos. Las heroínas también eran fuertes y decididas. El final solía ser <strong>trágico</strong>.</p>
-             <p class="text-left mb-6 text-base text-stone-700">La <strong>escenografía</strong> (decorados) buscaba impactar: ambientes nocturnos, tumbas, escenarios sobrenaturales...</p>
-             <p class="text-left mb-6 text-base text-stone-700">La <strong>finalidad</strong> era <strong>emocionar</strong>, conmover al espectador.</p>
-
-            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">Duque de Rivas (Ángel de Saavedra)</span> (1791-1865)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Su obra <strong class="work-title">Don Álvaro o la fuerza del sino</strong> (1835) marcó el triunfo del teatro romántico. Es un ejemplo perfecto del género, centrado en la <strong>fatalidad</strong>: el héroe no puede escapar de su destino trágico.</p>
-
-            <h5 class="text-lg font-semibold text-amber-900 mt-8 mb-3 text-left"><span class="author-name">José Zorrilla</span> (1817-1893)</h5>
-            <p class="text-left mb-6 text-base text-stone-700">Fue el autor de teatro más famoso de la época. Su <strong class="work-title">Don Juan Tenorio</strong> (1844) fue un éxito increíble y todavía se representa hoy.</p>
-            <p class="text-left mb-6 text-base text-stone-700">Zorrilla cogió el personaje de Don Juan, el seductor, pero lo hizo romántico: rebelde, lleno de vida, desafiante, pero capaz de enamorarse de verdad de Doña Inés. La obra mezcla aventura, poesía y cosas sobrenaturales. Lo más importante es el final: este Don Juan <strong>se salva del infierno gracias al amor de Doña Inés</strong>, un final muy romántico.</p>
-        </section>
-
-         <!-- SECCIÓN 7: ANÁLISIS TEXTUAL -->
-         <section id="textos" class="mb-16 scroll-mt-24">
-             <h2 class="text-3xl font-bold text-stone-700 mb-8 border-b-2 pb-3 border-amber-200 text-center">PARTE 7: Claves para Analizar Textos</h2>
-             <p class="text-left mb-6 text-base text-stone-700">Es importante saber cómo se organiza un texto y qué quiere decir, ya sea un texto expositivo (que informa) o uno más personal como los románticos.</p>
-
-             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Entender los Textos Expositivos</h4>
-             <p class="text-left mb-6 text-base text-stone-700">Recuerda: estos textos quieren <strong>informar</strong> de forma <strong>objetiva</strong> (sin dar opiniones personales), <strong>clara</strong> y <strong>precisa</strong>. Pueden ser <strong>divulgativos</strong> (para todo el mundo) o <strong>especializados</strong> (para expertos, con palabras técnicas). Normalmente tienen <strong>introducción, desarrollo y conclusión</strong>.</p>
-
-             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Analizar la Coherencia (Que el Texto Tenga Sentido)</h4>
-             <p class="text-left mb-6 text-base text-stone-700">Para ver si un texto es coherente (si tiene sentido y las ideas están bien conectadas), hacemos varias cosas:</p>
-              <p class="text-left mb-6 text-base text-stone-700"><strong>Sacar el Tema:</strong> Es la <strong>idea principal</strong> de todo el texto. Hay que decirlo en pocas palabras (10-12), de forma precisa y sin usar verbos si es posible. Por ejemplo: <em>"La preocupación por los sueldos bajos de los jóvenes españoles hoy en día."</em></p>
-              <p class="text-left mb-6 text-base text-stone-700"><strong>Hacer un Resumen:</strong> Contar lo más <strong>importante</strong> del texto (más o menos una cuarta parte), <strong>con tus palabras</strong>, hablando en <strong>3ª persona</strong> (él/ella/ellos), de forma <strong>objetiva</strong> y sin detalles poco importantes (ejemplos, anécdotas...).</p>
-              <p class="text-left mb-6 text-base text-stone-700"><strong>Ver la Estructura:</strong> Fijarse en cómo están organizadas las ideas. Miramos la estructura <strong>externa</strong> (cómo se divide en <strong>párrafos</strong>) y la <strong>interna</strong> (cómo se ordenan las ideas lógicamente). En la interna, buscamos la introducción, el desarrollo y la conclusión, y vemos cuáles son las <strong>ideas principales y secundarias</strong>. También podemos ver dónde está la <strong>Tesis</strong> (la idea principal que defiende el autor): si está al <strong>principio</strong> (estructura <strong>analizante/deductiva</strong>), al <strong>final</strong> (<strong>sintetizante/inductiva</strong>) o al principio y al final (encuadrada).</p>
-
-             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Pistas Lingüísticas de la Objetividad (En Textos Expositivos)</h4>
-             <p class="text-left mb-6 text-base text-stone-700">Para parecer objetivos, estos textos suelen usar:</p>
-              <p class="text-left mb-6 text-base text-stone-700">Oraciones <strong>enunciativas</strong> (que afirman o niegan algo) y la función <strong>referencial</strong> (informar sobre la realidad).</p>
-              <p class="text-left mb-6 text-base text-stone-700">La <strong>tercera persona</strong> (él/ella/ellos) y el modo <strong>indicativo</strong> (el que usamos normalmente para decir hechos).</p>
-              <p class="text-left mb-6 text-base text-stone-700">Palabras con significado claro y directo (<strong>léxico denotativo</strong>), <strong>preciso</strong>, y <strong>tecnicismos</strong> (palabras propias de un tema).</p>
-              <p class="text-left mb-6 text-base text-stone-700"><strong>Conectores</strong> para ordenar las ideas (por ejemplo, "en primer lugar", "además", "por lo tanto") y <strong>datos</strong>, <strong>cifras</strong> o <strong>citas</strong> de expertos para dar credibilidad.</p>
-
-             <h4 class="text-xl font-semibold text-stone-700 mt-10 mb-4 text-left pt-6 border-t border-dashed border-stone-300">Recordatorio: Modalidades y Funciones</h4>
-             <p class="text-left mb-6 text-base text-stone-700">No olvides las <strong>Modalidades</strong> (la actitud del que habla: afirmar, preguntar, exclamar, mandar, desear, dudar) y las <strong>Funciones</strong> del lenguaje (la intención: informar, expresar sentimientos, influir en el otro, comprobar el canal, hablar de la lengua, crear belleza).</p>
-         </section>
-
-
-        <!-- SECCIÓN ASISTENTE IA (Sin cambios en HTML, solo JS adaptado para clave API) -->
-        <section id="gemini-assistant" class="bg-stone-50 border border-stone-200 p-6 rounded-lg shadow-md mb-12 scroll-mt-24">
-             <h2 class="text-3xl font-bold text-amber-900 mb-6 border-b-2 pb-3 border-amber-200 text-center">✨ Asistente de Estudio IA</h2>
-             <div id="api-key-section" class="mb-8 p-4 border border-amber-300 rounded-lg bg-amber-50">
-                 {... Contenido sección API Key ...}
-             </div>
-             <div id="api-key-message" class="p-4 rounded-md text-sm mb-6 hidden api-key-message">
-                 ⚠️ Por favor, introduce y guarda tu Clave API de Google AI Studio...
-             </div>
-            <p class="mb-6 text-stone-600 text-left">Usa la inteligencia artificial para saber más sobre el Neoclasicismo y el Romanticismo.</p>
-             {... Resto del contenido HTML del asistente IA ...}
-        </section>
-
-        <!-- SECCIÓN PODCAST (Sin cambios en HTML, solo JS adaptado para clave API) -->
-        <section id="podcast-generator-section" class="bg-stone-50 border border-stone-200 p-6 rounded-lg shadow-md mb-12 scroll-mt-24">
-             <h2 class="text-3xl font-bold text-amber-900 mb-6 border-b-2 pb-3 border-amber-200 text-center">🎧 Generador de Podcast Completo</h2>
-             <div id="api-key-message-podcast" class="p-4 rounded-md text-sm mb-6 hidden api-key-message">
-                 ⚠️ Por favor, introduce y guarda tu Clave API...
-             </div>
-            <p class="mb-6 text-stone-600 text-left">Genera y descarga un archivo de audio WAV con toda la guía de estudio...</p>
-             {... Resto del contenido HTML del podcast ...}
-        </section>
-
+<!-- Slide 1: Portada (Title_Slide) -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <h1>Cap. 4.1.B. Card Sorting</h1>
+        <p class="subtitle">Ingeniería de la Usabilidad</p>
+        <p class="presenter">José Manuel Gandía Zaragoza<br>Curso 2025-26</p>
     </div>
+</div>
 
-    <!-- Script para Gemini API (MODIFICADO para pedir API Key) -->
-    <script>
-        // --- Guion del Podcast ---
-        function getPodcastScript() {
-            const sections = [
-                { id: 'neoclasicismo', title: 'Parte 1: Neoclasicismo' },
-                { id: 'prosa-neo', title: 'Parte 2: Prosa Neoclásica' },
-                { id: 'poesia-teatro-neo', title: 'Parte 3: Poesía y Teatro Neoclásico' },
-                { id: 'romanticismo', title: 'Parte 4: Romanticismo - Contexto y Características' },
-                { id: 'poesia-rom', title: 'Parte 5: Poesía Romántica' },
-                { id: 'prosa-teatro-rom', title: 'Parte 6: Prosa y Teatro Romántico' },
-                { id: 'textos', title: 'Parte 7: Análisis Textual' }
-            ];
-            const chunks = {};
-            sections.forEach(section => {
-                const el = document.getElementById(section.id);
-                if (el) {
-                    let text = el.innerText || el.textContent || "";
-                    text = text.replace(/\[Imagen de.*?\]/g, '');
-                    text = text.replace(/(\r\n|\n|\r)/gm, " ").replace(/\s\s+/g, ' ').trim();
-                    // Simplificación adicional para TTS si es necesario
-                    text = text.replace(/—/g, '-'); // Guiones largos a cortos
-                    chunks[section.title] = `${section.title}. ${text}`;
-                } else {
-                    chunks[section.title] = `${section.title}. Contenido no encontrado.`;
-                }
-            });
-            return chunks;
-        }
-        let podcastChunks = {};
+<!-- Slide 2: Índice (Section_Title) -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">Índice</h2>
+    <div class="content-area">
+        <div class="section-title-layout">
+            <ul>
+                <li>¿Qué es el Card Sorting?</li>
+                <li>Tipos y Modalidades</li>
+                <li>Preparación de la Sesión</li>
+                <li>Ejecución y Análisis de Resultados</li>
+                <li>Conclusión y Bibliografía</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-        // --- DOM Elements ---
-        const btnExplain = document.getElementById('btn-explain');
-        const btnQuiz = document.getElementById('btn-quiz');
-        const btnAnalysis = document.getElementById('btn-analysis');
-        const btnTts = document.getElementById('btn-tts');
-        const btnVisualize = document.getElementById('btn-visualize');
-        const btnExplainImage = document.getElementById('btn-explain-image');
-        const fileUpload = document.getElementById('file-upload');
-        const btnAnalogy = document.getElementById('btn-analogy');
-        const btnCompare = document.getElementById('btn-compare');
-        const btnGenerateFullPodcast = document.getElementById('btn-generate-full-podcast');
-        const podcastControls = document.getElementById('podcast-controls');
-        const fullPodcastPlayer = document.getElementById('full-podcast-player');
-        const downloadPodcastLink = document.getElementById('download-podcast-link');
-        const podcastStatus = document.getElementById('podcast-status');
-        const promptText = document.getElementById('gemini-prompt');
-        const promptConcept1 = document.getElementById('prompt-concept-1');
-        const promptConcept2 = document.getElementById('prompt-concept-2');
-        const loadingEl = document.getElementById('gemini-loading');
-        const resultsEl = document.getElementById('gemini-results');
-        const audioPlayer = document.getElementById('audio-player');
-        const imagePreviewContainer = document.getElementById('image-preview-container');
-        const imageResultContainer = document.getElementById('image-result-container');
-        const apiKeyInput = document.getElementById('api-key-input');
-        const saveApiKeyBtn = document.getElementById('save-api-key-btn');
-        const apiKeyStatus = document.getElementById('api-key-status');
-        const apiKeyMessages = document.querySelectorAll('.api-key-message');
-        const aiButtons = document.querySelectorAll('.ai-button');
+<!-- Slide 3: ¿Qué es? (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">1. ¿Qué es el Card Sorting?</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>Comprender el Modelo Mental del Usuario</h3>
+                <p>Es una técnica fundamental de la Ingeniería de la Usabilidad para descubrir cómo los usuarios entienden y categorizan la información de forma lógica.</p>
+                <p style="margin-top: 20px;">El objetivo es diseñar una Arquitectura de la Información (AI), es decir, la estructura de una app o web, que sea intuitiva y coincida con las expectativas del usuario, permitiéndole encontrar lo que busca con facilidad.</p>
+                <p style="margin-top: 20px;">El valor no está en una sola sesión, sino en los patrones que emergen al agregar los resultados de múltiples participantes.</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="https" alt="Diagrama abstracto de tarjetas desordenadas fluyendo hacia una estructura organizada.">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-        // --- API Config (Variables actualizables) ---
-        let API_KEY = "";
-        let API_URL_GENERATE = "";
-        let API_URL_TTS = "";
-        let API_URL_IMAGEN = "";
+<!-- Slide 4: Tipo Abierto (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">2. Tipos de Metodología: Abierto (Open)</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>Objetivo: Explorar y Descubrir</h3>
+                <p>Los participantes reciben las tarjetas (conceptos) y tienen total libertad para crear sus propios grupos.</p>
+                <ul style="padding-left: 30px;">
+                    <li>Al final, deben poner un nombre o etiqueta a cada grupo que han creado.</li>
+                    <li>Es el método ideal cuando se está diseñando una AI desde cero.</li>
+                    <li>Permite descubrir la terminología (taxonomía) que los propios usuarios emplean de forma natural.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="https" alt="Una persona organizando tarjetas post-it en grupos sobre una mesa de trabajo.">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: Pexels) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-        let uploadedImageBase64 = null;
-        let uploadedMimeType = null;
-        let chatHistory = [];
+<!-- Slide 5: Tipo Cerrado (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">2. Tipos de Metodología: Cerrado (Closed)</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>Objetivo: Validar</h3>
+                <p>El investigador proporciona las tarjetas Y un conjunto de categorías predefinidas, por ejemplo "Reservas", "Mi Perfil" o "Ayuda".</p>
+                <ul style="padding-left: 30px;">
+                    <li>La tarea del participante es asignar cada tarjeta a la categoría donde considera que mejor encaja.</li>
+                    <li>Se usa para validar una estructura ya existente o una nueva propuesta.</li>
+                    <li>Mide si las etiquetas de las categorías son comprensibles y si los usuarios están de acuerdo sobre dónde va cada contenido.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="https" alt="La mano de un usuario arrastrando una tarjeta digital 'Vuelos' a una carpeta de categoría 'Reservas' en una pantalla de ordenador.">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-        // --- Funciones API Key y URLs ---
-        function updateApiUrls() {
-            API_URL_GENERATE = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
-            API_URL_TTS = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
-            API_URL_IMAGEN = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
-        }
+<!-- Slide 6: Tipo Híbrido (Ampliación) (Quote) -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">2. Tipos de Metodología: Híbrido</h2>
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>Combina ambos métodos: se proporcionan categorías predefinidas (Cerrado), pero también se permite al usuario crear las suyas (Abierto).</blockquote>
+            <cite>Ofrece lo mejor de ambos mundos. Permite validar la estructura principal y, a la vez, descubrir nuevos conceptos o agrupaciones que el equipo de diseño había olvidado.</cite>
+        </div>
+    </div>
+</div>
 
-        function checkApiKey() {
-            const keyPresent = !!API_KEY;
-            apiKeyMessages.forEach(msg => msg.classList.toggle('hidden', keyPresent));
-            // Opcional: Deshabilitar/Habilitar botones
-            // aiButtons.forEach(btn => btn.disabled = !keyPresent);
-            return keyPresent;
-        }
+<!-- Slide 7: Modalidades Presencial vs. Remoto (Two_Column_Text) -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">2.1. Modalidades de Ejecución</h2>
+    <div class="content-area">
+        <div class="two-column-text">
+            <div>
+                <div class="icon"><i class="fa-solid fa-users"></i></div>
+                <h3>Presencial (In-Person)</h3>
+                <p>Un facilitador guía al participante, ya sea de forma individual o en un grupo simultáneo.</p>
+                <ul>
+                    <li>Ventaja Clave: Permite usar el protocolo Think Aloud o Pensar en Voz Alta para capturar el "porqué" cualitativo.</li>
+                    <li>Desventaja: Es más lento y costoso en tiempo, recursos y logística.</li>
+                </ul>
+            </div>
+            <div>
+                <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                <h3>Remoto (Online)</h3>
+                <p>El participante realiza la tarea solo, desde su propio ordenador, sin moderador.</p>
+                <ul>
+                    <li>Ventaja Clave: Rápido, económico y permite una muestra mucho más grande y geográficamente diversa. Ideal para datos cuantitativos.</li>
+                    <li>Desventaja: Se pierde el "porqué". No sabemos por qué el usuario dudó o por qué creó un grupo.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-        if (saveApiKeyBtn && apiKeyInput && apiKeyStatus) {
-            saveApiKeyBtn.addEventListener('click', () => {
-                const key = apiKeyInput.value.trim();
-                if (key) {
-                    API_KEY = key;
-                    updateApiUrls();
-                    apiKeyStatus.classList.remove('hidden');
-                    apiKeyInput.disabled = true;
-                    saveApiKeyBtn.disabled = true;
-                    saveApiKeyBtn.textContent = "Clave Guardada";
-                    checkApiKey();
-                }
-            });
-        }
+<!-- Slide 8: Preparación (1/2): Las Tarjetas (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">3. Preparación (1/2): Las Tarjetas</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>El Núcleo del Estudio</h3>
+                <p>Una mala selección de tarjetas invalida los resultados.</p>
+                <ul style="padding-left: 30px;">
+                    <li>Claridad: Cada tarjeta debe incluir una breve definición, no solo la etiqueta, para evitar ambigüedades.</li>
+                    <li>Fuente: Se obtienen de inventarios de contenido, entrevistas a usuarios o técnicas como el free-listing.</li>
+                    <li>Cantidad: Hay que evitar la "fatiga del participante". El consenso de la industria aconseja un rango ideal de 30 a 60 tarjetas.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper" style="background-color: #f0f0f0;">
+                <img src="https" alt="Ejemplo de una tarjeta de Card Sorting para 'Vuelos'">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-        // --- UI Functions ---
-        function showLoading(message = "Procesando...") {
-             if (loadingEl) {
-                 loadingEl.querySelector('p').textContent = message;
-                 loadingEl.classList.remove('hidden');
-             }
-             if (resultsEl) resultsEl.innerHTML = '';
-             if (resultsEl) resultsEl.classList.add('hidden');
-             if (audioPlayer) { audioPlayer.classList.add('hidden'); audioPlayer.src = ''; }
-             if (imageResultContainer) { imageResultContainer.innerHTML = ''; imageResultContainer.classList.add('hidden'); }
-             if (podcastControls) podcastControls.classList.add('hidden');
-             if (fullPodcastPlayer) fullPodcastPlayer.src = '';
-             if (downloadPodcastLink) downloadPodcastLink.href = '#';
-             if (podcastStatus) podcastStatus.textContent = '';
-         }
-        function hideLoading() { if (loadingEl) loadingEl.classList.add('hidden'); }
+<!-- Slide 9: Preparación (2/2): Los Participantes (Highlighted_Numbers) -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title">3. Preparación (2/2): Los Participantes</h2>
+    <div class="content-area">
+        <div class="highlight-numbers-layout">
+            <div class="number-side">
+                <div class="number">15-30</div>
+                <div class="number-label">Participantes</div>
+            </div>
+            <div>
+                <h3>Calidad sobre Cantidad</h3>
+                <p>Basado en estudios clave como el de Tullis & Wood (2004), el consenso de la industria es:</p>
+                <ul style="padding-left: 30px; font-size: 20px;">
+                    <li>Con menos de 15 participantes, los patrones de agrupación pueden no ser fiables.</li>
+                    <li>Con más de 30, los beneficios son marginales. Se empiezan a repetir los mismos patrones y se incrementa el coste.</li>
+                    <li>Crítico: Los participantes deben ser representativos de la audiencia objetivo.</li>
+                    <li>Crítico: No mezclar perfiles (ej. clientes y empleados) en el mismo análisis, ya que sus modelos mentales son diferentes.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-        // --- Core Functions (Pcm/Wav/Fetch) ---
-         function base64ToArrayBuffer(b64) { try { const bS = window.atob(b64); const l = bS.length; const b = new Uint8Array(l); for (let i = 0; i < l; i++) { b[i] = bS.charCodeAt(i); } return b.buffer; } catch (e) { console.error("Error Base64:", e); return new ArrayBuffer(0); } }
-         function writeString(v, o, s) { for (let i = 0; i < s.length; i++) { v.setUint8(o + i, s.charCodeAt(i)); } }
-         function pcmToWav(pcmData, sR) { const nC = 1; const bPS = 16; const bR = sR * nC * bPS / 8; const bA = nC * bPS / 8; let dS; let pB; if (pcmData instanceof Int16Array) { pB = pcmData.buffer; dS = pcmData.byteLength; } else if (pcmData instanceof ArrayBuffer) { pB = pcmData; dS = pcmData.byteLength; } else { console.error("Bad PCM"); return null; } if (dS === 0) { console.error("Empty PCM"); return null; } const bf = new ArrayBuffer(44 + dS); const v = new DataView(bf); writeString(v, 0, 'RIFF'); v.setUint32(4, 36 + dS, true); writeString(v, 8, 'WAVE'); writeString(v, 12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, nC, true); v.setUint32(24, sR, true); v.setUint32(28, bR, true); v.setUint16(32, bA, true); v.setUint16(34, bPS, true); writeString(v, 36, 'data'); v.setUint32(40, dS, true); try { const pV = new Int16Array(pB); const dV = new Int16Array(bf, 44); dV.set(pV); return new Blob([v], { type: 'audio/wav' }); } catch (e) { console.error("Error creating WAV DataView:", e); return null; } }
-         async function fetchWithBackoff(url, options, retries = 5, delay = 1000) { try { const r = await fetch(url, options); if (!r.ok) { let eB; try { eB = await r.json(); } catch (e) { eB = await r.text(); } console.error(`HTTP err ${r.status}`, eB); const errorMessage = `Error ${r.status}: ${typeof eB === 'string' ? eB : JSON.stringify(eB)}`; if ((r.status === 429 || r.status >= 500) && retries > 0) { await new Promise(ok => setTimeout(ok, delay)); return fetchWithBackoff(url, options, retries - 1, delay * 2); } throw new Error(errorMessage); } return r.json(); } catch (e) { console.error("Fetch/JSON err:", e); if (retries > 0) { await new Promise(ok => setTimeout(ok, delay)); return fetchWithBackoff(url, options, retries - 1, delay * 2); } else { console.error("Max retries."); throw e; } } }
+<!-- Slide 10: Ejecución: Las 3 Fases (Timeline) -->
+<div class="slide-container" id="slide10">
+    <h2 class="slide-title">4. Ejecución: Las Fases del "Open Sort"</h2>
+    <div class="content-area">
+        <div class="timeline-layout">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+                <div class="icon"><i class="fa-solid fa-eye"></i></div>
+                <h3>1. Revisar (y Renombrar)</h3>
+                <p>El usuario se familiariza con todas las tarjetas. Puede renombrar las que le parezcan confusas.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="icon"><i class="fa-solid fa-object-group"></i></div>
+                <h3>2. Agrupar (Sorting)</h3>
+                <p>El usuario crea grupos lógicos según su propio criterio. Aquí se usa el protocolo Think Aloud si es presencial.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="icon"><i class="fa-solid fa-pencil-alt"></i></div>
+                <h3>3. Etiquetar (Labeling)</h3>
+                <p>El usuario asigna un nombre (etiqueta) a cada grupo que ha creado.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Slide 11: Análisis (1/2): Cuantitativo (Matriz) (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide11">
+    <h2 class="slide-title">5. Análisis (1/2): Cuantitativo (El Qué)</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>Matriz de Similaridad</h3>
+                <p>Es el primer paso del análisis. Es una tabla que muestra el porcentaje de participantes que agruparon dos tarjetas en el mismo grupo.</p>
+                <p style="margin-top: 20px;">Un porcentaje alto, como 85% o 100%, indica una fuerte afinidad, es decir, los usuarios están de acuerdo. Un porcentaje bajo, como 10%, indica que no ven relación entre esos conceptos.</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="https...googleusercontent.com/image_retrieval_content/VXhlcmNpc2VzIGluIFN0YXRpc3RpY3NfMTY0MDIzMTMxOV81ZmRkMmFkNS5qcGc=/0" alt="Un mapa de calor (heatmap) que representa una matriz de similaridad, con celdas rojas para 100% y azules para 0%.">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-        // --- Funciones FollowUp ---
-        function addFollowUpUI(c){ /* ... (Sin cambios) ... */ }
-        async function handleFollowUp(){
-             if (!checkApiKey()) return;
-             const fI=document.getElementById('f-i'); if(!fI) return;
-             const uP=fI.value; if(!uP.trim()) return;
-             const fB=document.getElementById('b-f'); if(!fB) return;
-             fI.disabled=true; fB.disabled=true; fB.textContent="Pensando...";
-             const uMD=document.createElement('div'); uMD.className='mt-4 p-3 bg-stone-200 rounded text-left'; uMD.innerHTML=`<strong>Tú:</strong><pre class="bg-stone-200 p-2 rounded whitespace-pre-wrap font-mono">${uP}</pre>`;
-             if(resultsEl) resultsEl.appendChild(uMD);
-             chatHistory.push({role:"user",parts:[{text:uP}]});
-             const cFUI=resultsEl ? resultsEl.querySelector('.f') : null; if(cFUI)cFUI.remove();
-             const sE=chatHistory.find(e=>e.role==='system'); const sPT=sE?sE.parts[0].text:"Eres un tutor útil.";
-             const pL={contents:chatHistory.filter(m=>m.role!=='system'),systemInstruction:{parts:[{text:sPT}]}};
-             const op={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pL)};
-             try{
-                 const rs=await fetchWithBackoff(API_URL_GENERATE,op); const t=rs.candidates?.[0]?.content?.parts?.[0]?.text;
-                 chatHistory.push({role:"model",parts:[{text:t||"(Sin resp.)"}]});
-                 const mMD=document.createElement('div'); mMD.className='mt-4 p-3 bg-blue-100 rounded text-left gemini-answer'; mMD.innerHTML=`<strong>Tutor:</strong><pre class="bg-blue-100 p-2 rounded whitespace-pre-wrap">${t||"(Sin resp.)"}</pre>`;
-                 if(resultsEl) resultsEl.appendChild(mMD);
-             } catch(e){
-                 const eMD=document.createElement('div'); eMD.className='mt-4 p-3 bg-red-100 rounded text-left'; eMD.innerHTML=`<strong>Error:</strong><pre class="bg-red-100 p-2 rounded whitespace-pre-wrap">${e.message}</pre>`;
-                 if(resultsEl) resultsEl.appendChild(eMD);
-             } finally {
-                 if(resultsEl) addFollowUpUI(resultsEl);
-                 if(resultsEl) resultsEl.classList.remove('hidden');
-                 if(resultsEl) resultsEl.scrollTop=resultsEl.scrollHeight;
-             }
-         }
+<!-- Slide 12: Análisis (2/2): Dendrograma (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide12">
+    <h2 class="slide-title">5. Análisis (2/2): Visualización de Clústeres</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>Análisis Clúster (Dendrograma)</h3>
+                <p>La Matriz de Similaridad alimenta un algoritmo de Análisis Clúster que genera un Dendrograma o diagrama de árbol.</p>
+                <ul style="padding-left: 30px; font-size: 20px;">
+                    <li>Muestra jerárquicamente cómo se agrupan las tarjetas.</li>
+                    <li>Las tarjetas que se unen más cerca, como Vuelos y Hoteles, tienen una afinidad más fuerte.</li>
+                    <li>Nos dice <strong>qué</strong> tarjetas deben ir juntas.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="https" alt="Un diagrama de dendrograma limpio y profesional que muestra la agrupación jerárquica de tarjetas.">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: Wikiwand) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-        // --- Manejador de Podcast Completo ---
-        async function getSingleAudioChunk(text, voiceName = "Vindemiatrix") { /* ... (Sin cambios internos) ... */ }
-        if (btnGenerateFullPodcast) {
-            btnGenerateFullPodcast.addEventListener('click', async () => {
-                if (!checkApiKey()) return;
-                const button = btnGenerateFullPodcast; const originalText = button.textContent; button.disabled = true;
-                if(podcastStatus) podcastStatus.textContent = "Iniciando generación...";
-                if(podcastControls) podcastControls.classList.add('hidden');
-                // ... resto de la lógica del podcast ...
-                 try {
-                     // ... bucle for para generar chunks ...
-                     if (Object.keys(podcastChunks).length === 0) { podcastChunks = getPodcastScript(); } // Asegurar script
-                     const chunkEntries = Object.entries(podcastChunks);
-                     let allPcmBuffers = []; let sampleRate = 0; let totalLength = 0;
+<!-- Slide 13: Análisis (3/3): Cualitativo y Grafo (Image_Right_Text_Left) -->
+<div class="slide-container" id="slide13">
+    <h2 class="slide-title">5. Análisis (3/3): El "Porqué" y el "Puente"</h2>
+    <div class="content-area">
+        <div class="image-right-text-left">
+            <div>
+                <h3>Análisis Cualitativo (El "Porqué")</h3>
+                <p>El dendrograma nos dice "Qué" agrupar, pero no "Cómo" llamarlo.</p>
+                <ul style="padding-left: 30px; font-size: 20px;">
+                    <li><strong>Análisis de Etiquetas:</strong> Se analizan las etiquetas creadas por los usuarios. Si 10 de 15 usuarios usan "Ayuda", "Soporte" o "Dudas" para un clúster, se valida la etiqueta "Ayuda".</li>
+                    <li><strong>Think Aloud:</strong> Las notas de la sesión explican por qué una tarjeta fue ambigua.</li>
+                </ul>
+                <h3 style="margin-top: 20px;">Visualización de Grafos (El "Puente")</h3>
+                <p>Un análisis alternativo (de la UXPA) que muestra la red de relaciones e identifica "Puentes", que son tarjetas ambiguas que conectan varios clústeres.</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="https" alt="Un grafo de red que muestra clústeres y tarjetas 'puente' conectando ambos.">
+            </div>
+        </div>
+    </div>
+    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
+    <div class="notes">
+        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
+    </div>
+</div>
 
-                     for (let i = 0; i < chunkEntries.length; i++) {
-                         // ... (obtener chunk y añadir a allPcmBuffers) ...
-                         const [title, text] = chunkEntries[i];
-                         if(podcastStatus) podcastStatus.textContent = `Generando ${i + 1}/${chunkEntries.length}: ${title}...`;
-                         const chunk = await getSingleAudioChunk(`Voz profesor, lee claro: ${text}`, voiceName);
-                         if (sampleRate === 0 && chunk.pcmBuffer.byteLength > 0) { sampleRate = chunk.sampleRate; }
-                         else if (chunk.sampleRate !== sampleRate && chunk.pcmBuffer.byteLength > 0) { throw new Error("Inconsistent sample rate."); }
-                         if (chunk.pcmBuffer.byteLength > 0) { allPcmBuffers.push(chunk.pcmBuffer); totalLength += chunk.pcmBuffer.byteLength; }
-                         else { console.warn(`Skipping empty chunk: ${title}`); }
-                     }
-                     if (totalLength === 0 || sampleRate === 0) throw new Error("No valid audio generated.");
+<!-- Slide 14: Conclusión (Quote) -->
+<div class="slide-container" id="slide14">
+    <h2 class="slide-title">6. Conclusión</h2>
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>Fundamentamos la Arquitectura de la Información en <strong>datos empíricos del usuario</strong>, no en la estructura organizativa interna de la empresa.</blockquote>
+            <cite>El Card Sorting nos permite empatizar con el modelo mental del usuario, diseñando productos digitales más intuitivos, eficientes y usables.</cite>
+        </div>
+    </div>
+</div>
 
-                     if(podcastStatus) podcastStatus.textContent = "Concatenando y empaquetando...";
-                     // ... (concatenar buffers y crear WAV) ...
-                      const finalPcmBuffer = new ArrayBuffer(totalLength);
-                      const finalPcmView = new Uint8Array(finalPcmBuffer);
-                      let offset = 0;
-                      for (const buffer of allPcmBuffers) { finalPcmView.set(new Uint8Array(buffer), offset); offset += buffer.byteLength; }
-                      const finalInt16Array = new Int16Array(finalPcmBuffer);
-                      const finalWavBlob = pcmToWav(finalInt16Array, sampleRate);
-                      if (!finalWavBlob) throw new Error("Failed to create WAV.");
+<!-- Slide 15: Bibliografía y Cierre (Final_Layout) -->
+<div class="slide-container" id="slide15">
+    <div class="final-layout">
+        <div>
+            <h2>Gracias</h2>
+        </div>
+        <div class="bibliografia">
+            <h3>Bibliografía</h3>
+            <p><strong>Principal:</strong><br>
+            Baxter, K., Courage, C., & Caine, K. (2015). Chapter 11: Card Sorting. En <i>Understanding Your Users: A Practical Guide to User Research Methods (Second Edition)</i>. Morgan Kaufmann.</p>
+            
+            <p><strong>Adicional (Ampliación):</strong><br>
+            Tullis, T., & Wood, L. (2004). How many users are enough for a card-sorting study? <i>Proceedings of the UPA 2004 Conference</i>.<br>
+            UXPA (s.f.). <i>Analyzing Card-Sorting Data Using Graph Visualization</i>. JUX - UXPA Journal.</p>
+            
+            <hr>
+            <!-- DECLARACIÓN DE IA RESTAURADA -->
+            <p><strong>Declaración de Uso de IA:</strong><br>
+            Se ha utilizado IA Generativa para la traducción inicial del capítulo base, la búsqueda de fuentes adicionales y el refinamiento de estilo del resumen. El uso de imágenes se declara según las normas.</p>
+        </div>
+    </div>
+</div>
 
-                     // ... (mostrar controles y enlace descarga) ...
-                     const audioUrl = URL.createObjectURL(finalWavBlob);
-                     if(fullPodcastPlayer) fullPodcastPlayer.src = audioUrl;
-                     if(downloadPodcastLink) downloadPodcastLink.href = audioUrl;
-                     if(downloadPodcastLink) downloadPodcastLink.download = "literatura_podcast_completo.wav";
-                     if(podcastControls) podcastControls.classList.remove('hidden');
-                     if(podcastStatus) podcastStatus.textContent = '';
-
-                 } catch (error) {
-                    if(podcastStatus) podcastStatus.textContent = `Error: ${error.message}`;
-                    console.error("PODCAST ERROR:", error);
-                 } finally {
-                    button.textContent = originalText; button.disabled = false;
-                 }
-            });
-        }
-
-
-        // --- Manejadores de Eventos (Asistente IA) ---
-        async function startTextGeneration(systemPrompt, userPrompt, outputContainer, isFollowUp=false) {
-             if (!isFollowUp) {
-                 showLoading();
-                 if (!(systemPrompt.includes("Analizas la imagen"))) chatHistory = [];
-             }
-             let currentCallHistory = [];
-             if (chatHistory.length === 0 || !isFollowUp) {
-                 currentCallHistory = [{ role: "user", parts: [{ text: userPrompt }] }];
-                 chatHistory = [{ role: "system", parts: [{ text: systemPrompt }] }, ...currentCallHistory];
-             } else {
-                 chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
-                 currentCallHistory = chatHistory;
-             }
-             const payload = { contents: currentCallHistory.filter(m => m.role !== 'system'), systemInstruction: { parts: [{ text: systemPrompt }] }, };
-             const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
-             try {
-                 const result = await fetchWithBackoff(API_URL_GENERATE, options);
-                 const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                 const modelResponse = { role: "model", parts: [{ text: text || "(No se generó respuesta)" }] };
-                 if (!isFollowUp || chatHistory[chatHistory.length - 1]?.role !== 'model') { chatHistory.push(modelResponse); }
-                 return text || "(No se generó respuesta)";
-             } catch (error) { console.error("Error in startTextGeneration:", error); return `Error: ${error.message}`; }
-             finally { if (!isFollowUp) { hideLoading(); if(outputContainer) outputContainer.classList.remove('hidden'); } }
-         }
-
-        // --- Event Listeners para botones IA (con checkApiKey) ---
-        if (btnExplain) btnExplain.addEventListener('click', async () => { if (!checkApiKey()) return; const userPrompt = promptText.value; if (!userPrompt.trim()) return; const systemPrompt = "..."; const fullUserPrompt = `... "${userPrompt}"`; const text = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl); if(resultsEl) resultsEl.innerHTML = `<div class="gemini-answer"><h4>Explicación:</h4><pre>${text}</pre></div>`; addFollowUpUI(resultsEl); });
-        if (btnAnalogy) btnAnalogy.addEventListener('click', async () => { if (!checkApiKey()) return; const userPrompt = promptText.value; if (!userPrompt.trim()) return; const systemPrompt = "..."; const fullUserPrompt = `... "${userPrompt}"`; const text = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl); if(resultsEl) resultsEl.innerHTML = `<div class="gemini-answer"><h4>Analogía:</h4><pre>${text}</pre></div>`; addFollowUpUI(resultsEl); });
-        if (btnCompare) btnCompare.addEventListener('click', async () => { if (!checkApiKey()) return; const c1 = promptConcept1.value; const c2 = promptConcept2.value; if (!c1.trim() || !c2.trim()) return; chatHistory = []; showLoading("Comparando..."); const systemPrompt = `... '${c1}', '${c2}'.`; const fullUserPrompt = `Compara "${c1}" con "${c2}".`; const payload = { contents: [{ parts: [{ text: fullUserPrompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, }; const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }; try { const result = await fetchWithBackoff(API_URL_GENERATE, options); const htmlTable = result.candidates?.[0]?.content?.parts?.[0]?.text; if (htmlTable && htmlTable.trim().startsWith('<table') && htmlTable.trim().endsWith('</table>')) { if(resultsEl) resultsEl.innerHTML = `<h4>Comparativa: ${c1} vs. ${c2}</h4>${htmlTable}`; } else { console.warn("Invalid HTML table:", htmlTable); if(resultsEl) resultsEl.innerHTML = `<h4>Comparativa...</h4><p>Error...</p><pre>${htmlTable || '(Vacía)'}</pre>`; } } catch (error) { if(resultsEl) resultsEl.innerHTML = `<h4>Error:</h4><pre>${error.message}</pre>`; } finally { hideLoading(); if(resultsEl) resultsEl.classList.remove('hidden'); } });
-        if (btnQuiz) btnQuiz.addEventListener('click', async () => { if (!checkApiKey()) return; const userPrompt = promptText.value; if (!userPrompt.trim()) return; const systemPrompt = "... Formato *exacto*: 'PREGUNTA #: ... RESPUESTA: [Letra]\n---'."; const fullUserPrompt = `... sobre: "${userPrompt}"`; const resultText = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl); const questions = resultText.split('---'); let quizHtml = '<h4>Preguntas Tipo Test:</h4>'; questions.forEach((q, index) => { const parts = q.trim().split(/\nRESPUESTA:/); const questionBlock = parts[0]; const answer = parts[1] ? parts[1].trim() : "N/A"; if(questionBlock) { quizHtml += `<div class="mt-4 p-4 ... gemini-answer"><pre ...>${questionBlock}</pre><div id="answer-${index}" class="hidden ..."><strong>Respuesta:</strong> ${answer}</div><button onclick="toggleAnswer('answer-${index}')" ...>Mostrar/Ocultar Respuesta</button></div>`; } }); if(resultsEl) resultsEl.innerHTML = quizHtml; addFollowUpUI(resultsEl); });
-        if (btnAnalysis) btnAnalysis.addEventListener('click', async () => { if (!checkApiKey()) return; const userPrompt = promptText.value; if (!userPrompt.trim()) return; const systemPrompt = "... Formato: 'ANÁLISIS: ...\n---\nCONCLUSIÓN: ...'"; const fullUserPrompt = `... de: "${userPrompt}"`; const resultText = await startTextGeneration(systemPrompt, fullUserPrompt, resultsEl); const parts = resultText.split('---'); const analysisBlock = parts[0] ? parts[0].replace('ANÁLISIS:', '').trim() : "No generado."; const conclusionBlock = parts[1] ? parts[1].replace('CONCLUSIÓN:', '').trim() : ""; let analysisHtml = `<div class="gemini-answer"><h4>Análisis Literario:</h4><pre>${analysisBlock}</pre>${conclusionBlock ? `<div class="mt-3 pt-3 ..."><pre><strong>CONCLUSIÓN:</strong>\n${conclusionBlock}</pre></div>` : ''}</div>`; if(resultsEl) resultsEl.innerHTML = analysisHtml; addFollowUpUI(resultsEl); });
-        if (btnTts) btnTts.addEventListener('click', async () => { if (!checkApiKey()) return; const userPrompt = promptText.value; if (!userPrompt.trim()) return; showLoading("Generando audio..."); chatHistory = []; const payload = { contents: [{ parts: [{ text: `Voz profesor, lee español: ${userPrompt}` }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Vindemiatrix" } } } }, model: "gemini-2.5-flash-preview-tts" }; const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }; try { const result = await fetchWithBackoff(API_URL_TTS, options); const part = result?.candidates?.[0]?.content?.parts?.[0]; const audioData = part?.inlineData?.data; const mimeType = part?.inlineData?.mimeType; if (audioData && mimeType?.startsWith("audio/")) { const sampleRateMatch = mimeType.match(/rate=(\d+)/); const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000; const pcmBuffer = base64ToArrayBuffer(audioData); if (pcmBuffer.byteLength === 0) throw new Error("PCM vacío."); const pcm16 = new Int16Array(pcmBuffer); const wavBlob = pcmToWav(pcm16, sampleRate); if (!wavBlob) throw new Error("Fallo WAV."); const audioUrl = URL.createObjectURL(wavBlob); if(audioPlayer) { audioPlayer.src = audioUrl; audioPlayer.classList.remove('hidden'); audioPlayer.play(); } } else { throw new Error(`Respuesta TTS inválida`); } } catch (error) { console.error("TTS Error:", error); if(resultsEl) { resultsEl.innerHTML = `<h4>Error Audio:</h4><pre>${error.message}</pre>`; resultsEl.classList.remove('hidden'); } } finally { hideLoading(); } });
-        if (btnVisualize) btnVisualize.addEventListener('click', async () => { if (!checkApiKey()) return; const userPrompt = promptText.value; if (!userPrompt.trim()) return; showLoading("Generando imagen..."); chatHistory = []; const fullPrompt = `... representando: "${userPrompt}" ...`; const payload = { instances: [{ prompt: fullPrompt }], parameters: { "sampleCount": 1 } }; const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }; try { const result = await fetchWithBackoff(API_URL_IMAGEN, options); const base64Data = result.predictions?.[0]?.bytesBase64Encoded; if (base64Data) { const imageUrl = `data:image/png;base64,${base64Data}`; if(imageResultContainer) { imageResultContainer.innerHTML = `<h4>Visualización:</h4><img src="${imageUrl}" alt="..." class="...">`; imageResultContainer.classList.remove('hidden'); } } else { throw new Error(`Respuesta Imagen inválida`); } } catch (error) { console.error("Visualize Error:", error); if(resultsEl) { resultsEl.innerHTML = `<h4>Error Imagen:</h4><pre>${error.message}</pre>`; resultsEl.classList.remove('hidden'); } } finally { hideLoading(); } });
-        if (fileUpload) fileUpload.addEventListener('change', () => { const file = fileUpload.files[0]; if (!file) return; const reader = new FileReader(); reader.onloadend = () => { const dataUrl = reader.result; uploadedMimeType = dataUrl.substring(dataUrl.indexOf(':')+1, dataUrl.indexOf(';')); uploadedImageBase64 = dataUrl.substring(dataUrl.indexOf(',')+1); if(imagePreviewContainer) { imagePreviewContainer.innerHTML = `<h4>Vista Previa:</h4><img src="${dataUrl}" alt="..." class="...">`; imagePreviewContainer.classList.remove('hidden'); } /* Reset other outputs */ if(resultsEl) resultsEl.innerHTML = ''; if(resultsEl) resultsEl.classList.add('hidden'); if(imageResultContainer) imageResultContainer.innerHTML = ''; if(imageResultContainer) imageResultContainer.classList.add('hidden'); if(audioPlayer) { audioPlayer.classList.add('hidden'); audioPlayer.src = ''; } if(podcastControls) podcastControls.classList.add('hidden'); }; reader.readAsDataURL(file); });
-        if (btnExplainImage) btnExplainImage.addEventListener('click', async () => { if (!checkApiKey()) return; if (!uploadedImageBase64) return; const userPrompt = promptText.value.trim() || "..."; const systemPrompt = "..."; const imagePrompt = { role: "user", parts: [ { text: userPrompt }, { inlineData: { mimeType: uploadedMimeType || "image/jpeg", data: uploadedImageBase64 } } ] }; showLoading("Analizando imagen..."); chatHistory = [ { role: "system", parts: [{ text: systemPrompt }] }, imagePrompt ]; const payload = { contents: chatHistory.filter(m => m.role === 'user'), systemInstruction: { parts: [{ text: systemPrompt }] }, }; const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }; try { const result = await fetchWithBackoff(API_URL_GENERATE, options); const text = result.candidates?.[0]?.content?.parts?.[0]?.text; if(text) chatHistory.push({ role: "model", parts: [{ text }] }); if(resultsEl) { resultsEl.innerHTML = `<div class="gemini-answer"><h4>Análisis de Imagen:</h4><pre>${text || "No se pudo."}</pre></div>`; resultsEl.classList.remove('hidden'); } addFollowUpUI(resultsEl); } catch (error) { if(resultsEl) { resultsEl.innerHTML = `<h4>Error:</h4><pre>${error.message}</pre>`; resultsEl.classList.remove('hidden'); } } finally { hideLoading(); if(imagePreviewContainer) imagePreviewContainer.classList.remove('hidden'); } });
-
-        // --- Función global toggleAnswer ---
-        window.toggleAnswer = function(id) { const answerEl = document.getElementById(id); if (answerEl) answerEl.classList.toggle('hidden'); }
-        
-        // --- Carga inicial ---
-        window.addEventListener('DOMContentLoaded', () => {
-            podcastChunks = getPodcastScript();
-            updateApiUrls(); // Actualiza con API_KEY vacía
-            checkApiKey(); // Muestra mensaje si es necesario
-        });
-
-    </script>
 </body>
 </html>
