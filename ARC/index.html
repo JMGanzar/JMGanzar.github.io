@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblia de Redes (T4-T8) | Nivel Experto</title>
+    <title>Biblia de Redes | Simulador Infinito (T4-T8)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,11 +18,11 @@
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 5px; }
         ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
 
-        /* Estilos de Tablas (CENTRADAS) */
-        .table-wrapper { overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; border: 1px solid #334155; }
-        table { width: 100%; border-collapse: collapse; text-align: center; } /* Todo centrado */
-        th { background: #1e293b; color: #60a5fa; padding: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #3b82f6; text-align: center; }
-        td { padding: 1rem; border-bottom: 1px solid #334155; color: #cbd5e1; vertical-align: middle; text-align: center; }
+        /* Estilos de Tablas */
+        .table-wrapper { overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; border: 1px solid #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        table { width: 100%; border-collapse: collapse; text-align: center; }
+        th { background: #1e293b; color: #60a5fa; padding: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #3b82f6; }
+        td { padding: 1rem; border-bottom: 1px solid #334155; color: #cbd5e1; vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
         tr:nth-child(even) { background-color: rgba(30, 41, 59, 0.5); }
         tr:hover { background-color: rgba(59, 130, 246, 0.1); }
@@ -30,22 +30,29 @@
         /* Layout */
         .sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: 280px; background: #0f172a; border-right: 1px solid #1e293b; overflow-y: auto; z-index: 50; }
         .main-content { margin-left: 280px; padding: 3rem; max-w: 1400px; }
-        
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 1.5rem; } }
+
         /* Tarjetas de Teoría */
-        .theory-card { background: #1e293b; border: 1px solid #334155; border-radius: 1rem; margin-bottom: 3rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
-        .theory-header { background: linear-gradient(to right, #1d4ed8, #1e40af); padding: 1.5rem; border-bottom: 1px solid #334155; }
+        .theory-card { background: #1e293b; border: 1px solid #334155; border-radius: 1rem; margin-bottom: 3rem; position: relative; overflow: hidden; }
+        .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #3b82f6; }
+        .theory-header { background: linear-gradient(90deg, #1e3a8a 0%, #1e293b 100%); padding: 1.5rem; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 1rem; }
         .theory-body { padding: 2rem; }
 
         /* Cajas de Énfasis */
-        .detail-box { background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
-        .alert-box { background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
-        .cmd-box { background: #020617; font-family: 'Courier New', monospace; padding: 1rem; border-radius: 0.5rem; border: 1px solid #334155; color: #22d3ee; margin: 1rem 0; white-space: pre-wrap; }
+        .detail-box { background: rgba(16, 185, 129, 0.1); border: 1px solid #059669; border-left: 4px solid #10b981; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0.5rem; }
+        .alert-box { background: rgba(220, 38, 38, 0.1); border: 1px solid #991b1b; border-left: 4px solid #ef4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0.5rem; }
+        .cmd-box { background: #020617; font-family: 'Courier New', monospace; padding: 1.25rem; border-radius: 0.5rem; border: 1px solid #334155; color: #67e8f9; margin: 1rem 0; white-space: pre-wrap; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
 
         /* Simulador */
-        .option-btn { width: 100%; text-align: left; padding: 1.25rem; margin-bottom: 0.75rem; border: 2px solid #334155; border-radius: 0.75rem; background: #1e293b; color: #e2e8f0; transition: all 0.2s; font-weight: 500; }
-        .option-btn:hover:not(:disabled) { border-color: #3b82f6; background: #334155; }
-        .option-btn.correct { border-color: #10b981; background: rgba(16, 185, 129, 0.2); color: #34d399; }
-        .option-btn.incorrect { border-color: #ef4444; background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .quiz-wrapper { background: white; border-radius: 1.5rem; padding: 2rem; color: #1e293b; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .option-btn { width: 100%; text-align: left; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; border: 2px solid #e2e8f0; border-radius: 1rem; background: #f8fafc; color: #334155; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 600; font-size: 1.05rem; position: relative; overflow: hidden; }
+        .option-btn:hover:not(:disabled) { border-color: #3b82f6; background: #eff6ff; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1); }
+        .option-btn:disabled { cursor: default; opacity: 0.7; }
+        .option-btn.correct { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+        .option-btn.incorrect { border-color: #ef4444; background: #fee2e2; color: #7f1d1d; }
+        
+        .feedback-panel { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -54,37 +61,41 @@
     <aside class="sidebar hidden md:block">
         <div class="p-6">
             <h1 class="text-3xl font-black text-white mb-1 tracking-tighter">NET<span class="text-blue-500">MASTER</span></h1>
-            <p class="text-xs text-blue-400 font-bold tracking-widest uppercase mb-10">Edición 200% Teoría</p>
+            <p class="text-xs text-blue-400 font-bold tracking-widest uppercase mb-10">Edición "Infinito"</p>
             
             <nav class="space-y-2">
                 <a href="#t4" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-sitemap w-5 text-center"></i> T4: Jerárquicas</a>
-                <a href="#t5" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-network-wired w-5 text-center"></i> T5: STP Avanzado</a>
+                <a href="#t5" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-network-wired w-5 text-center"></i> T5: STP Experto</a>
                 <a href="#t6" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-tags w-5 text-center"></i> T6: VLANs & 802.1Q</a>
                 <a href="#t7" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-server w-5 text-center"></i> T7: VTP Total</a>
                 <a href="#t8" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-route w-5 text-center"></i> T8: Inter-VLAN</a>
             </nav>
 
-            <div class="mt-12 p-4 bg-gradient-to-br from-blue-900 to-slate-900 rounded-xl border border-blue-800">
-                <h4 class="text-white font-bold mb-2"><i class="fa-solid fa-graduation-cap mr-2"></i>Modo Examen</h4>
-                <p class="text-xs text-blue-200 mb-4">Preguntas ilimitadas y aleatorias.</p>
-                <a href="#simulator" class="block text-center bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition text-sm shadow-lg">
-                    Iniciar Test
+            <div class="mt-12 pt-8 border-t border-slate-700">
+                <a href="#simulator" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-blue-500/30 hover:scale-[1.02] transition-all">
+                    <i class="fa-solid fa-play"></i> Iniciar Test
                 </a>
             </div>
         </div>
     </aside>
 
-    <!-- Contenido -->
-    <main class="main-content md:ml-64">
+    <!-- Contenido Principal -->
+    <main class="main-content">
         
-        <!-- TEMA 4 -->
+        <div class="mb-12 border-b border-slate-700 pb-8">
+            <h2 class="text-4xl font-extrabold text-white mb-4">Guía de Estudio <span class="text-blue-500">Maestra</span></h2>
+            <p class="text-lg text-slate-400 max-w-3xl">Contiene el 100% de la teoría de los PDFs. Si estudias esto y dominas el simulador, el 10 está garantizado.</p>
+        </div>
+
+        <!-- TEMA 4: REDES JERÁRQUICAS -->
         <section id="t4" class="theory-card">
             <div class="theory-header">
-                <h2 class="text-2xl font-bold text-white"><span class="text-blue-300 mr-3">TEMA 4</span> Redes Jerárquicas</h2>
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-sitemap text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 4: Redes Jerárquicas</h2>
             </div>
             <div class="theory-body">
-                <h3 class="text-xl font-bold text-blue-400 mb-4">1. El Modelo de 3 Capas (Detalle Exhaustivo)</h3>
-                <p class="mb-4">Diseño modular para escalabilidad, redundancia, rendimiento y facilidad de mantenimiento. Supera a las redes planas.</p>
+                <h3 class="text-xl font-bold text-white mb-4">1. El Modelo de 3 Capas (Cisco)</h3>
+                <p class="mb-4 text-slate-300">Diseño modular para evitar redes planas. Cada capa tiene una función exclusiva.</p>
                 
                 <div class="table-wrapper">
                     <table>
@@ -99,40 +110,34 @@
                             <tr>
                                 <td class="font-bold text-green-400">ACCESO<br>(Access Layer)</td>
                                 <td>Conexión de usuarios (Edge)</td>
-                                <td>
-                                    <ul class="text-left list-disc pl-6 space-y-1 text-sm">
-                                        <li><strong>Port Security</strong> y control de acceso.</li>
-                                        <li>VLANs y marcado QoS (Clasificación).</li>
-                                        <li><strong>PoE</strong> (Power over Ethernet) para Teléfonos IP y APs.</li>
-                                        <li>ARP Inspection.</li>
-                                        <li>Switches de bajo coste/alta densidad.</li>
-                                        <li><strong>NO</strong> suele tener redundancia al host (1 cable).</li>
-                                    </ul>
+                                <td class="text-left text-sm">
+                                    • Seguridad de puerto (Port Security).<br>
+                                    • VLANs y Marcado QoS (Clasificación).<br>
+                                    • <strong>PoE</strong> (Power over Ethernet) para teléfonos/APs.<br>
+                                    • ARP Inspection.<br>
+                                    • Switches de bajo coste/alta densidad.<br>
+                                    • <strong>NO</strong> suele tener redundancia al host.
                                 </td>
                             </tr>
                             <tr>
                                 <td class="font-bold text-blue-400">DISTRIBUCIÓN<br>(Distribution Layer)</td>
                                 <td>Agregación y Políticas</td>
-                                <td>
-                                    <ul class="text-left list-disc pl-6 space-y-1 text-sm">
-                                        <li><strong>Punto de demarcación L2/L3.</strong></li>
-                                        <li>Enrutamiento Inter-VLAN.</li>
-                                        <li>Aplicación de políticas de seguridad (ACLs).</li>
-                                        <li>Redundancia hacia el Núcleo y Acceso.</li>
-                                        <li>Sumarización de rutas.</li>
-                                    </ul>
+                                <td class="text-left text-sm">
+                                    • <strong>Punto de demarcación L2/L3.</strong><br>
+                                    • Enrutamiento Inter-VLAN.<br>
+                                    • Aplicación de políticas de seguridad (ACLs).<br>
+                                    • Redundancia hacia el Núcleo y Acceso.<br>
+                                    • Sumarización de rutas.
                                 </td>
                             </tr>
                             <tr>
                                 <td class="font-bold text-red-400">NÚCLEO<br>(Core Layer)</td>
                                 <td>Backbone de Alta Velocidad</td>
-                                <td>
-                                    <ul class="text-left list-disc pl-6 space-y-1 text-sm">
-                                        <li><strong>Conmutación de paquetes a máxima velocidad.</strong></li>
-                                        <li>Fiabilidad extrema y redundancia.</li>
-                                        <li><strong>PROHIBIDO:</strong> Tareas intensivas en CPU (ACLs, inspección de paquetes, enrutamiento complejo). Ralentizan.</li>
-                                        <li>Hardware: Fibra óptica (10G/40G/100G).</li>
-                                    </ul>
+                                <td class="text-left text-sm">
+                                    • <strong>Conmutación pura</strong> (Switching).<br>
+                                    • Fiabilidad extrema y redundancia.<br>
+                                    • <strong>PROHIBIDO:</strong> ACLs, inspección de paquetes.<br>
+                                    • Hardware: Fibra óptica (10G/40G/100G).
                                 </td>
                             </tr>
                         </tbody>
@@ -140,128 +145,111 @@
                 </div>
 
                 <div class="detail-box">
-                    <strong>Excepción de Diseño: Núcleo Colapsado (Collapsed Core)</strong>
-                    <p class="mt-1 text-sm">En redes pequeñas, se fusionan las capas de <strong>Distribución y Núcleo</strong> en una sola capa. Reduce costes pero limita la escalabilidad.</p>
+                    <strong>⚠️ Excepción: Núcleo Colapsado</strong>
+                    <p class="mt-1 text-sm text-slate-300">En redes pequeñas, se fusionan las capas de <strong>Distribución y Núcleo</strong>. Reduce costes pero limita la escalabilidad.</p>
                 </div>
 
-                <h3 class="text-xl font-bold text-blue-400 mb-4 mt-8">2. Principios de Diseño y Hardware</h3>
-                <ul class="list-disc pl-5 space-y-2 mb-6">
-                    <li><strong>Diámetro de la Red:</strong> Número de saltos entre origen y destino. Debe mantenerse bajo y predecible para garantizar baja latencia.</li>
-                    <li><strong>Agregado de Ancho de Banda (EtherChannel):</strong> Combinar enlaces físicos en uno lógico. Vital en uplinks (Acceso->Distribución).</li>
+                <h3 class="text-xl font-bold text-white mb-4 mt-8">2. Principios de Diseño</h3>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Diámetro de la Red:</strong> Número de saltos entre origen y destino. Objetivo: Bajo y predecible.</li>
+                    <li><strong>Agregado de Ancho de Banda:</strong> Uso de <strong>EtherChannel</strong> para combinar enlaces físicos en uno lógico. Vital en uplinks.</li>
                     <li><strong>Redundancia:</strong> Duplicar enlaces y equipos. Obligatorio en Distribución y Núcleo.</li>
                 </ul>
 
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr><th>Factor de Forma</th><th>Descripción</th><th>Uso Típico</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-bold">Configuración Fija</td>
-                                <td>Puertos inamovibles (24/48). Menor coste.</td>
-                                <td>Capa de Acceso.</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold">Modular</td>
-                                <td>Chasis con tarjetas de línea (line cards). Máxima escalabilidad.</td>
-                                <td>Distribución y Núcleo.</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold">Apilable (Stackable)</td>
-                                <td>Varios switches unidos por cable especial (StackWise). Actúan como <strong>UNA unidad lógica</strong> (plano de control único, más ancho de banda).</td>
-                                <td>Acceso (alta densidad).</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <h3 class="text-xl font-bold text-white mb-4">3. Factores de Forma</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-blue-400 block mb-1">Fija</strong>
+                        <span class="text-sm text-slate-400">Puertos inamovibles (24/48). Acceso.</span>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-blue-400 block mb-1">Modular</strong>
+                        <span class="text-sm text-slate-400">Chasis + Tarjetas. Escalable. Núcleo.</span>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-blue-400 block mb-1">Apilable</strong>
+                        <span class="text-sm text-slate-400">StackWise. Plano de control único.</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- TEMA 5 -->
+        <!-- TEMA 5: STP -->
         <section id="t5" class="theory-card">
             <div class="theory-header">
-                <h2 class="text-2xl font-bold text-white"><span class="text-blue-300 mr-3">TEMA 5</span> STP (Spanning Tree Protocol)</h2>
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-network-wired text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 5: STP (Spanning Tree)</h2>
             </div>
             <div class="theory-body">
                 <div class="alert-box">
-                    <strong class="text-red-400 text-lg"><i class="fa-solid fa-triangle-exclamation"></i> Problemas de la Redundancia L2</strong>
-                    <p class="mt-2">Sin STP, los bucles físicos causan:</p>
-                    <ol class="list-decimal pl-5 mt-1 font-bold text-white">
-                        <li>Tormentas de Broadcast (Broadcast Storms).</li>
-                        <li>Inestabilidad de la tabla de direcciones MAC.</li>
-                        <li>Transmisión de tramas duplicadas.</li>
-                    </ol>
-                </div>
-
-                <h3 class="text-xl font-bold text-blue-400 mb-4 mt-8">1. Algoritmo STP (IEEE 802.1D) - El detalle importa</h3>
-                <p class="mb-4">El objetivo es crear una topología lógica de árbol (sin bucles) bloqueando puertos.</p>
-
-                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-6">
-                    <h4 class="text-lg font-bold text-white mb-3 border-b border-slate-600 pb-2">PASO 1: Elección del Puente Raíz (Root Bridge)</h4>
-                    <p class="mb-2">Solo hay <strong>UNO</strong> por VLAN. Gana el switch con el <strong>BID (Bridge ID) más bajo</strong>.</p>
-                    <div class="cmd-box text-center">BID = Prioridad (2 bytes) + Dirección MAC (6 bytes)</div>
-                    <ul class="list-disc pl-5 text-sm">
-                        <li>Prioridad por defecto: <strong>32768</strong> (+ ID VLAN en PVST+).</li>
-                        <li><strong>Criterio de Desempate:</strong> Si las prioridades son iguales, gana la <strong>MAC más baja</strong>.</li>
+                    <strong class="text-red-400 text-lg"><i class="fa-solid fa-triangle-exclamation"></i> Riesgos sin STP</strong>
+                    <ul class="list-disc pl-5 mt-2 text-slate-300 text-sm">
+                        <li><strong>Tormentas de Broadcast:</strong> Tramas girando infinitamente (Ethernet no tiene TTL).</li>
+                        <li><strong>Inestabilidad de tabla MAC:</strong> La misma MAC se aprende por puertos distintos.</li>
+                        <li><strong>Tramas Duplicadas:</strong> Recepción múltiple de un mismo paquete.</li>
                     </ul>
                 </div>
 
-                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-6">
-                    <h4 class="text-lg font-bold text-white mb-3 border-b border-slate-600 pb-2">PASO 2: Elección de Puertos Raíz (Root Ports - RP)</h4>
-                    <p class="mb-2">Cada switch NO-Raíz elige <strong>un solo</strong> puerto: el mejor camino hacia el Raíz.</p>
-                    <p class="font-bold text-blue-400 mb-1">Criterios de desempate (en orden):</p>
-                    <ol class="list-decimal pl-5 text-sm space-y-1">
-                        <li>Menor Costo acumulado hacia el Raíz.</li>
-                        <li>Menor BID del switch vecino (Sender Bridge ID).</li>
-                        <li>Menor Prioridad de Puerto del vecino (Sender Port Priority, default 128).</li>
-                        <li>Menor ID de Puerto del vecino (Sender Port ID).</li>
-                    </ol>
+                <h3 class="text-xl font-bold text-white mb-4 mt-8">1. Algoritmo STP (Paso a Paso)</h3>
+                <div class="space-y-4">
+                    <div class="bg-slate-800 p-4 rounded border-l-4 border-blue-500">
+                        <h4 class="font-bold text-white">PASO 1: Elección del Puente Raíz (Root Bridge)</h4>
+                        <p class="text-sm text-slate-400 mt-1">Solo hay UNO por VLAN. Gana el <strong>BID más bajo</strong>.</p>
+                        <code class="block mt-2 text-center">BID = Prioridad (2B) + MAC (6B)</code>
+                        <p class="text-xs text-slate-500 mt-2 text-center">Prioridad Default: 32768. Desempate: MAC más baja.</p>
+                    </div>
+                    
+                    <div class="bg-slate-800 p-4 rounded border-l-4 border-blue-500">
+                        <h4 class="font-bold text-white">PASO 2: Elección de Puertos Raíz (RP)</h4>
+                        <p class="text-sm text-slate-400 mt-1">Cada switch No-Raíz elige <strong>1 puerto</strong> (mejor camino al Raíz).</p>
+                        <p class="text-xs font-bold text-blue-400 mt-2">Desempate: Costo > BID Vecino > Prioridad Puerto Vecino > ID Puerto.</p>
+                    </div>
+
+                    <div class="bg-slate-800 p-4 rounded border-l-4 border-blue-500">
+                        <h4 class="font-bold text-white">PASO 3: Puertos Designados (DP) y Bloqueo</h4>
+                        <p class="text-sm text-slate-400 mt-1">1 DP por segmento (mejor costo). El resto se bloquea.</p>
+                        <p class="text-xs font-bold text-green-400 mt-2">TRUCO: Todos los puertos del Root Bridge son DP (Forwarding).</p>
+                    </div>
                 </div>
 
-                <h3 class="text-xl font-bold text-blue-400 mb-4">2. Costos de Puerto (IEEE Revisado)</h3>
-                <p class="mb-4">¡OJO! El examen usa los valores revisados (actuales), no los antiguos.</p>
-                <div class="table-wrapper">
-                    <table>
-                        <thead><tr><th>Velocidad de Enlace</th><th>Costo (IEEE Viejo)</th><th>Costo (IEEE Revisado)</th></tr></thead>
-                        <tbody>
-                            <tr><td>10 Gbps</td><td>1</td><td class="font-black text-green-400 text-lg">2</td></tr>
-                            <tr><td>1 Gbps</td><td>4</td><td class="font-black text-green-400 text-lg">4</td></tr>
-                            <tr><td>100 Mbps</td><td>10</td><td class="font-black text-green-400 text-lg">19</td></tr>
-                            <tr><td>10 Mbps</td><td>100</td><td class="font-black text-green-400 text-lg">100</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3 class="text-xl font-bold text-blue-400 mb-4 mt-8">3. Estados y Temporizadores (802.1D)</h3>
+                <h3 class="text-xl font-bold text-white mb-4 mt-8">2. Costos y Temporizadores (MEMORIZAR)</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="font-bold text-white mb-2">Estados del Puerto</h4>
-                        <ul class="list-disc pl-5 space-y-2 text-sm">
-                            <li><strong>Blocking (20s):</strong> Solo recibe BPDU. No envía datos, no aprende MAC. (Espera Max Age).</li>
-                            <li><strong>Listening (15s):</strong> Envía/Recibe BPDU. Prepara elección. No aprende MAC. (Forward Delay).</li>
-                            <li><strong>Learning (15s):</strong> Envía/Recibe BPDU. <strong>Aprende MACs</strong>. No envía datos. (Forward Delay).</li>
-                            <li><strong>Forwarding:</strong> Estado operativo. Envía datos y aprende MACs.</li>
-                            <li><strong>Disabled:</strong> Apagado administrativamente.</li>
-                        </ul>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>Velocidad</th><th>Costo IEEE (Nuevo)</th></tr></thead>
+                            <tbody>
+                                <tr><td>10 Gbps</td><td class="font-bold text-green-400">2</td></tr>
+                                <tr><td>1 Gbps</td><td class="font-bold text-green-400">4</td></tr>
+                                <tr><td>100 Mbps</td><td class="font-bold text-green-400">19</td></tr>
+                                <tr><td>10 Mbps</td><td class="font-bold text-green-400">100</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-white mb-2">Temporizadores (Timers)</h4>
-                        <ul class="list-disc pl-5 space-y-2 text-sm">
-                            <li><strong>Hello Time:</strong> 2 segundos. (Frecuencia de BPDUs del Raíz).</li>
-                            <li><strong>Max Age:</strong> 20 segundos. (Tiempo de vida de la info del BPDU).</li>
-                            <li><strong>Forward Delay:</strong> 15 segundos. (Tiempo en Listening y en Learning).</li>
-                            <li class="border-t border-slate-600 pt-2 text-yellow-400 font-bold">Convergencia Total: 50 segundos (20 + 15 + 15).</li>
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                        <h4 class="text-lg font-bold text-white mb-3">Temporizadores 802.1D</h4>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Hello Time</span> <span class="text-blue-400 font-mono">2 seg</span></li>
+                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Max Age</span> <span class="text-blue-400 font-mono">20 seg</span></li>
+                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Forward Delay</span> <span class="text-blue-400 font-mono">15 seg</span></li>
+                            <li class="flex justify-between pt-2 text-yellow-400 font-bold"><span>Convergencia Total</span> <span>50 seg</span></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="detail-box mt-6">
-                    <strong>Mejoras y Variantes:</strong>
-                    <ul class="list-disc pl-5 mt-2 text-sm">
-                        <li><strong>PortFast (Cisco):</strong> Para puertos de acceso. Salta Listening/Learning y pasa a Forwarding INSTANTÁNEAMENTE. Evita problemas DHCP.</li>
-                        <li><strong>PVST+ (Cisco):</strong> Per-VLAN Spanning Tree Plus. Una instancia STP por cada VLAN. Permite balanceo de carga (Root de VLAN 10 en Switch A, Root de VLAN 20 en Switch B).</li>
-                        <li><strong>RSTP (802.1w):</strong> Estándar rápido. Convergencia en sub-segundos. Estados: Discarding, Learning, Forwarding. Roles nuevos: Alternate (backup de RP) y Backup (backup de DP).</li>
+                <h3 class="text-xl font-bold text-white mb-2 mt-8">3. Estados (802.1D) y Variantes</h3>
+                <ul class="list-disc pl-5 text-sm text-slate-300 mb-6">
+                    <li><strong>Blocking (20s):</strong> Solo BPDU.</li>
+                    <li><strong>Listening (15s):</strong> Prepara elección.</li>
+                    <li><strong>Learning (15s):</strong> Aprende MACs.</li>
+                    <li><strong>Forwarding:</strong> Datos y MACs.</li>
+                </ul>
+
+                <div class="detail-box">
+                    <strong>Tecnologías Avanzadas:</strong>
+                    <ul class="list-disc pl-5 mt-2 text-sm text-slate-300">
+                        <li><strong>PortFast:</strong> Salta a Forwarding ya. Solo puertos de acceso (PC). Evita error DHCP.</li>
+                        <li><strong>PVST+:</strong> Instancia STP por VLAN (Balanceo de carga).</li>
+                        <li><strong>RSTP (802.1w):</strong> Rápido. Estados: Discarding, Learning, Forwarding.</li>
                     </ul>
                 </div>
             </div>
@@ -270,46 +258,53 @@
         <!-- TEMA 6 -->
         <section id="t6" class="theory-card">
             <div class="theory-header">
-                <h2 class="text-2xl font-bold text-white"><span class="text-blue-300 mr-3">TEMA 6</span> VLANs y Trunking</h2>
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-tags text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 6: VLANs y 802.1Q</h2>
             </div>
             <div class="theory-body">
-                <h3 class="text-xl font-bold text-blue-400 mb-4">1. Tipos de VLAN</h3>
-                <div class="table-wrapper">
-                    <table>
-                        <thead><tr><th>Tipo</th><th>Descripción y Uso Crítico</th></tr></thead>
-                        <tbody>
-                            <tr><td class="font-bold text-blue-300">Datos</td><td>Tráfico de usuario normal.</td></tr>
-                            <tr><td class="font-bold text-blue-300">Predeterminada</td><td><strong>VLAN 1</strong>. Todos los puertos pertenecen a ella por defecto. Lleva tráfico de control (CDP, PAgP, VTP). Insegura.</td></tr>
-                            <tr><td class="font-bold text-yellow-300">Nativa</td><td>Exclusiva de Trunks 802.1Q. El tráfico va <strong>SIN ETIQUETA (Untagged)</strong>. Por defecto es la 1 (debe cambiarse a 99, etc.). Si no coincide en ambos extremos -> "Native VLAN Mismatch".</td></tr>
-                            <tr><td class="font-bold text-blue-300">Gestión</td><td>VLAN SVI configurada con IP para administrar el switch (SSH/Telnet).</td></tr>
-                            <tr><td class="font-bold text-purple-300">Voz</td><td>Para teléfonos IP. Requiere QoS, ancho de banda garantizado, prioridad alta. El teléfono IP tiene un switch de 3 puertos integrado.</td></tr>
-                        </tbody>
-                    </table>
+                <h3 class="text-xl font-bold text-white mb-4">1. Clasificación de VLANs</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                        <strong class="text-blue-400">VLAN de Datos</strong><br>
+                        <span class="text-xs text-slate-400">Usuarios normales.</span>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                        <strong class="text-red-400">VLAN 1 (Default)</strong><br>
+                        <span class="text-xs text-slate-400">Todos los puertos nacen aquí. Tráfico control. Insegura.</span>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                        <strong class="text-yellow-400">VLAN Nativa</strong><br>
+                        <span class="text-xs text-slate-400">Tráfico SIN ETIQUETA (Untagged) en Trunks. Default=1.</span>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                        <strong class="text-purple-400">VLAN de Voz</strong><br>
+                        <span class="text-xs text-slate-400">Prioridad (QoS), < 150ms delay.</span>
+                    </div>
                 </div>
 
-                <h3 class="text-xl font-bold text-blue-400 mb-4 mt-8">2. Etiquetado 802.1Q (Bit a Bit)</h3>
-                <p class="mb-2">Inserta un <strong>Tag de 4 Bytes</strong> en la trama Ethernet original.</p>
-                <div class="bg-black p-4 rounded border border-slate-600 font-mono text-sm text-center text-green-400 mb-4">
-                    [ MAC Dest | MAC Orig | <span class="text-yellow-400 font-bold bg-slate-800 px-1">TAG (4 Bytes)</span> | Tipo/Longitud | Datos | FCS ]
+                <h3 class="text-xl font-bold text-white mb-4">2. La Trama 802.1Q</h3>
+                <p class="mb-2 text-slate-300">Inserta un <strong>Tag de 4 Bytes</strong> (32 bits).</p>
+                <div class="cmd-box text-center text-sm">
+[ Dest | Orig | TAG (4B) | Tipo | Datos | FCS ]
                 </div>
-                <div class="bg-slate-800 p-4 rounded border border-slate-600 mb-6">
-                    <strong class="text-white">Estructura del TAG (4 Bytes = 32 bits):</strong>
-                    <ul class="list-disc pl-5 mt-2 text-sm space-y-2">
-                        <li><strong>TPID (Tag Protocol Identifier) - 16 bits:</strong> Valor fijo <code>0x8100</code>. Indica que la trama es 802.1Q.</li>
-                        <li><strong>TCI (Tag Control Information) - 16 bits:</strong>
-                            <ul class="list-circle pl-5 mt-1 text-slate-400">
-                                <li><strong>Prioridad (PRI) - 3 bits:</strong> Usado para CoS (Class of Service) / QoS (802.1p).</li>
-                                <li><strong>CFI (Canonical Format Indicator) - 1 bit:</strong> Compatibilidad con Token Ring (0 para Ethernet).</li>
-                                <li><strong>VID (VLAN ID) - 12 bits:</strong> El identificador de la VLAN. (2^12 = 4096 VLANs).</li>
+                <div class="bg-slate-900 p-4 rounded border border-slate-700 text-sm">
+                    <strong class="text-white block mb-2">Estructura del TAG:</strong>
+                    <ul class="space-y-1 text-slate-300">
+                        <li><span class="text-blue-400 font-mono">TPID (16 bits):</span> Valor <strong>0x8100</strong>.</li>
+                        <li><span class="text-blue-400 font-mono">TCI (16 bits):</span>
+                            <ul class="pl-4 list-disc">
+                                <li><strong>Prioridad (3 bits):</strong> QoS 802.1p.</li>
+                                <li><strong>CFI (1 bit):</strong> Token Ring.</li>
+                                <li><strong>VID (12 bits):</strong> ID de VLAN (hasta 4096).</li>
                             </ul>
                         </li>
                     </ul>
                 </div>
 
-                <h3 class="text-xl font-bold text-blue-400 mb-4">3. Almacenamiento de VLANs</h3>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li><strong>Rango Normal (1 - 1005):</strong> Se guardan en el archivo <code>vlan.dat</code> en la memoria Flash. Se sincronizan con VTP. (IDs 1002-1005 reservados para Token Ring/FDDI).</li>
-                    <li><strong>Rango Extendido (1006 - 4094):</strong> Se guardan en <code>running-config</code> (NVRAM). Requieren VTP en modo Transparente.</li>
+                <h3 class="text-xl font-bold text-white mb-2 mt-6">3. Rangos de ID</h3>
+                <ul class="list-disc pl-5 text-sm text-slate-300">
+                    <li><strong>Normal (1-1005):</strong> En <code>vlan.dat</code>. VTP OK. (1002-1005 reservados).</li>
+                    <li><strong>Extendido (1006-4094):</strong> En <code>running-config</code>. VTP Transparente requerido.</li>
                 </ul>
             </div>
         </section>
@@ -317,40 +312,36 @@
         <!-- TEMA 7 -->
         <section id="t7" class="theory-card">
             <div class="theory-header">
-                <h2 class="text-2xl font-bold text-white"><span class="text-blue-300 mr-3">TEMA 7</span> Protocolo VTP</h2>
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-server text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 7: VTP (VLAN Trunking Protocol)</h2>
             </div>
             <div class="theory-body">
-                <p class="mb-6">VLAN Trunking Protocol (Propietario de Cisco). Sincroniza la creación, borrado y renombrado de VLANs.</p>
+                <p class="mb-4 text-slate-300">Protocolo Cisco para sincronizar VLANs. Usa tramas L2 multicast.</p>
 
                 <div class="table-wrapper">
                     <table>
-                        <thead><tr><th>Modo</th><th>Crea/Borra VLANs</th><th>Sincroniza BD</th><th>Reenvía VTP</th><th>Ubicación Guardado</th></tr></thead>
+                        <thead><tr><th>Modo</th><th>Crea VLANs?</th><th>Sincroniza?</th><th>Reenvía?</th><th>Guarda en</th></tr></thead>
                         <tbody>
-                            <tr><td class="font-bold text-green-400">Servidor</td><td>✅ SÍ</td><td>✅ SÍ</td><td>✅ SÍ</td><td>NVRAM (vlan.dat)</td></tr>
-                            <tr><td class="font-bold text-blue-400">Cliente</td><td>❌ NO</td><td>✅ SÍ</td><td>✅ SÍ</td><td>RAM (se pierde al reinicio)</td></tr>
-                            <tr><td class="font-bold text-slate-400">Transparente</td><td>✅ SÍ (Solo locales)</td><td>❌ NO</td><td>✅ SÍ (V2) / NO (V1)</td><td>NVRAM (local)</td></tr>
+                            <tr><td class="text-green-400 font-bold">Servidor</td><td>SÍ</td><td>SÍ</td><td>SÍ</td><td>NVRAM (vlan.dat)</td></tr>
+                            <tr><td class="text-blue-400 font-bold">Cliente</td><td>NO</td><td>SÍ</td><td>SÍ</td><td>RAM (Volátil)</td></tr>
+                            <tr><td class="text-gray-400 font-bold">Transparente</td><td>SÍ (Local)</td><td>NO</td><td>SÍ</td><td>NVRAM</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="alert-box">
-                    <strong class="text-red-400 text-xl"><i class="fa-solid fa-bomb"></i> PELIGRO: Número de Revisión (Revision Number)</strong>
-                    <p class="mt-2">Es un contador de 32 bits que aumenta +1 con cada cambio de VLAN. Los switches <strong>SIEMPRE confían en la revisión más alta</strong>.</p>
-                    <p class="mt-2 font-bold text-white">Escenario de Desastre:</p>
-                    <p class="text-sm">Si conectas un switch de laboratorio con Revisión Alta y BD vacía a la red de producción -> <strong>BORRARÁ TODAS LAS VLANs DE LA RED</strong>.</p>
-                    <p class="mt-2"><strong>Cómo Resetear la Revisión a 0:</strong></p>
-                    <ul class="list-disc pl-5 text-sm">
-                        <li>Cambiar el nombre de dominio VTP a uno inexistente y volver al original.</li>
-                        <li>Cambiar el modo a Transparente y luego volver a Servidor/Cliente.</li>
-                    </ul>
+                <div class="alert-box mt-6">
+                    <strong class="text-red-400 text-xl"><i class="fa-solid fa-bomb"></i> Número de Revisión (Revision Number)</strong>
+                    <p class="mt-2 text-slate-300 text-sm">Contador que sube +1 por cambio. Los switches <strong>obedecen a la revisión más alta</strong>.</p>
+                    <p class="mt-2 font-bold text-white text-sm">Riesgo: Switch viejo con revisión alta borra VLANs de la red.</p>
+                    <p class="text-sm text-slate-300"><strong>Reset:</strong> Cambiar Dominio o pasar a Transparente.</p>
                 </div>
 
-                <h3 class="text-xl font-bold text-blue-400 mb-4 mt-8">Mensajes VTP y Pruning</h3>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li><strong>Resumen (Summary Advertisement):</strong> Enviado cada 5 minutos o tras un cambio. Contiene Nombre Dominio, Revisión, Timestamp, MD5.</li>
-                    <li><strong>Subconjunto (Subset Advertisement):</strong> Enviado tras un cambio. Contiene la lista detallada de VLANs.</li>
-                    <li><strong>Petición (Request Advertisement):</strong> Enviado por un cliente que necesita actualizarse (ej. al arrancar o ver revisión mayor).</li>
-                    <li><strong>VTP Pruning (Poda):</strong> Optimización que evita enviar tráfico de broadcast/multicast de una VLAN a través de enlaces troncales hacia switches que NO tienen puertos en esa VLAN. Ahorra ancho de banda.</li>
+                <h3 class="text-xl font-bold text-white mb-2 mt-6">Mensajes VTP</h3>
+                <ul class="list-disc pl-5 text-sm text-slate-300">
+                    <li><strong>Summary:</strong> Cada 5 min. Lleva Revisión.</li>
+                    <li><strong>Subset:</strong> Lleva detalles de VLANs.</li>
+                    <li><strong>Request:</strong> Cliente pide datos.</li>
+                    <li><strong>Pruning:</strong> Poda tráfico innecesario.</li>
                 </ul>
             </div>
         </section>
@@ -358,100 +349,84 @@
         <!-- TEMA 8 -->
         <section id="t8" class="theory-card">
             <div class="theory-header">
-                <h2 class="text-2xl font-bold text-white"><span class="text-blue-300 mr-3">TEMA 8</span> Enrutamiento Inter-VLAN</h2>
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-route text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 8: Enrutamiento Inter-VLAN</h2>
             </div>
             <div class="theory-body">
-                <p class="mb-6">Las VLANs son dominios de broadcast (L2) aislados. Para comunicar VLAN 10 con VLAN 20, el tráfico debe pasar por un dispositivo de Capa 3 (Router o Switch L3).</p>
-
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- ROAS -->
                     <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
-                        <h4 class="text-xl font-bold text-purple-400 mb-3 border-b border-slate-600 pb-2">1. Router-on-a-Stick (ROAS)</h4>
-                        <p class="text-sm mb-4 text-slate-300">Router externo conectado al switch por <strong>un enlace troncal</strong>.</p>
-                        <ul class="list-disc pl-5 space-y-2 text-sm mb-4">
-                            <li>Usa <strong>Subinterfaces</strong> lógicas (ej. <code>Fa0/0.10</code>).</li>
-                            <li>La interfaz física NO debe tener IP.</li>
-                            <li>Cuello de botella físico (todo el tráfico sube y baja por un cable).</li>
+                        <h4 class="text-xl font-bold text-purple-400 mb-3 border-b border-slate-600 pb-2">ROAS (Router-on-a-Stick)</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300 mb-4">
+                            <li>Router externo + 1 Trunk.</li>
+                            <li>Usa <strong>Subinterfaces</strong> (<code>Fa0/0.10</code>).</li>
+                            <li>Obligatorio: <code>encapsulation dot1q 10</code>.</li>
+                            <li>Interfaz física SIN IP.</li>
+                            <li><strong>Desventaja:</strong> Cuello de botella.</li>
                         </ul>
-                        <div class="cmd-box">
-Router(config)# int g0/0.10
-Router(config-subif)# encapsulation dot1q 10
-Router(config-subif)# ip address 192.168.10.1 255.255.255.0
-Router(config-subif)# int g0/0.20
-Router(config-subif)# encapsulation dot1q 20
-Router(config-subif)# ip address 192.168.20.1 255.255.255.0</div>
                     </div>
 
-                    <!-- SVI -->
                     <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
-                        <h4 class="text-xl font-bold text-blue-400 mb-3 border-b border-slate-600 pb-2">2. Switch Multicapa (SVI)</h4>
-                        <p class="text-sm mb-4 text-slate-300">Enrutamiento interno por Hardware (ASIC). Método preferido y rápido.</p>
-                        <ul class="list-disc pl-5 space-y-2 text-sm mb-4">
-                            <li>Usa interfaces virtuales <strong>SVI</strong> (ej. <code>interface vlan 10</code>).</li>
-                            <li><strong>Comando CRÍTICO:</strong> <code>ip routing</code> (habilita L3).</li>
-                            <li>También soporta <strong>Puertos Enrutados</strong> físicos (<code>no switchport</code>).</li>
+                        <h4 class="text-xl font-bold text-blue-400 mb-3 border-b border-slate-600 pb-2">Switch Multicapa (SVI)</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300 mb-4">
+                            <li>Hardware ASIC (Rápido).</li>
+                            <li>Usa <strong>SVI</strong> (<code>interface vlan 10</code>).</li>
+                            <li>Obligatorio: <code>ip routing</code>.</li>
+                            <li>Puerto Enrutado: <code>no switchport</code>.</li>
                         </ul>
-                        <div class="cmd-box">
-Switch(config)# ip routing
-Switch(config)# interface vlan 10
-Switch(config-if)# ip address 192.168.10.1 255.255.255.0
-Switch(config-if)# no shutdown
-Switch(config-if)# interface vlan 20
-Switch(config-if)# ip address 192.168.20.1 255.255.255.0</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- SIMULADOR INFINITO -->
-        <section id="simulator" class="mt-20 mb-20">
-            <div class="bg-gradient-to-r from-blue-900 to-slate-900 rounded-2xl p-10 shadow-2xl text-center border border-blue-800">
-                <h2 class="text-4xl font-black text-white mb-4">🎓 SIMULADOR INFINITO 10/10</h2>
-                <p class="text-blue-200 mb-8 text-lg">Banco de más de 50 preguntas técnicas. Cada vez que inicies, se generará un examen diferente.</p>
+        <section id="simulator" class="mt-24 mb-20">
+            <div class="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl p-12 shadow-2xl text-center border-2 border-indigo-500/30">
+                <h2 class="text-5xl font-black text-white mb-6 tracking-tight">SIMULADOR INFINITO</h2>
+                <p class="text-blue-200 mb-10 text-xl">Banco de preguntas masivo. Barajado inteligente. Nunca el mismo test.</p>
                 
-                <div id="quiz-container" class="bg-white text-slate-900 rounded-xl p-8 max-w-3xl mx-auto text-left shadow-2xl min-h-[400px]">
+                <div id="quiz-container" class="bg-white text-slate-900 rounded-2xl p-10 max-w-4xl mx-auto text-left shadow-2xl min-h-[500px] relative">
                     
                     <!-- Pantalla Inicio -->
-                    <div id="quiz-start" class="text-center py-10">
-                        <div class="text-6xl text-blue-600 mb-6"><i class="fa-solid fa-shuffle"></i></div>
-                        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-12 rounded-full transition shadow-lg hover:shadow-blue-500/50 transform hover:-translate-y-1">
-                            GENERAR NUEVO TEST
+                    <div id="quiz-start" class="text-center py-16">
+                        <div class="text-7xl text-blue-600 mb-8 animate-bounce"><i class="fa-solid fa-bolt"></i></div>
+                        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white text-2xl font-bold py-5 px-16 rounded-full transition shadow-xl hover:shadow-blue-600/40 transform hover:scale-105">
+                            GENERAR TEST ALEATORIO
                         </button>
-                        <p class="text-sm text-slate-500 mt-6">Se seleccionarán 10 preguntas aleatorias del banco maestro.</p>
+                        <p class="text-base text-slate-500 mt-8 font-medium">Se generarán 10 preguntas únicas de un banco de 60+.</p>
                     </div>
 
                     <!-- Pantalla Pregunta -->
                     <div id="quiz-question" class="hidden">
-                        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
-                            <span class="text-xs font-bold text-slate-400 tracking-widest uppercase bg-slate-100 px-3 py-1 rounded" id="q-topic">TEMA X</span>
-                            <span class="text-blue-600 font-bold text-lg" id="q-counter">1/10</span>
+                        <div class="flex justify-between items-center mb-8 pb-6 border-b border-slate-100">
+                            <span class="text-xs font-bold text-white bg-slate-800 px-4 py-1.5 rounded-full tracking-widest uppercase" id="q-topic">TEMA X</span>
+                            <span class="text-blue-600 font-black text-xl" id="q-counter">1/10</span>
                         </div>
                         
-                        <h3 class="text-xl font-bold text-slate-800 mb-8 leading-relaxed" id="q-text">...</h3>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-10 leading-snug" id="q-text">...</h3>
                         
-                        <div id="q-options" class="space-y-3"></div>
+                        <div id="q-options" class="space-y-4"></div>
 
-                        <div id="feedback" class="hidden mt-8 p-5 rounded-lg border border-slate-200 bg-slate-50 animation-fade-in">
-                            <div class="flex gap-4">
-                                <div id="fb-icon" class="text-3xl pt-1"></div>
+                        <div id="feedback" class="hidden mt-8 p-6 rounded-xl border border-slate-200 bg-slate-50 feedback-panel">
+                            <div class="flex gap-5">
+                                <div id="fb-icon" class="text-4xl pt-1"></div>
                                 <div>
-                                    <h4 id="fb-title" class="font-bold text-lg mb-2"></h4>
-                                    <p id="fb-text" class="text-sm text-slate-600 leading-relaxed"></p>
+                                    <h4 id="fb-title" class="font-black text-xl mb-2"></h4>
+                                    <p id="fb-text" class="text-base text-slate-700 leading-relaxed"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <button id="btn-next" onclick="nextQuestion()" class="hidden w-full mt-8 bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-lg transition shadow-lg">Siguiente Pregunta <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        <button id="btn-next" onclick="nextQuestion()" class="hidden w-full mt-10 bg-slate-900 hover:bg-black text-white text-lg font-bold py-4 rounded-xl transition shadow-lg flex justify-center items-center gap-3">Siguiente Pregunta <i class="fa-solid fa-arrow-right"></i></button>
                     </div>
 
                     <!-- Pantalla Resultados -->
-                    <div id="result-screen" class="hidden text-center py-10">
-                        <h3 class="text-3xl font-bold text-slate-800 mb-8">Resultados del Test</h3>
-                        <div class="inline-flex items-center justify-center w-40 h-40 rounded-full border-8 border-blue-600 mb-8 bg-blue-50">
-                            <span id="score-display" class="text-6xl font-black text-blue-600"></span>
+                    <div id="result-screen" class="hidden text-center py-12">
+                        <h3 class="text-4xl font-black text-slate-800 mb-8">Resultados Finales</h3>
+                        <div class="inline-flex items-center justify-center w-48 h-48 rounded-full border-[10px] border-blue-600 mb-8 bg-blue-50 shadow-inner">
+                            <span id="score-display" class="text-7xl font-black text-blue-600"></span>
                         </div>
-                        <p id="score-msg" class="text-xl text-slate-600 mb-10 font-medium px-8"></p>
-                        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition">Generar Otro Test Diferente</button>
+                        <p id="score-msg" class="text-2xl text-slate-700 mb-12 font-bold px-8"></p>
+                        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition text-lg">Generar Nuevo Test</button>
                     </div>
 
                 </div>
@@ -461,58 +436,61 @@ Switch(config-if)# ip address 192.168.20.1 255.255.255.0</div>
     </main>
 
     <script>
-        /* --- BANCO DE DATOS MAESTRO (50+ PREGUNTAS) --- */
+        /* --- BANCO DE DATOS MASIVO (60+ PREGUNTAS ÚNICAS) --- */
         const masterQuestionBank = [
-            // TEMA 4
-            { t: "T4: Jerárquicas", q: "¿Cuál es la función principal de la Capa de Núcleo (Core)?", o: ["Aplicar ACLs y filtros", "Conmutar tráfico a máxima velocidad", "Conectar usuarios finales", "Enrutamiento Inter-VLAN"], c: 1, e: "El Núcleo es el backbone. Su única misión es velocidad y fiabilidad. No debe hacer tareas de CPU intensivas." },
-            { t: "T4: Jerárquicas", q: "¿Qué término define el número de dispositivos que un paquete debe cruzar?", o: ["Ancho de banda", "Latencia", "Diámetro de la red", "Redundancia"], c: 2, e: "El diámetro de la red mide los saltos. Un diseño jerárquico busca mantenerlo bajo y predecible." },
-            { t: "T4: Jerárquicas", q: "¿En qué capa se aplican típicamente las políticas de seguridad (ACLs)?", o: ["Acceso", "Distribución", "Núcleo", "Internet"], c: 1, e: "La Distribución es el punto de agregación y control inteligente de la red." },
-            { t: "T4: Jerárquicas", q: "¿Qué tecnología se usa para agregar enlaces físicos en uno lógico?", o: ["STP", "VTP", "EtherChannel", "PoE"], c: 2, e: "EtherChannel combina ancho de banda y provee redundancia en un solo enlace lógico." },
-            { t: "T4: Jerárquicas", q: "¿Qué factor de forma permite unir varios switches físicos para gestionarlos como uno solo?", o: ["Modular", "Fijo", "Apilable (Stackable)", "Rack"], c: 2, e: "Los switches apilables usan un cable especial (StackWise) para compartir el plano de control." },
-            { t: "T4: Jerárquicas", q: "¿Qué función es característica de la Capa de Acceso?", o: ["Enrutamiento OSPF", "Port Security", "Filtrado de rutas", "Conexión a WAN"], c: 1, e: "La seguridad de puerto se aplica en el borde, donde se conectan los usuarios." },
-            { t: "T4: Jerárquicas", q: "¿Dónde se debe colocar un servidor que tiene mucho tráfico 'Servidor-a-Servidor'?", o: ["En la capa de Acceso", "En el Centro de Datos (Núcleo/Distribución)", "En la DMZ", "En la capa de Acceso remoto"], c: 1, e: "Los servidores deben agruparse en el bloque de servicios (Data Center) conectado a switches de alta gama." },
+            // --- TEMA 4: JERÁRQUICAS ---
+            { t: "T4", q: "¿Cuál es la función PRINCIPAL de la Capa de Núcleo (Core)?", o: ["Conmutación de alta velocidad", "Filtrado de paquetes", "Conexión de usuarios", "Routing Inter-VLAN"], c: 0, e: "El Núcleo es el backbone. Solo debe mover datos rápido." },
+            { t: "T4", q: "En el modelo jerárquico, ¿dónde se deben aplicar las ACLs y políticas?", o: ["Distribución", "Acceso", "Núcleo", "Internet"], c: 0, e: "La capa de Distribución es el punto de control inteligente." },
+            { t: "T4", q: "¿Qué término describe el número de saltos entre dos puntos de la red?", o: ["Diámetro de la red", "Ancho de banda", "Latencia", "Convergenia"], c: 0, e: "El diámetro mide los saltos. Debe ser bajo." },
+            { t: "T4", q: "¿Qué tecnología combina varios enlaces físicos en uno lógico?", o: ["EtherChannel", "STP", "VTP", "OSPF"], c: 0, e: "EtherChannel agrega ancho de banda y da redundancia." },
+            { t: "T4", q: "¿Qué factor de forma permite gestionar varios switches como una sola unidad lógica?", o: ["Apilable (Stackable)", "Modular", "Fijo", "Rack"], c: 0, e: "Los switches apilables comparten el plano de control (StackWise)." },
+            { t: "T4", q: "¿Qué capa es responsable de la seguridad de puerto (Port Security)?", o: ["Acceso", "Distribución", "Núcleo", "WAN"], c: 0, e: "La seguridad se aplica en el borde, donde se conecta el usuario." },
+            { t: "T4", q: "¿Dónde se agrupan los servidores en un diseño moderno?", o: ["Granja de Servidores (Data Center)", "Capa de Acceso", "DMZ", "Capa de Núcleo directo"], c: 0, e: "Se conectan a switches de alta gama en un bloque de servicios." },
+            { t: "T4", q: "¿Qué tarea está PROHIBIDA en la capa de Núcleo?", o: ["Inspección de paquetes profunda", "Redundancia", "QoS básico", "Routing rápido"], c: 0, e: "Cualquier cosa que use mucha CPU está prohibida en el Core." },
             
-            // TEMA 5
-            { t: "T5: STP", q: "En STP 802.1D, ¿cuál es la duración exacta del temporizador 'Max Age'?", o: ["15 s", "2 s", "20 s", "50 s"], c: 2, e: "Max Age es 20s. Forward Delay es 15s. Hello Time es 2s." },
-            { t: "T5: STP", q: "¿Qué criterio de desempate se usa PRIMERO para elegir el Root Bridge?", o: ["MAC más baja", "Prioridad más baja", "IP más baja", "Mayor uptime"], c: 1, e: "El BID es Prioridad + MAC. Primero se mira la Prioridad. Si empata, la MAC." },
-            { t: "T5: STP", q: "¿Cuál es el costo IEEE revisado para un enlace de 10 Gbps?", o: ["1", "2", "4", "19"], c: 1, e: "10G=2, 1G=4, 100M=19, 10M=100." },
-            { t: "T5: STP", q: "¿Qué estado de puerto STP aprende direcciones MAC pero NO envía datos?", o: ["Listening", "Blocking", "Learning", "Forwarding"], c: 2, e: "Learning es el estado de transición donde se puebla la tabla MAC." },
-            { t: "T5: STP", q: "¿Qué función de Cisco permite a un puerto pasar a Forwarding inmediatamente?", o: ["UplinkFast", "PortFast", "BackboneFast", "BPDU Guard"], c: 1, e: "PortFast salta los estados de escucha/aprendizaje. Solo para puertos de acceso." },
-            { t: "T5: STP", q: "¿Cuántos Puertos Raíz (Root Ports) tiene un switch que NO es el Root Bridge?", o: ["Ninguno", "Uno", "Dos", "Uno por VLAN"], c: 1, e: "Cada switch no-raíz elige exactamente UN puerto raíz (el mejor camino hacia el Root)." },
-            { t: "T5: STP", q: "¿Cuál es el tiempo total de convergencia de STP 802.1D ante un fallo indirecto (Max Age expira)?", o: ["30 s", "50 s", "2 s", "Inmediato"], c: 1, e: "20s (Max Age) + 15s (Listening) + 15s (Learning) = 50 segundos." },
-            { t: "T5: STP", q: "¿Qué estado de puerto NO existe en RSTP (802.1w)?", o: ["Discarding", "Listening", "Learning", "Forwarding"], c: 1, e: "RSTP combina Blocking, Listening y Disabled en el estado 'Discarding'." },
-            { t: "T5: STP", q: "¿Qué prioridad por defecto tiene un switch Cisco?", o: ["1", "4096", "32768", "65535"], c: 2, e: "La prioridad base es 32768." },
-            
-            // TEMA 6
-            { t: "T6: VLANs", q: "¿Qué valor hexadecimal tiene el TPID de una etiqueta 802.1Q?", o: ["0x8200", "0x8100", "0x0800", "0xAAAA"], c: 1, e: "0x8100 identifica la trama como etiquetada con 802.1Q." },
-            { t: "T6: VLANs", q: "¿Qué ocurre con el tráfico de la VLAN Nativa en un Trunk?", o: ["Se etiqueta con ID 1", "Se bloquea", "Viaja sin etiqueta (untagged)", "Se etiqueta con ID 99"], c: 2, e: "La VLAN Nativa no lleva etiqueta para compatibilidad." },
-            { t: "T6: VLANs", q: "¿Dónde se guardan las VLANs de Rango Extendido (1006-4094)?", o: ["vlan.dat", "running-config", "flash memory", "servidor VTP"], c: 1, e: "Las extendidas van en la running-config (NVRAM) y requieren modo Transparente." },
-            { t: "T6: VLANs", q: "¿Qué tamaño tiene el campo VLAN ID (VID) en la etiqueta 802.1Q?", o: ["4 bits", "8 bits", "12 bits", "16 bits"], c: 2, e: "12 bits permiten hasta 4096 VLANs." },
-            { t: "T6: VLANs", q: "¿Cuál es la VLAN predeterminada de todos los puertos en un switch Cisco nuevo?", o: ["VLAN 10", "VLAN 99", "VLAN 1", "Ninguna"], c: 2, e: "Todos los puertos pertenecen a la VLAN 1 por defecto." },
-            { t: "T6: VLANs", q: "¿Qué campo de la etiqueta 802.1Q se usa para QoS (Prioridad)?", o: ["VID", "CFI", "TPID", "PRI (3 bits)"], c: 3, e: "Los 3 bits de prioridad (802.1p) están en el campo TCI." },
-            { t: "T6: VLANs", q: "¿Qué requisito es vital para la VLAN de Voz?", o: ["Retardo > 200ms", "Sin QoS", "Retardo < 150ms", "Misma VLAN que datos"], c: 2, e: "La voz es sensible al retardo y requiere menos de 150ms y prioridad alta." },
+            // --- TEMA 5: STP (Valores y Algoritmo) ---
+            { t: "T5", q: "En STP 802.1D, ¿cuánto dura el temporizador Max Age?", o: ["20 segundos", "15 segundos", "2 segundos", "50 segundos"], c: 0, e: "Max Age = 20s. Forward Delay = 15s. Hello = 2s." },
+            { t: "T5", q: "¿Cuál es el tiempo TOTAL de convergencia en STP clásico (Listen+Learn+MaxAge)?", o: ["50 segundos", "30 segundos", "20 segundos", "2 segundos"], c: 0, e: "20s (Max Age) + 15s (Listen) + 15s (Learn) = 50s." },
+            { t: "T5", q: "¿Qué costo tiene un enlace de 10 Gbps según IEEE revisado?", o: ["2", "1", "4", "19"], c: 0, e: "10G=2, 1G=4, 100M=19." },
+            { t: "T5", q: "¿Qué costo tiene un enlace de 100 Mbps según IEEE revisado?", o: ["19", "10", "100", "4"], c: 0, e: "100Mbps = 19." },
+            { t: "T5", q: "¿Qué criterio es el PRIMERO para elegir el Root Bridge?", o: ["Menor BID", "Mayor MAC", "Menor IP", "Mayor prioridad"], c: 0, e: "Gana el switch con el Bridge ID más bajo." },
+            { t: "T5", q: "Si dos switches tienen la misma prioridad, ¿qué desempata el Root Bridge?", o: ["La MAC más baja", "La MAC más alta", "El puerto más bajo", "La IP más alta"], c: 0, e: "BID = Prioridad + MAC. Si prioridad igual, gana MAC baja." },
+            { t: "T5", q: "¿Qué parte del BID cambia por defecto en Cisco (PVST+)?", o: ["Prioridad + ID VLAN", "Solo MAC", "Solo Prioridad", "Nada"], c: 0, e: "La prioridad (2 bytes) incluye el ID de VLAN (Sys ID Ext)." },
+            { t: "T5", q: "¿Cuántos Puertos Raíz tiene un switch que NO es Root?", o: ["Uno", "Dos", "Ninguno", "Uno por enlace"], c: 0, e: "Solo un mejor camino hacia el Root." },
+            { t: "T5", q: "¿Qué estado de puerto STP aprende MACs pero NO envía datos?", o: ["Learning", "Listening", "Blocking", "Forwarding"], c: 0, e: "Learning puebla la tabla MAC antes de abrir." },
+            { t: "T5", q: "¿Qué hace la función PortFast?", o: ["Salta a Forwarding inmediatamente", "Desactiva STP", "Aumenta la velocidad", "Prioriza voz"], c: 0, e: "Evita los 30s de espera. Solo para PC/Teléfonos." },
+            { t: "T5", q: "¿Qué estado NO existe en RSTP (802.1w)?", o: ["Blocking", "Discarding", "Learning", "Forwarding"], c: 0, e: "RSTP usa 'Discarding' en lugar de Blocking/Listening." },
 
-            // TEMA 7
-            { t: "T7: VTP", q: "¿Qué hace un cliente VTP si recibe una revisión mayor a la suya?", o: ["Ignora", "Pasa a Transparente", "Pide actualización (Request)", "Borra su BD"], c: 2, e: "Sabe que está desactualizado y pide los datos nuevos." },
-            { t: "T7: VTP", q: "¿Dónde guarda la configuración un switch VTP Transparente?", o: ["vlan.dat", "running-config", "No guarda", "Servidor"], c: 1, e: "El modo Transparente guarda su configuración local en la NVRAM." },
-            { t: "T7: VTP", q: "¿Qué peligro tiene conectar un switch con Revisión Alta?", o: ["Ninguno", "Borra las VLANs de la red", "Crea un bucle", "Apaga el dominio"], c: 1, e: "Sobrescribe la base de datos de todos los demás switches." },
-            { t: "T7: VTP", q: "¿Qué modo VTP permite crear VLANs pero NO las propaga a otros?", o: ["Servidor", "Cliente", "Transparente", "Off"], c: 2, e: "Transparente crea VLANs locales pero no sincroniza su BD con otros." },
-            { t: "T7: VTP", q: "¿Qué mensaje VTP contiene la lista detallada de VLANs?", o: ["Summary", "Request", "Subset", "Join"], c: 2, e: "El 'Subset Advertisement' lleva los detalles de las VLANs." },
-            { t: "T7: VTP", q: "¿Qué función de VTP ahorra ancho de banda evitando broadcasts innecesarios?", o: ["VTP Snooping", "VTP Pruning", "VTP Version 3", "VTP Guard"], c: 1, e: "VTP Pruning (Poda) corta el tráfico hacia switches que no tienen esa VLAN." },
-            { t: "T7: VTP", q: "¿Dónde guarda la configuración un switch VTP Cliente?", o: ["NVRAM", "Flash", "RAM", "Disco"], c: 2, e: "El cliente no guarda la BD de VLANs permanentemente; la pierde al reiniciar." },
+            // --- TEMA 6: VLANs ---
+            { t: "T6", q: "¿Cuál es el valor hexadecimal del TPID en 802.1Q?", o: ["0x8100", "0x8200", "0x0800", "0xFFFF"], c: 0, e: "0x8100 identifica la trama etiquetada." },
+            { t: "T6", q: "¿Cuántos bits tiene el campo VLAN ID (VID)?", o: ["12 bits", "16 bits", "8 bits", "4 bits"], c: 0, e: "12 bits permiten 4096 VLANs." },
+            { t: "T6", q: "¿Qué pasa con el tráfico de la VLAN Nativa en un Trunk?", o: ["No lleva etiqueta", "Se etiqueta con ID 1", "Se bloquea", "Lleva doble etiqueta"], c: 0, e: "Por diseño, la nativa es 'untagged'." },
+            { t: "T6", q: "¿Qué VLAN viene por defecto en todos los puertos Cisco?", o: ["VLAN 1", "VLAN 100", "Ninguna", "VLAN 99"], c: 0, e: "VLAN 1 es la default y lleva tráfico de control." },
+            { t: "T6", q: "¿Dónde se guardan las VLANs de rango extendido (1006+)?", o: ["running-config", "vlan.dat", "flash", "ROM"], c: 0, e: "Las extendidas no caben en vlan.dat, van en la config." },
+            { t: "T6", q: "¿Qué IDs de VLAN están reservados para Token Ring/FDDI?", o: ["1002-1005", "1-5", "4000-4005", "100-105"], c: 0, e: "Son legados históricos inamovibles." },
+            { t: "T6", q: "¿Qué característica es crítica para una VLAN de Voz?", o: ["Retardo < 150ms", "Sin QoS", "Ancho de banda bajo", "Sin etiqueta"], c: 0, e: "La voz necesita prioridad y bajo retardo." },
 
-            // TEMA 8
-            { t: "T8: Routing", q: "¿Qué comando habilita el routing en un Switch L3?", o: ["router rip", "ip routing", "no switchport", "encapsulation dot1q"], c: 1, e: "Sin 'ip routing', el switch actúa como L2." },
-            { t: "T8: Routing", q: "¿Qué se configura en el router para ROAS?", o: ["Interfaces físicas", "Subinterfaces", "SVIs", "Puertos trunk"], c: 1, e: "Router-on-a-Stick usa subinterfaces (ej. G0/0.10) con encapsulación dot1q." },
-            { t: "T8: Routing", q: "¿Qué es una SVI?", o: ["Switch Virtual Interface", "System Vlan ID", "Spanning Vlan Interface", "Static Virtual IP"], c: 0, e: "Es una interfaz lógica (interface vlan X) para enrutar en switches L3." },
-            { t: "T8: Routing", q: "¿Qué comando convierte un puerto de switch en un puerto enrutado (L3)?", o: ["ip routing", "switchport mode access", "no switchport", "interface vlan"], c: 2, e: "'no switchport' elimina las funciones de capa 2 del puerto físico." },
-            { t: "T8: Routing", q: "¿Cuál es la principal desventaja de Router-on-a-Stick?", o: ["Es caro", "Cuello de botella en el enlace único", "No soporta VLANs", "Difícil de configurar"], c: 1, e: "Todo el tráfico sube y baja por un solo cable físico, limitando el rendimiento." },
-            { t: "T8: Routing", q: "En ROAS, ¿qué encapsulación se debe configurar en la subinterfaz?", o: ["ISL", "Dot1Q", "802.1d", "PPP"], c: 1, e: "encapsulation dot1q <vlan_id> es obligatorio." },
+            // --- TEMA 7: VTP ---
+            { t: "T7", q: "¿Qué hace un cliente VTP si ve una Revisión mayor?", o: ["Pide actualización (Request)", "Ignora", "Pasa a Transparente", "Borra su Flash"], c: 0, e: "Sabe que su BD es vieja y pide la nueva." },
+            { t: "T7", q: "¿Dónde guarda la config un switch VTP Transparente?", o: ["NVRAM (startup-config)", "vlan.dat", "RAM", "Servidor"], c: 0, e: "Guarda localmente, no en la base de datos compartida." },
+            { t: "T7", q: "¿Qué peligro tiene conectar un switch con Revisión Alta?", o: ["Borra todas las VLANs de la red", "Crea un bucle", "Apaga el dominio", "Nada"], c: 0, e: "El servidor actual se sincronizará con él y perderá sus datos." },
+            { t: "T7", q: "¿Qué modo VTP crea VLANs pero NO las comparte?", o: ["Transparente", "Servidor", "Cliente", "Off"], c: 0, e: "Transparente es local. Reenvía anuncios de otros, pero no los suyos." },
+            { t: "T7", q: "¿Qué mensaje VTP lleva la lista completa de VLANs?", o: ["Subset Advertisement", "Summary Advertisement", "Request", "Hello"], c: 0, e: "El Summary solo lleva la revisión; el Subset lleva los datos." },
+            { t: "T7", q: "¿Qué hace VTP Pruning?", o: ["Evita tráfico broadcast innecesario", "Borra VLANs viejas", "Corta cables físicos", "Resetea la revisión"], c: 0, e: "Poda el tráfico hacia switches que no tienen usuarios en esa VLAN." },
             
-            // EXTRAS TÉCNICOS
-            { t: "T6: VLANs", q: "Si la VLAN Nativa no coincide en ambos extremos de un trunk, ¿qué error ocurre?", o: ["Loop L2", "Native VLAN Mismatch", "VTP Error", "Port Security Violation"], c: 1, e: "El switch alertará de un 'Native VLAN Mismatch' y el tráfico puede perderse o mezclarse." },
-            { t: "T5: STP", q: "¿Cuál es la dirección MAC destino de una BPDU?", o: ["La del Root Bridge", "La del vecino", "01:80:C2:00:00:00 (Multicast)", "FF:FF:FF:FF:FF:FF"], c: 2, e: "Las BPDUs se envían a una dirección Multicast reservada para puentes STP." },
-            { t: "T6: VLANs", q: "Los IDs de VLAN 1002 a 1005 están reservados para...", o: ["Voz", "Gestión", "Token Ring y FDDI", "Nativa"], c: 2, e: "Son legados de tecnologías antiguas y no se pueden borrar." }
+            // --- TEMA 8: ROUTING ---
+            { t: "T8", q: "¿Qué comando activa el routing en un Switch L3?", o: ["ip routing", "router ospf", "no switchport", "encapsulation dot1q"], c: 0, e: "Sin 'ip routing', el switch es solo L2." },
+            { t: "T8", q: "¿Qué requiere una interfaz física en Router-on-a-Stick?", o: ["Estar sin IP y encendida", "Tener IP", "Ser trunk L2", "Nada"], c: 0, e: "La IP va en las subinterfaces, no en la física." },
+            { t: "T8", q: "¿Cómo se llama la interfaz virtual de una VLAN en un switch L3?", o: ["SVI", "VLAN Port", "Subinterfaz", "Tunnel"], c: 0, e: "Switch Virtual Interface (interface vlan X)." },
+            { t: "T8", q: "¿Qué comando convierte un puerto de switch en puerto de router?", o: ["no switchport", "ip routing", "port-channel", "mode trunk"], c: 0, e: "Desactiva las funciones L2 del puerto." },
+            { t: "T8", q: "En ROAS, ¿dónde se configura la encapsulación 802.1Q?", o: ["En la subinterfaz", "En el switch", "En la interfaz física", "En el PC"], c: 0, e: "encapsulation dot1q <id> en la subinterfaz." },
+            
+            // --- VARIACIONES Y EXTRAS ---
+            { t: "T5", q: "Si el costo al Root es igual en dos puertos, ¿qué desempata?", o: ["BID del vecino", "Prioridad propia", "MAC propia", "Velocidad"], c: 0, e: "1. Costo, 2. BID Vecino, 3. Prioridad Puerto Vecino, 4. ID Puerto Vecino." },
+            { t: "T5", q: "¿Qué prioridad STP es la predeterminada?", o: ["32768", "1", "4096", "100"], c: 0, e: "Es el valor base." },
+            { t: "T6", q: "¿Cuántos bytes añade la etiqueta 802.1Q a la trama?", o: ["4 Bytes", "2 Bytes", "128 Bytes", "1 Byte"], c: 0, e: "4 Bytes (32 bits)." },
+            { t: "T6", q: "¿Qué campo de 802.1Q se usa para la prioridad (CoS)?", o: ["TCI (PRI)", "TPID", "VID", "CFI"], c: 0, e: "Los 3 bits de PRI están dentro del TCI." },
+            { t: "T7", q: "¿Cada cuánto se envía un VTP Summary por defecto?", o: ["5 minutos", "30 segundos", "1 hora", "10 minutos"], c: 0, e: "Cada 5 minutos o cuando hay un cambio." }
         ];
 
         /* --- MOTOR DEL SIMULADOR --- */
@@ -521,19 +499,21 @@ Switch(config-if)# ip address 192.168.20.1 255.255.255.0</div>
         let score = 0;
 
         function startQuiz() {
-            // 1. Barajar banco completo (Algoritmo Fisher-Yates para aleatoriedad real)
-            const shuffled = [...masterQuestionBank];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
+            // 1. Barajar todo el banco
+            const shuffled = masterQuestionBank.map(q => ({...q})).sort(() => 0.5 - Math.random());
             
-            // 2. Coger 10 preguntas
-            currentQuiz = shuffled.slice(0, 10);
+            // 2. Barajar las opciones de cada pregunta
+            currentQuiz = shuffled.slice(0, 10).map(q => {
+                const correctAnswer = q.o[q.c];
+                const options = [...q.o].sort(() => 0.5 - Math.random());
+                const newCorrectIndex = options.indexOf(correctAnswer);
+                return { ...q, o: options, c: newCorrectIndex };
+            });
+
             currentIndex = 0;
             score = 0;
 
-            // 3. UI
+            // 3. UI Update
             document.getElementById('quiz-start').classList.add('hidden');
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('quiz-question').classList.remove('hidden');
@@ -558,14 +538,13 @@ Switch(config-if)# ip address 192.168.20.1 255.255.255.0</div>
             q.o.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<span class="font-bold mr-3 text-blue-500">${String.fromCharCode(65+idx)}.</span> ${opt}`;
+                btn.innerHTML = opt;
                 btn.onclick = () => checkAnswer(idx, btn, q);
                 optsContainer.appendChild(btn);
             });
         }
 
         function checkAnswer(selectedIdx, btn, qData) {
-            // Bloquear botones
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(b => b.disabled = true);
 
@@ -579,16 +558,15 @@ Switch(config-if)# ip address 192.168.20.1 255.255.255.0</div>
                 btn.classList.add('correct');
                 fbIcon.innerHTML = '<i class="fa-solid fa-circle-check text-green-500"></i>';
                 fbTitle.innerText = "¡CORRECTO!";
-                fbTitle.className = "font-bold text-lg mb-1 text-green-600";
-                feedbackEl.className = "mt-6 p-5 rounded-xl border border-green-200 bg-green-50 block shadow-sm";
+                fbTitle.className = "font-black text-xl mb-1 text-green-600";
+                feedbackEl.className = "mt-8 p-6 rounded-xl border border-green-200 bg-green-50 block shadow-lg feedback-panel";
             } else {
                 btn.classList.add('incorrect');
-                // Mostrar la correcta
                 buttons[qData.c].classList.add('correct');
                 fbIcon.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-500"></i>';
-                fbTitle.innerText = "INCORRECTO";
-                fbTitle.className = "font-bold text-lg mb-1 text-red-600";
-                feedbackEl.className = "mt-6 p-5 rounded-xl border border-red-200 bg-red-50 block shadow-sm";
+                fbTitle.innerText = "ERROR";
+                fbTitle.className = "font-black text-xl mb-1 text-red-600";
+                feedbackEl.className = "mt-8 p-6 rounded-xl border border-red-200 bg-red-50 block shadow-lg feedback-panel";
             }
 
             document.getElementById('fb-text').innerText = qData.e;
@@ -612,11 +590,10 @@ Switch(config-if)# ip address 192.168.20.1 255.255.255.0</div>
             scoreDisplay.innerText = `${score}/10`;
             
             let msg = "";
-            if(score === 10) msg = "¡INCREÍBLE! 🏆 Nivel Experto Desbloqueado.";
+            if(score === 10) msg = "¡INCREÍBLE! 🏆 Nivel Experto.";
             else if(score >= 9) msg = "¡Excelente! Casi perfecto.";
-            else if(score >= 7) msg = "Buen trabajo. Repasa los fallos puntuales.";
-            else if(score >= 5) msg = "Aprobado justo. Necesitas repasar la teoría.";
-            else msg = "No te rindas. Vuelve a leer la guía y reinténtalo.";
+            else if(score >= 7) msg = "Buen trabajo. Repasa los fallos.";
+            else msg = "Sigue practicando. La repetición es clave.";
             
             document.getElementById('score-msg').innerText = msg;
         }
