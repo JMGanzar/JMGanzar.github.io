@@ -3,646 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Sorting - Ingeniería de la Usabilidad</title>
-    
-    <!-- Fuentes: Inter (para todo) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <title>Judo Infografía Radial Completa</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- 1. CONFIGURACIÓN (TEMA LIMPIO/CORPORATIVO) --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto+Condensed:wght@400;700&display=swap');
+
+        :root {
+            --center-bg: #003399; /* Azul fuerte Judo */
+            --accent-red: #cc0000; /* Rojo Japón */
+            --accent-gold: #ffcc00;
+            --accent-green: #2ecc71;
+            --text-dark: #333;
+            --line-color: #cbd5e0;
         }
 
         body {
-            background-color: #f1f5f9; /* Fondo de la página (Gris muy claro) */
-            display: grid;
-            gap: 20px;
-            place-items: center;
-            padding: 20px 0;
-            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Roboto Condensed', sans-serif;
         }
 
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            overflow: hidden;
+        /* LIENZO 1:1 (Cuadrado) Ampliado para más info */
+        .infographic-canvas {
+            width: 1100px;
+            height: 1100px;
+            background-color: white;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #ffffff; /* Fondo de diapositiva (Blanco) */
-            color: #334155; /* Texto principal (Gris oscuro) */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            border: 1px solid #cbd5e1;
-        }
-
-        .slide-container .slide-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 52px;
-            font-weight: 700;
-            color: #2563eb; /* Azul (Acento) */
-            position: absolute;
-            top: 60px;
-            left: 60px;
-            width: calc(100% - 120px);
-            padding-bottom: 20px;
-            border-bottom: 3px solid #e2e8f0; /* Gris claro */
-        }
-
-        .slide-container .content-area {
-            display: flex;
-            width: calc(100% - 120px);
-            height: calc(100% - 160px); /* Altura - Título */
-            margin-top: 100px; /* Espacio para el título */
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-        }
-        
-        .slide-container .notes {
-            position: absolute;
-            bottom: 10px;
-            left: 60px;
-            font-size: 12px;
-            color: #94a3b8; /* Gris */
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* --- 2. TIPOGRAFÍA --- */
-        h1, h2, h3 {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            color: #2563eb;
-            margin-bottom: 15px;
-        }
-        
-        p, li {
-            font-size: 22px;
-            line-height: 1.6;
-            color: #334155;
-        }
-        
-        li {
-            margin-bottom: 12px;
-        }
-
-        /* --- 3. DISEÑOS (LAYOUTS) --- */
-
-        /* Layout: Portada (Title_Slide) */
-        .title-layout {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 100px;
-            background: #ffffff;
-        }
-        .title-layout h1 {
-            font-size: 84px;
-            color: #1e3a8a; /* Azul oscuro */
-            margin-bottom: 10px;
-        }
-        .title-layout .subtitle {
-            font-size: 32px;
-            color: #475569;
-            font-family: 'Inter', sans-serif;
-            font-weight: 400;
-        }
-        .title-layout .presenter {
-            font-size: 24px;
-            color: #334155;
-            margin-top: 50px;
-            font-family: 'Inter', sans-serif;
-            border-top: 3px solid #2563eb;
-            padding-top: 20px;
-        }
-
-        /* Layout: Índice (Section_Title) */
-        .section-title-layout {
-            text-align: left;
-            width: 100%;
-        }
-        .section-title-layout ul {
-            list-style: none;
-            padding-left: 10px;
-        }
-        .section-title-layout li {
-            font-size: 36px;
-            color: #475569;
-            margin-bottom: 30px;
-            padding-left: 20px;
-        }
-        .section-title-layout li::before {
-            content: '>';
-            font-weight: 700;
-            color: #2563eb;
-            margin-right: 20px;
-        }
-
-        /* Layout: Columna Izquierda Texto, Columna Derecha Imagen */
-        .image-right-text-left {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr; /* Más espacio para el texto */
-            gap: 50px;
-            align-items: center;
-        }
-        .image-right-text-left ul {
-            padding-left: 40px;
-        }
-        .image-wrapper {
-            width: 100%;
-            height: 450px;
-            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             overflow: hidden;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            display: grid;
+            /* Grid 3x3 */
+            grid-template-columns: 1fr 320px 1fr;
+            grid-template-rows: 1fr 320px 1fr auto;
+            padding: 30px;
+            gap: 20px;
+            box-sizing: border-box;
         }
-        .image-wrapper img {
+
+        /* FONDO DECORATIVO */
+        .bg-kanji {
+            position: absolute;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 35rem;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--center-bg);
+            opacity: 0.04;
+            font-weight: 900;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* LÍNEAS CONECTORAS */
+        .connector {
+            position: absolute;
+            background-color: var(--line-color);
+            z-index: 1;
+            transform-origin: center;
+        }
+        .line-tl { top: 28%; left: 28%; width: 20%; height: 3px; transform: rotate(40deg); }
+        .line-tr { top: 28%; right: 28%; width: 20%; height: 3px; transform: rotate(-40deg); }
+        .line-ml { top: 50%; left: 18%; width: 25%; height: 3px; }
+        .line-mr { top: 50%; right: 18%; width: 25%; height: 3px; }
+        .line-bl { bottom: 32%; left: 28%; width: 20%; height: 3px; transform: rotate(-40deg); }
+        .line-br { bottom: 32%; right: 28%; width: 20%; height: 3px; transform: rotate(40deg); }
+
+        /* NÚCLEO CENTRAL */
+        .center-core {
+            grid-column: 2;
+            grid-row: 2;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--center-bg);
+            color: white;
+            border-radius: 50%;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            border: 12px solid white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            text-align: center;
+            position: relative;
         }
 
-        /* Layout: Columnas de Texto (Tiled Text) */
-        .two-column-text {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        .two-column-text h3 {
-            font-size: 30px;
-            text-align: center;
-        }
-        .two-column-text ul {
-            padding-left: 40px;
-            margin-top: 15px;
-        }
-         .two-column-text li {
-            font-size: 20px;
-            color: #475569;
-        }
-        .two-column-text .icon {
-            font-size: 40px;
-            color: #2563eb;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+        .center-core h1 { font-family: 'Montserrat', sans-serif; font-size: 4rem; margin: 0; line-height: 1; letter-spacing: 2px; text-transform: uppercase; }
+        .center-core .kanji { font-size: 2.5rem; opacity: 0.8; margin-bottom: 5px; }
+        .center-core p { font-size: 1.1rem; margin-top: 5px; opacity: 0.9; letter-spacing: 1px; }
 
-        /* Layout: Cita */
-        .quote-layout {
-            width: 90%;
-            text-align: center;
+        /* TARJETAS DE INFORMACIÓN (NODOS) */
+        .info-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 18px;
+            z-index: 5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
-        .quote-layout blockquote {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 48px;
-            color: #1e3a8a;
-            line-height: 1.5;
-            border-left: 5px solid #2563eb;
-            padding-left: 30px;
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        .quote-layout cite {
-            font-family: 'Inter', sans-serif;
-            font-size: 24px;
-            font-weight: 400;
-            color: #475569;
-        }
-
-        /* Layout: Números Destacados */
-        .highlight-numbers-layout {
-            display: grid;
-            grid-template-columns: 35% 65%;
-            gap: 50px;
-            width: 100%;
+        
+        .card-header {
+            display: flex;
             align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 3px solid;
+            padding-bottom: 8px;
         }
-        .highlight-numbers-layout .number-side {
-            text-align: center;
-            border-right: 2px solid #e2e8f0;
-            padding-right: 50px;
+        .card-header i { font-size: 1.5rem; margin-right: 10px; }
+        .card-header h3 { margin: 0; font-family: 'Montserrat', sans-serif; text-transform: uppercase; font-size: 1.2rem; font-weight: 800; }
+
+        .card-content { font-size: 0.95rem; color: #444; line-height: 1.45; flex-grow: 1; }
+
+        /* --- POSICIONAMIENTO Y ESTILOS ESPECÍFICOS --- */
+
+        /* 1. Historia (Arriba Izq) */
+        .node-history { grid-column: 1; grid-row: 1; border-right: 6px solid var(--center-bg); }
+        .node-history .card-header { color: var(--center-bg); border-color: var(--center-bg); }
+
+        /* 2. Valores (Arriba Der) */
+        .node-values { grid-column: 3; grid-row: 1; border-left: 6px solid var(--accent-red); }
+        .node-values .card-header { color: var(--accent-red); border-color: var(--accent-red); }
+
+        /* 3. Equipo (Centro Izq) */
+        .node-gear { grid-column: 1; grid-row: 2; border-right: 6px solid #555; }
+        .node-gear .card-header { color: #555; border-color: #555; }
+
+        /* 4. Puntuación (Centro Der) */
+        .node-score { grid-column: 3; grid-row: 2; border-left: 6px solid var(--accent-gold); }
+        .node-score .card-header { color: #d4af37; border-color: var(--accent-gold); }
+
+        /* 5. Curiosidades (Abajo Izq) */
+        .node-facts { grid-column: 1; grid-row: 3; border-right: 6px solid var(--accent-green); }
+        .node-facts .card-header { color: var(--accent-green); border-color: var(--accent-green); }
+
+        /* 6. Técnicas (Abajo Der) */
+        .node-tech { grid-column: 3; grid-row: 3; border-left: 6px solid var(--center-bg); }
+        .node-tech .card-header { color: var(--center-bg); border-color: var(--center-bg); }
+
+        /* --- Estilos de Contenido --- */
+        ul.clean-list { list-style: none; padding: 0; margin: 0; }
+        ul.clean-list li { margin-bottom: 4px; display: flex; align-items: flex-start; }
+        ul.clean-list li::before { content: "•"; color: inherit; font-weight: bold; margin-right: 5px; flex-shrink: 0;}
+
+        .fact-box { background: #f0fff4; border-left: 4px solid var(--accent-green); padding: 8px; margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .olympic-box {
+            background: #f0f8ff; 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin-top: 10px;
+            font-size: 0.9rem;
         }
-        .highlight-numbers-layout .number {
-            font-size: 150px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            color: #2563eb;
-            line-height: 1;
+
+        .score-row { display: flex; align-items: center; margin-bottom: 10px; }
+        .score-icon { 
+            width: 35px; height: 35px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; font-size: 1.1rem; color: #fff; margin-right: 12px; 
+            flex-shrink: 0; 
         }
-        .highlight-numbers-layout .number-label {
-            font-size: 32px;
-            font-family: 'Inter', sans-serif;
-            color: #334155;
+
+        /* CINTURONES (Barra Inferior) */
+        .belts-container {
+            grid-column: 1 / -1;
+            grid-row: 4;
+            background: white;
+            padding: 10px 30px;
+            border-radius: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 20;
+            border: 1px solid #ddd;
             margin-top: 10px;
         }
-        .highlight-numbers-layout ul {
-            padding-left: 30px;
-        }
-        
-        /* Layout: Timeline */
-        .timeline-layout {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            width: 100%;
-            padding-top: 20px;
-        }
-        .timeline-layout .timeline-line {
-            position: absolute;
-            top: 50px; /* Centro del icono */
-            left: 5%;
-            width: 90%;
-            height: 4px;
-            background-color: #cbd5e1;
-            z-index: 1;
-        }
-        .timeline-item {
-            width: 30%;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        .timeline-item .icon {
-            font-size: 30px;
-            color: #ffffff;
-            background-color: #2563eb;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            line-height: 60px;
-            border: 4px solid #ffffff;
-            margin: 20px auto;
-        }
-        .timeline-item h3 {
-            font-size: 24px;
-            color: #1e3a8a;
-        }
-        .timeline-item p {
-            font-size: 20px;
-        }
-
-        /* Layout: Cierre / Bibliografía */
-        .final-layout {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 50px;
-            align-items: center;
-        }
-        .final-layout h2 {
-            font-size: 80px;
-            margin: 0;
-            text-align: center;
-            color: #1e3a8a;
-        }
-        .final-layout .bibliografia {
-            text-align: left;
-            font-size: 14px;
-            padding-right: 60px; /* ARREGLADO: Separación del margen derecho */
-        }
-        .final-layout .bibliografia p {
-            font-size: 14px;
-            margin-bottom: 8px;
-            line-height: 1.4;
-            color: #475569;
-        }
-         .final-layout .bibliografia p strong {
-            color: #334155;
-        }
-         .final-layout .bibliografia hr {
-            border-color: #e2e8f0;
-            margin: 10px 0;
-         }
+        .belt-item { display: flex; flex-direction: column; align-items: center; width: 60px; }
+        .belt-strip { width: 100%; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 5px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1); }
+        .belt-label { font-size: 0.75rem; font-weight: bold; color: #555; text-transform: uppercase; }
 
     </style>
 </head>
 <body>
 
-<!-- Slide 1: Portada (Title_Slide) -->
-<div class="slide-container" id="slide1">
-    <div class="title-layout">
-        <h1>Cap. 4.1.B. Card Sorting</h1>
-        <p class="subtitle">Ingeniería de la Usabilidad</p>
-        <p class="presenter">José Manuel Gandía Zaragoza<br>Curso 2025-26</p>
-    </div>
-</div>
+    <div class="infographic-canvas">
+        <!-- Fondo -->
+        <div class="bg-kanji">柔道</div>
+        
+        <!-- Conectores -->
+        <div class="connector line-tl"></div>
+        <div class="connector line-tr"></div>
+        <div class="connector line-ml"></div>
+        <div class="connector line-mr"></div>
+        <div class="connector line-bl"></div>
+        <div class="connector line-br"></div>
 
-<!-- Slide 2: Índice (Section_Title) -->
-<div class="slide-container" id="slide2">
-    <h2 class="slide-title">Índice</h2>
-    <div class="content-area">
-        <div class="section-title-layout">
-            <ul>
-                <li>¿Qué es el Card Sorting?</li>
-                <li>Tipos y Modalidades</li>
-                <li>Preparación de la Sesión</li>
-                <li>Ejecución y Análisis de Resultados</li>
-                <li>Conclusión y Bibliografía</li>
-            </ul>
+        <!-- NÚCLEO CENTRAL -->
+        <div class="center-core">
+            <span class="kanji">柔道</span>
+            <h1>JUDO</h1>
+            <p>CAMINO DE LA SUAVIDAD</p>
+            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9; font-style: italic;">
+                "Seiryoku Zenyo"<br>(Máxima Eficiencia)
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Slide 3: ¿Qué es? (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide3">
-    <h2 class="slide-title">1. ¿Qué es el Card Sorting?</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>Comprender el Modelo Mental del Usuario</h3>
-                <p>Es una técnica fundamental de la Ingeniería de la Usabilidad para descubrir cómo los usuarios entienden y categorizan la información de forma lógica.</p>
-                <p style="margin-top: 20px;">El objetivo es diseñar una Arquitectura de la Información (AI), es decir, la estructura de una app o web, que sea intuitiva y coincida con las expectativas del usuario, permitiéndole encontrar lo que busca con facilidad.</p>
-                <p style="margin-top: 20px;">El valor no está en una sola sesión, sino en los patrones que emergen al agregar los resultados de múltiples participantes.</p>
+        <!-- 1. HISTORIA (Arriba Izq) -->
+        <div class="info-card node-history">
+            <div class="card-header">
+                <i class="fas fa-history"></i>
+                <h3>Origen & Evolución</h3>
             </div>
-            <div class="image-wrapper">
-                <img src="https" alt="Diagrama abstracto de tarjetas desordenadas fluyendo hacia una estructura organizada.">
+            <div class="card-content">
+                <p style="margin-top: 0;">Fundado por <strong>Jigoro Kano</strong> en 1882 con la creación del <strong>Kodokan</strong> en Tokio. Transformó el antiguo Jujutsu (arte de guerra) eliminando las técnicas peligrosas para crear un método de educación física, mental y moral.</p>
+                <div class="olympic-box">
+                    <strong><i class="fas fa-olympic-rings"></i> Cronología Olímpica:</strong>
+                    <ul class="clean-list" style="margin-top: 5px; color: var(--center-bg);">
+                        <li><strong>1964 Tokio:</strong> Debut Masculino.</li>
+                        <li><strong>1992 Barcelona:</strong> Debut Femenino.</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
 
-<!-- Slide 4: Tipo Abierto (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide4">
-    <h2 class="slide-title">2. Tipos de Metodología: Abierto (Open)</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>Objetivo: Explorar y Descubrir</h3>
-                <p>Los participantes reciben las tarjetas (conceptos) y tienen total libertad para crear sus propios grupos.</p>
-                <ul style="padding-left: 30px;">
-                    <li>Al final, deben poner un nombre o etiqueta a cada grupo que han creado.</li>
-                    <li>Es el método ideal cuando se está diseñando una AI desde cero.</li>
-                    <li>Permite descubrir la terminología (taxonomía) que los propios usuarios emplean de forma natural.</li>
-                </ul>
+        <!-- 2. VALORES (Arriba Der) -->
+        <div class="info-card node-values">
+            <div class="card-header">
+                <i class="fas fa-heart"></i>
+                <h3>Código Moral</h3>
             </div>
-            <div class="image-wrapper">
-                <img src="https" alt="Una persona organizando tarjetas post-it en grupos sobre una mesa de trabajo.">
+            <div class="card-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 10px;">
+                    <ul class="clean-list" style="color: var(--accent-red); font-size: 0.9rem;">
+                        <li>Cortesía</li>
+                        <li>Coraje</li>
+                        <li>Sinceridad</li>
+                        <li>Honor</li>
+                    </ul>
+                    <ul class="clean-list" style="color: var(--accent-red); font-size: 0.9rem;">
+                        <li>Modestia</li>
+                        <li>Respeto</li>
+                        <li>Autocontrol</li>
+                        <li>Amistad</li>
+                    </ul>
+                </div>
+                <div style="font-size: 0.85rem; background: #fff5f5; padding: 8px; border-radius: 6px;">
+                    <strong>El Saludo (Rei):</strong><br>
+                    Inicio y fin obligatorio.<br>
+                    <i class="fas fa-chevron-right" style="font-size: 0.7rem; color:red;"></i> <em>Ritsurei</em> (De pie) / <em>Zarei</em> (Suelo).
+                </div>
             </div>
         </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: Pexels) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
 
-<!-- Slide 5: Tipo Cerrado (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide5">
-    <h2 class="slide-title">2. Tipos de Metodología: Cerrado (Closed)</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>Objetivo: Validar</h3>
-                <p>El investigador proporciona las tarjetas Y un conjunto de categorías predefinidas, por ejemplo "Reservas", "Mi Perfil" o "Ayuda".</p>
-                <ul style="padding-left: 30px;">
-                    <li>La tarea del participante es asignar cada tarjeta a la categoría donde considera que mejor encaja.</li>
-                    <li>Se usa para validar una estructura ya existente o una nueva propuesta.</li>
-                    <li>Mide si las etiquetas de las categorías son comprensibles y si los usuarios están de acuerdo sobre dónde va cada contenido.</li>
-                </ul>
+        <!-- 3. EQUIPO (Centro Izq) -->
+        <div class="info-card node-gear">
+            <div class="card-header">
+                <i class="fas fa-tshirt"></i>
+                <h3>El Equipo</h3>
             </div>
-            <div class="image-wrapper">
-                <img src="https" alt="La mano de un usuario arrastrando una tarjeta digital 'Vuelos' a una carpeta de categoría 'Reservas' en una pantalla de ordenador.">
+            <div class="card-content" style="display: flex; align-items: center;">
+                <i class="fas fa-user-ninja" style="font-size: 4rem; color: #ddd; margin-right: 20px;"></i>
+                <div style="font-size: 0.9rem;">
+                    <div style="margin-bottom: 5px;"><strong>Uwagi:</strong> Chaqueta gruesa.</div>
+                    <div style="margin-bottom: 5px;"><strong>Obi:</strong> Cinturón (indica rango).</div>
+                    <div style="margin-bottom: 5px;"><strong>Zubon:</strong> Pantalón reforzado.</div>
+                    <div style="margin-top: 10px; padding-top: 5px; border-top: 1px dashed #ccc; color: #555;">
+                        <strong>Tatami:</strong> Superficie de 14x14m (Combate + Seguridad).
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
 
-<!-- Slide 6: Tipo Híbrido (Ampliación) (Quote) -->
-<div class="slide-container" id="slide6">
-    <h2 class="slide-title">2. Tipos de Metodología: Híbrido</h2>
-    <div class="content-area">
-        <div class="quote-layout">
-            <blockquote>Combina ambos métodos: se proporcionan categorías predefinidas (Cerrado), pero también se permite al usuario crear las suyas (Abierto).</blockquote>
-            <cite>Ofrece lo mejor de ambos mundos. Permite validar la estructura principal y, a la vez, descubrir nuevos conceptos o agrupaciones que el equipo de diseño había olvidado.</cite>
+        <!-- 4. PUNTUACIÓN (Centro Der) -->
+        <div class="info-card node-score">
+            <div class="card-header">
+                <i class="fas fa-trophy"></i>
+                <h3>Reglas</h3>
+            </div>
+            <div class="card-content">
+                <div class="score-row">
+                    <div class="score-icon" style="background: gold;">I</div>
+                    <div>
+                        <strong>IPPON (10 pts)</strong><br>
+                        <span style="font-size: 0.85rem;">Victoria total (Espalda/20s/Rendición).</span>
+                    </div>
+                </div>
+                <div class="score-row">
+                    <div class="score-icon" style="background: silver;">W</div>
+                    <div>
+                        <strong>WAZA-ARI (1 pt)</strong><br>
+                        <span style="font-size: 0.85rem;">Medio punto (Casi Ippon / 10-19s).</span>
+                    </div>
+                </div>
+                <div class="score-row">
+                    <div class="score-icon" style="background: var(--accent-red); font-size: 1rem;">S</div>
+                    <div>
+                        <strong>SHIDO (Falta)</strong><br>
+                        <span style="font-size: 0.85rem;">Leve. 3 Shidos = Descalificación.</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Slide 7: Modalidades Presencial vs. Remoto (Two_Column_Text) -->
-<div class="slide-container" id="slide7">
-    <h2 class="slide-title">2.1. Modalidades de Ejecución</h2>
-    <div class="content-area">
-        <div class="two-column-text">
-            <div>
-                <div class="icon"><i class="fa-solid fa-users"></i></div>
-                <h3>Presencial (In-Person)</h3>
-                <p>Un facilitador guía al participante, ya sea de forma individual o en un grupo simultáneo.</p>
-                <ul>
-                    <li>Ventaja Clave: Permite usar el protocolo Think Aloud o Pensar en Voz Alta para capturar el "porqué" cualitativo.</li>
-                    <li>Desventaja: Es más lento y costoso en tiempo, recursos y logística.</li>
-                </ul>
+        <!-- 5. CURIOSIDADES (Abajo Izq) -->
+        <div class="info-card node-facts">
+            <div class="card-header">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Curiosidades</h3>
             </div>
-            <div>
-                <div class="icon"><i class="fa-solid fa-globe"></i></div>
-                <h3>Remoto (Online)</h3>
-                <p>El participante realiza la tarea solo, desde su propio ordenador, sin moderador.</p>
-                <ul>
-                    <li>Ventaja Clave: Rápido, económico y permite una muestra mucho más grande y geográficamente diversa. Ideal para datos cuantitativos.</li>
-                    <li>Desventaja: Se pierde el "porqué". No sabemos por qué el usuario dudó o por qué creó un grupo.</li>
-                </ul>
+            <div class="card-content">
+                <div class="fact-box">
+                    <strong>Técnica > Fuerza:</strong> Diseñado para usar la fuerza e inercia del oponente.
+                </div>
+                <div class="fact-box">
+                    <strong>Ukemi (Caídas):</strong> Lo primero que se enseña es a caer sin dolor golpeando el suelo.
+                </div>
+                <div class="fact-box" style="border-left-color: #3498db; background: #f0f8ff;">
+                    <strong>Judogi Azul:</strong> Se introdujo para diferenciar competidores en TV (antes solo blanco).
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Slide 8: Preparación (1/2): Las Tarjetas (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide8">
-    <h2 class="slide-title">3. Preparación (1/2): Las Tarjetas</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>El Núcleo del Estudio</h3>
-                <p>Una mala selección de tarjetas invalida los resultados.</p>
-                <ul style="padding-left: 30px;">
-                    <li>Claridad: Cada tarjeta debe incluir una breve definición, no solo la etiqueta, para evitar ambigüedades.</li>
-                    <li>Fuente: Se obtienen de inventarios de contenido, entrevistas a usuarios o técnicas como el free-listing.</li>
-                    <li>Cantidad: Hay que evitar la "fatiga del participante". El consenso de la industria aconseja un rango ideal de 30 a 60 tarjetas.</li>
-                </ul>
+        <!-- 6. TÉCNICAS (Abajo Der) -->
+        <div class="info-card node-tech">
+            <div class="card-header">
+                <i class="fas fa-project-diagram"></i>
+                <h3>Técnicas (Waza)</h3>
             </div>
-            <div class="image-wrapper" style="background-color: #f0f0f0;">
-                <img src="https" alt="Ejemplo de una tarjeta de Card Sorting para 'Vuelos'">
+            <div class="card-content">
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <strong style="color:var(--center-bg); font-size:0.9rem;">NAGE (Pie)</strong>
+                        <ul class="clean-list" style="font-size: 0.85rem; color: #555;">
+                            <li>Te (Brazo)</li>
+                            <li>Koshi (Cadera)</li>
+                            <li>Ashi (Pierna)</li>
+                            <li>Sutemi (Sacrificio)</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1;">
+                        <strong style="color:var(--accent-red); font-size:0.9rem;">KATAME (Suelo)</strong>
+                        <ul class="clean-list" style="font-size: 0.85rem; color: #555;">
+                            <li>Osae (Inmovilizar)</li>
+                            <li>Shime (Estrangular)</li>
+                            <li>Kansetsu (Luxar)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="text-align: center; font-size: 0.8rem; background: #eee; border-radius: 4px; padding: 5px;">
+                    <strong>FASES:</strong> Kuzushi (Desequilibrio) → Tsukuri (Preparación) → Kake (Proyección)
+                </div>
             </div>
         </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
 
-<!-- Slide 9: Preparación (2/2): Los Participantes (Highlighted_Numbers) -->
-<div class="slide-container" id="slide9">
-    <h2 class="slide-title">3. Preparación (2/2): Los Participantes</h2>
-    <div class="content-area">
-        <div class="highlight-numbers-layout">
-            <div class="number-side">
-                <div class="number">15-30</div>
-                <div class="number-label">Participantes</div>
-            </div>
-            <div>
-                <h3>Calidad sobre Cantidad</h3>
-                <p>Basado en estudios clave como el de Tullis & Wood (2004), el consenso de la industria es:</p>
-                <ul style="padding-left: 30px; font-size: 20px;">
-                    <li>Con menos de 15 participantes, los patrones de agrupación pueden no ser fiables.</li>
-                    <li>Con más de 30, los beneficios son marginales. Se empiezan a repetir los mismos patrones y se incrementa el coste.</li>
-                    <li>Crítico: Los participantes deben ser representativos de la audiencia objetivo.</li>
-                    <li>Crítico: No mezclar perfiles (ej. clientes y empleados) en el mismo análisis, ya que sus modelos mentales son diferentes.</li>
-                </ul>
-            </div>
+        <!-- CINTURONES (Barra Inferior) -->
+        <div class="belts-container">
+            <div class="belt-item"><div class="belt-strip" style="background:white; border:1px solid #ccc;"></div><div class="belt-label">6º Kyu</div></div>
+            <div class="belt-item"><div class="belt-strip" style="background:#ffeb3b;"></div><div class="belt-label">5º Kyu</div></div>
+            <div class="belt-item"><div class="belt-strip" style="background:#ff9800;"></div><div class="belt-label">4º Kyu</div></div>
+            <div class="belt-item"><div class="belt-strip" style="background:#4caf50;"></div><div class="belt-label">3º Kyu</div></div>
+            <div class="belt-item"><div class="belt-strip" style="background:#2196f3;"></div><div class="belt-label">2º Kyu</div></div>
+            <div class="belt-item"><div class="belt-strip" style="background:#795548;"></div><div class="belt-label">1º Kyu</div></div>
+            <i class="fas fa-chevron-right" style="color: #bbb;"></i>
+            <div class="belt-item"><div class="belt-strip" style="background:black;"></div><div class="belt-label" style="color:black; font-weight:900;">DAN</div></div>
         </div>
-    </div>
-</div>
 
-<!-- Slide 10: Ejecución: Las 3 Fases (Timeline) -->
-<div class="slide-container" id="slide10">
-    <h2 class="slide-title">4. Ejecución: Las Fases del "Open Sort"</h2>
-    <div class="content-area">
-        <div class="timeline-layout">
-            <div class="timeline-line"></div>
-            <div class="timeline-item">
-                <div class="icon"><i class="fa-solid fa-eye"></i></div>
-                <h3>1. Revisar (y Renombrar)</h3>
-                <p>El usuario se familiariza con todas las tarjetas. Puede renombrar las que le parezcan confusas.</p>
-            </div>
-            <div class="timeline-item">
-                <div class="icon"><i class="fa-solid fa-object-group"></i></div>
-                <h3>2. Agrupar (Sorting)</h3>
-                <p>El usuario crea grupos lógicos según su propio criterio. Aquí se usa el protocolo Think Aloud si es presencial.</p>
-            </div>
-            <div class="timeline-item">
-                <div class="icon"><i class="fa-solid fa-pencil-alt"></i></div>
-                <h3>3. Etiquetar (Labeling)</h3>
-                <p>El usuario asigna un nombre (etiqueta) a cada grupo que ha creado.</p>
-            </div>
-        </div>
     </div>
-</div>
-
-<!-- Slide 11: Análisis (1/2): Cuantitativo (Matriz) (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide11">
-    <h2 class="slide-title">5. Análisis (1/2): Cuantitativo (El Qué)</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>Matriz de Similaridad</h3>
-                <p>Es el primer paso del análisis. Es una tabla que muestra el porcentaje de participantes que agruparon dos tarjetas en el mismo grupo.</p>
-                <p style="margin-top: 20px;">Un porcentaje alto, como 85% o 100%, indica una fuerte afinidad, es decir, los usuarios están de acuerdo. Un porcentaje bajo, como 10%, indica que no ven relación entre esos conceptos.</p>
-            </div>
-            <div class="image-wrapper">
-                <img src="https...googleusercontent.com/image_retrieval_content/VXhlcmNpc2VzIGluIFN0YXRpc3RpY3NfMTY0MDIzMTMxOV81ZmRkMmFkNS5qcGc=/0" alt="Un mapa de calor (heatmap) que representa una matriz de similaridad, con celdas rojas para 100% y azules para 0%.">
-            </div>
-        </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
-
-<!-- Slide 12: Análisis (2/2): Dendrograma (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide12">
-    <h2 class="slide-title">5. Análisis (2/2): Visualización de Clústeres</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>Análisis Clúster (Dendrograma)</h3>
-                <p>La Matriz de Similaridad alimenta un algoritmo de Análisis Clúster que genera un Dendrograma o diagrama de árbol.</p>
-                <ul style="padding-left: 30px; font-size: 20px;">
-                    <li>Muestra jerárquicamente cómo se agrupan las tarjetas.</li>
-                    <li>Las tarjetas que se unen más cerca, como Vuelos y Hoteles, tienen una afinidad más fuerte.</li>
-                    <li>Nos dice <strong>qué</strong> tarjetas deben ir juntas.</li>
-                </ul>
-            </div>
-            <div class="image-wrapper">
-                <img src="https" alt="Un diagrama de dendrograma limpio y profesional que muestra la agrupación jerárquica de tarjetas.">
-            </div>
-        </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: Wikiwand) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
-
-<!-- Slide 13: Análisis (3/3): Cualitativo y Grafo (Image_Right_Text_Left) -->
-<div class="slide-container" id="slide13">
-    <h2 class="slide-title">5. Análisis (3/3): El "Porqué" y el "Puente"</h2>
-    <div class="content-area">
-        <div class="image-right-text-left">
-            <div>
-                <h3>Análisis Cualitativo (El "Porqué")</h3>
-                <p>El dendrograma nos dice "Qué" agrupar, pero no "Cómo" llamarlo.</p>
-                <ul style="padding-left: 30px; font-size: 20px;">
-                    <li><strong>Análisis de Etiquetas:</strong> Se analizan las etiquetas creadas por los usuarios. Si 10 de 15 usuarios usan "Ayuda", "Soporte" o "Dudas" para un clúster, se valida la etiqueta "Ayuda".</li>
-                    <li><strong>Think Aloud:</strong> Las notas de la sesión explican por qué una tarjeta fue ambigua.</li>
-                </ul>
-                <h3 style="margin-top: 20px;">Visualización de Grafos (El "Puente")</h3>
-                <p>Un análisis alternativo (de la UXPA) que muestra la red de relaciones e identifica "Puentes", que son tarjetas ambiguas que conectan varios clústeres.</p>
-            </div>
-            <div class="image-wrapper">
-                <img src="https" alt="Un grafo de red que muestra clústeres y tarjetas 'puente' conectando ambos.">
-            </div>
-        </div>
-    </div>
-    <!-- NOTA DE IA REQUERIDA (RESTAURADA) -->
-    <div class="notes">
-        Nota: La imagen de esta diapositiva (fuente: googleusercontent.com) se utiliza siguiendo las directrices de derechos de autor.
-    </div>
-</div>
-
-<!-- Slide 14: Conclusión (Quote) -->
-<div class="slide-container" id="slide14">
-    <h2 class="slide-title">6. Conclusión</h2>
-    <div class="content-area">
-        <div class="quote-layout">
-            <blockquote>Fundamentamos la Arquitectura de la Información en <strong>datos empíricos del usuario</strong>, no en la estructura organizativa interna de la empresa.</blockquote>
-            <cite>El Card Sorting nos permite empatizar con el modelo mental del usuario, diseñando productos digitales más intuitivos, eficientes y usables.</cite>
-        </div>
-    </div>
-</div>
-
-<!-- Slide 15: Bibliografía y Cierre (Final_Layout) -->
-<div class="slide-container" id="slide15">
-    <div class="final-layout">
-        <div>
-            <h2>Gracias</h2>
-        </div>
-        <div class="bibliografia">
-            <h3>Bibliografía</h3>
-            <p><strong>Principal:</strong><br>
-            Baxter, K., Courage, C., & Caine, K. (2015). Chapter 11: Card Sorting. En <i>Understanding Your Users: A Practical Guide to User Research Methods (Second Edition)</i>. Morgan Kaufmann.</p>
-            
-            <p><strong>Adicional (Ampliación):</strong><br>
-            Tullis, T., & Wood, L. (2004). How many users are enough for a card-sorting study? <i>Proceedings of the UPA 2004 Conference</i>.<br>
-            UXPA (s.f.). <i>Analyzing Card-Sorting Data Using Graph Visualization</i>. JUX - UXPA Journal.</p>
-            
-            <hr>
-            <!-- DECLARACIÓN DE IA RESTAURADA -->
-            <p><strong>Declaración de Uso de IA:</strong><br>
-            Se ha utilizado IA Generativa para la traducción inicial del capítulo base, la búsqueda de fuentes adicionales y el refinamiento de estilo del resumen. El uso de imágenes se declara según las normas.</p>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>
