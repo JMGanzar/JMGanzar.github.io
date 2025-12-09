@@ -3,426 +3,979 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblia de Redes | Simulador Infinito (T4-T8)</title>
+    <title>Guía Completa ARC | T9-T11 + Simulador</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
-        
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
-
-        /* Estilos de Tablas */
-        .table-wrapper { overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; border: 1px solid #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        table { width: 100%; border-collapse: collapse; text-align: center; }
-        th { background: #1e293b; color: #60a5fa; padding: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #3b82f6; }
-        td { padding: 1rem; border-bottom: 1px solid #334155; color: #cbd5e1; vertical-align: middle; }
+        
+        .table-wrapper { overflow-x: auto; margin: 2rem 0; border-radius: 0.75rem; border: 1px solid #334155; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #1e293b; color: #60a5fa; padding: 1rem; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #3b82f6; }
+        td { padding: 1rem; border-bottom: 1px solid #334155; color: #cbd5e1; }
         tr:last-child td { border-bottom: none; }
         tr:nth-child(even) { background-color: rgba(30, 41, 59, 0.5); }
         tr:hover { background-color: rgba(59, 130, 246, 0.1); }
-
-        /* Layout */
+        
         .sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: 280px; background: #0f172a; border-right: 1px solid #1e293b; overflow-y: auto; z-index: 50; }
-        .main-content { margin-left: 280px; padding: 3rem; max-w: 1400px; }
+        .main-content { margin-left: 280px; padding: 3rem; max-width: 1400px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 1.5rem; } }
-
-        /* Tarjetas de Teoría */
+        
         .theory-card { background: #1e293b; border: 1px solid #334155; border-radius: 1rem; margin-bottom: 3rem; position: relative; overflow: hidden; }
         .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #3b82f6; }
         .theory-header { background: linear-gradient(90deg, #1e3a8a 0%, #1e293b 100%); padding: 1.5rem; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 1rem; }
         .theory-body { padding: 2rem; }
-
-        /* Cajas de Énfasis */
+        
         .detail-box { background: rgba(16, 185, 129, 0.1); border: 1px solid #059669; border-left: 4px solid #10b981; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0.5rem; }
         .alert-box { background: rgba(220, 38, 38, 0.1); border: 1px solid #991b1b; border-left: 4px solid #ef4444; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0.5rem; }
-        .cmd-box { background: #020617; font-family: 'Courier New', monospace; padding: 1.25rem; border-radius: 0.5rem; border: 1px solid #334155; color: #67e8f9; margin: 1rem 0; white-space: pre-wrap; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
-
-        /* Simulador */
-        .quiz-wrapper { background: white; border-radius: 1.5rem; padding: 2rem; color: #1e293b; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-        .option-btn { width: 100%; text-align: left; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; border: 2px solid #e2e8f0; border-radius: 1rem; background: #f8fafc; color: #334155; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 600; font-size: 1.05rem; position: relative; overflow: hidden; }
-        .option-btn:hover:not(:disabled) { border-color: #3b82f6; background: #eff6ff; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1); }
+        .warning-box { background: rgba(251, 191, 36, 0.1); border: 1px solid #d97706; border-left: 4px solid #fbbf24; padding: 1.5rem; margin: 1.5rem 0; border-radius: 0.5rem; }
+        .cmd-box { background: #020617; font-family: 'Courier New', monospace; padding: 1.25rem; border-radius: 0.5rem; border: 1px solid #334155; color: #67e8f9; margin: 1rem 0; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.6; }
+        
+        .option-btn { width: 100%; text-align: left; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; border: 2px solid #e2e8f0; border-radius: 1rem; background: #f8fafc; color: #334155; transition: all 0.2s; font-weight: 600; font-size: 1.05rem; cursor: pointer; }
+        .option-btn:hover:not(:disabled) { border-color: #3b82f6; background: #eff6ff; transform: translateY(-2px); }
         .option-btn:disabled { cursor: default; opacity: 0.7; }
         .option-btn.correct { border-color: #22c55e; background: #dcfce7; color: #14532d; }
         .option-btn.incorrect { border-color: #ef4444; background: #fee2e2; color: #7f1d1d; }
-        
-        .feedback-panel { animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- Menú Lateral -->
     <aside class="sidebar hidden md:block">
         <div class="p-6">
-            <h1 class="text-3xl font-black text-white mb-1 tracking-tighter">NET<span class="text-blue-500">MASTER</span></h1>
-            <p class="text-xs text-blue-400 font-bold tracking-widest uppercase mb-10">Edición "Infinito"</p>
+            <h1 class="text-3xl font-black text-white mb-1">ARC<span class="text-blue-500">MASTER</span></h1>
+            <p class="text-xs text-blue-400 font-bold uppercase mb-10">Temas 9-11 Completo</p>
             
             <nav class="space-y-2">
-                <a href="#t4" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-sitemap w-5 text-center"></i> T4: Jerárquicas</a>
-                <a href="#t5" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-network-wired w-5 text-center"></i> T5: STP Experto</a>
-                <a href="#t6" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-tags w-5 text-center"></i> T6: VLANs & 802.1Q</a>
-                <a href="#t7" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-server w-5 text-center"></i> T7: VTP Total</a>
-                <a href="#t8" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-route w-5 text-center"></i> T8: Inter-VLAN</a>
+                <a href="#t9" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-network-wired w-5"></i> T9: Aplicaciones</a>
+                <a href="#t10" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-globe w-5"></i> T10: NAT & IPv6</a>
+                <a href="#t11" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"><i class="fa-solid fa-exchange-alt w-5"></i> T11: TCP/UDP</a>
             </nav>
 
             <div class="mt-12 pt-8 border-t border-slate-700">
                 <a href="#simulator" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-blue-500/30 hover:scale-[1.02] transition-all">
-                    <i class="fa-solid fa-play"></i> Iniciar Test
+                    <i class="fa-solid fa-play"></i> Ir al Simulador
                 </a>
             </div>
         </div>
     </aside>
 
-    <!-- Contenido Principal -->
     <main class="main-content">
         
         <div class="mb-12 border-b border-slate-700 pb-8">
-            <h2 class="text-4xl font-extrabold text-white mb-4">Guía de Estudio <span class="text-blue-500">Maestra</span></h2>
-            <p class="text-lg text-slate-400 max-w-3xl">Contiene el 100% de la teoría de los PDFs. Si estudias esto y dominas el simulador, el 10 está garantizado.</p>
+            <h2 class="text-4xl font-extrabold text-white mb-4">Guía Maestra <span class="text-blue-500">Temas 9-11</span></h2>
+            <p class="text-lg text-slate-400 max-w-3xl">Toda la teoría al 200% + Simulador de 80+ preguntas. Estudia aquí y aprueba garantizado.</p>
         </div>
 
-        <!-- TEMA 4: REDES JERÁRQUICAS -->
-        <section id="t4" class="theory-card">
+        <!-- ===================== TEMA 9 ===================== -->
+        <section id="t9" class="theory-card">
             <div class="theory-header">
-                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-sitemap text-blue-400 text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">TEMA 4: Redes Jerárquicas</h2>
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-network-wired text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 9: Aplicaciones y Protocolos de Red</h2>
             </div>
             <div class="theory-body">
-                <h3 class="text-xl font-bold text-white mb-4">1. El Modelo de 3 Capas (Cisco)</h3>
-                <p class="mb-4 text-slate-300">Diseño modular para evitar redes planas. Cada capa tiene una función exclusiva.</p>
                 
+                <h3 class="text-xl font-bold text-white mb-4">1. DHCP (Dynamic Host Configuration Protocol)</h3>
+                <div class="alert-box">
+                    <strong>⚡ CRÍTICO:</strong> DHCP asigna direcciones IP automáticamente + parámetros de red (máscara, gateway, DNS).
+                </div>
+                
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Características Principales</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Protocolo:</strong> UDP</li>
+                    <li><strong>Puertos:</strong> 67 (servidor), 68 (cliente)</li>
+                    <li><strong>Basado en:</strong> BOOTP (Bootstrap Protocol)</li>
+                    <li><strong>Ventajas sobre BOOTP:</strong>
+                        <ul class="list-disc pl-5 mt-2">
+                            <li>Asignación dinámica con <strong>lease time</strong> (préstamo temporal)</li>
+                            <li>Reutilización de IPs cuando expira el lease</li>
+                            <li>Más parámetros configurables (DNS, WINS, NTP, etc.)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Proceso DHCP (4 Pasos - DORA)</h4>
+                <div class="cmd-box">Cliente                                    Servidor
+  │                                         │
+  │─── DHCPDISCOVER (broadcast) ──────────>│  1. Cliente busca servidores
+  │     255.255.255.255                     │
+  │                                         │
+  │<── DHCPOFFER ───────────────────────────│  2. Servidor ofrece IP + parámetros
+  │                                         │
+  │─── DHCPREQUEST ────────────────────────>│  3. Cliente solicita IP ofrecida
+  │                                         │
+  │<── DHCPACK ─────────────────────────────│  4. Servidor confirma asignación
+  │                                         │
+  │      PUEDE USAR LA IP AHORA             │</div>
+
+                <div class="detail-box">
+                    <strong>Renovación del Lease:</strong> Al llegar al 50% del tiempo, el cliente intenta renovar con DHCPREQUEST. Si el servidor responde DHCPACK, se renueva. Si responde DHCPNACK, debe liberar la IP y volver a DISCOVER.
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Otras Características</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>DHCP Relay:</strong> Agente que reenvía peticiones DHCP a servidores en otras subredes</li>
+                    <li><strong>APIPA (Automatic Private IP Addressing):</strong> Si no hay servidor DHCP, el sistema genera automáticamente una IP en el rango <code>169.254.0.0/16</code></li>
+                    <li><strong>Actualización de DNS:</strong> El servidor DHCP puede actualizar el DNS con las nuevas IPs asignadas</li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">2. DNS (Domain Name System)</h3>
+                <div class="alert-box">
+                    <strong>⚡ FUNCIÓN ESENCIAL:</strong> Traduce nombres de dominio (www.google.com) ↔ direcciones IP (142.250.185.46)
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Características</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Protocolo:</strong> UDP (consultas) / TCP (transferencias de zona)</li>
+                    <li><strong>Puerto:</strong> 53</li>
+                    <li><strong>Estructura:</strong> Jerárquica y distribuida (no centralizada)</li>
+                    <li><strong>Formato nombres:</strong> host.subdominio.dominio.tld (ej: www.google.com)</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Tipos de Registros DNS</h4>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th width="20%">Capa</th>
-                                <th width="30%">Función Principal</th>
-                                <th width="50%">Características Técnicas (Clave Examen)</th>
+                                <th>Tipo</th>
+                                <th>Función</th>
+                                <th>Ejemplo</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="font-bold text-green-400">ACCESO<br>(Access Layer)</td>
-                                <td>Conexión de usuarios (Edge)</td>
-                                <td class="text-left text-sm">
-                                    • Seguridad de puerto (Port Security).<br>
-                                    • VLANs y Marcado QoS (Clasificación).<br>
-                                    • <strong>PoE</strong> (Power over Ethernet) para teléfonos/APs.<br>
-                                    • ARP Inspection.<br>
-                                    • Switches de bajo coste/alta densidad.<br>
-                                    • <strong>NO</strong> suele tener redundancia al host.
-                                </td>
+                                <td class="font-bold text-blue-400">A</td>
+                                <td>Nombre → IPv4</td>
+                                <td>google.com → 142.250.185.46</td>
                             </tr>
                             <tr>
-                                <td class="font-bold text-blue-400">DISTRIBUCIÓN<br>(Distribution Layer)</td>
-                                <td>Agregación y Políticas</td>
-                                <td class="text-left text-sm">
-                                    • <strong>Punto de demarcación L2/L3.</strong><br>
-                                    • Enrutamiento Inter-VLAN.<br>
-                                    • Aplicación de políticas de seguridad (ACLs).<br>
-                                    • Redundancia hacia el Núcleo y Acceso.<br>
-                                    • Sumarización de rutas.
-                                </td>
+                                <td class="font-bold text-blue-400">AAAA</td>
+                                <td>Nombre → IPv6</td>
+                                <td>google.com → 2001:4860:4860::8888</td>
                             </tr>
                             <tr>
-                                <td class="font-bold text-red-400">NÚCLEO<br>(Core Layer)</td>
-                                <td>Backbone de Alta Velocidad</td>
-                                <td class="text-left text-sm">
-                                    • <strong>Conmutación pura</strong> (Switching).<br>
-                                    • Fiabilidad extrema y redundancia.<br>
-                                    • <strong>PROHIBIDO:</strong> ACLs, inspección de paquetes.<br>
-                                    • Hardware: Fibra óptica (10G/40G/100G).
-                                </td>
+                                <td class="font-bold text-green-400">MX</td>
+                                <td>Servidor de correo</td>
+                                <td>Prioridad 10, mail.gmail.com</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-purple-400">NS</td>
+                                <td>Servidor de nombres autoritativo</td>
+                                <td>ns1.google.com</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-yellow-400">CNAME</td>
+                                <td>Alias (nombre canónico)</td>
+                                <td>www → server1.host.com</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-red-400">PTR</td>
+                                <td>IP → Nombre (DNS inverso)</td>
+                                <td>46.185.250.142.in-addr.arpa → google.com</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-gray-400">SOA</td>
+                                <td>Autoridad de zona</td>
+                                <td>Admin, serial, refresh, retry, expire</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Tipos de Consultas</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-blue-400 block mb-2">Consulta Recursiva</strong>
+                        <p class="text-sm text-slate-300">El servidor DNS hace todo el trabajo. Si no sabe la respuesta, consulta a otros servidores hasta obtenerla y la devuelve al cliente.</p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-green-400 block mb-2">Consulta Iterativa</strong>
+                        <p class="text-sm text-slate-300">El servidor DNS responde con lo que sabe o con una referencia a otro servidor. El cliente debe hacer las consultas subsiguientes.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">3. FTP (File Transfer Protocol)</h3>
+                <div class="alert-box">
+                    <strong>⚡ CARACTERÍSTICA ÚNICA:</strong> Usa DOS conexiones TCP simultáneas (control + datos)
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Características</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Protocolo:</strong> TCP</li>
+                    <li><strong>Puerto 21:</strong> Conexión de control (comandos)</li>
+                    <li><strong>Puerto 20:</strong> Conexión de datos (archivos)</li>
+                    <li><strong>Autenticación:</strong> Usuario + contraseña (o FTP anónimo)</li>
+                    <li><strong>Modos de transferencia:</strong> ASCII (texto) / Binary (binario)</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Comandos FTP Principales</h4>
+                <div class="cmd-box">USER nombre           # Identificar usuario
+PASS contraseña       # Enviar contraseña
+CWD /directorio       # Cambiar directorio (Change Working Dir)
+LIST                  # Listar archivos
+RETR archivo.txt      # Descargar archivo (Retrieve)
+STOR archivo.txt      # Subir archivo (Store)
+PORT h1,h2,h3,h4,p1,p2  # Indicar IP:Puerto para datos
+QUIT                  # Cerrar conexión</div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Modos de Conexión</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-red-400 block mb-2">Modo Activo</strong>
+                        <p class="text-sm text-slate-300 mb-2">El <strong>servidor inicia</strong> la conexión de datos al cliente (puerto 20 → cliente).</p>
+                        <p class="text-xs text-slate-500">❌ Problema: Bloqueado por firewalls del cliente</p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-green-400 block mb-2">Modo Pasivo (PASV)</strong>
+                        <p class="text-sm text-slate-300 mb-2">El <strong>cliente inicia</strong> ambas conexiones (control y datos).</p>
+                        <p class="text-xs text-slate-500">✅ Solución: Evita problemas con firewalls</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">4. Correo Electrónico (SMTP + POP3)</h3>
+                
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">SMTP (Simple Mail Transfer Protocol)</h4>
+                <div class="detail-box">
+                    <strong>Función:</strong> ENVÍO de correo desde cliente → servidor o entre servidores
+                </div>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Protocolo:</strong> TCP</li>
+                    <li><strong>Puerto:</strong> 25 (sin cifrar), 587 (con STARTTLS)</li>
+                    <li><strong>Comandos principales:</strong>
+                        <div class="cmd-box mt-2">HELO dominio.com        # Identificación
+MAIL FROM: <user@domain.com>  # Remitente
+RCPT TO: <dest@domain.com>    # Destinatario
+DATA                     # Inicio del mensaje
+  (mensaje completo)
+  .                      # Punto solo en línea = fin
+QUIT                     # Cerrar</div>
+                    </li>
+                    <li><strong>Respuestas:</strong>
+                        <ul class="list-disc pl-5 mt-2">
+                            <li><code>220</code> - Ready</li>
+                            <li><code>250</code> - OK</li>
+                            <li><code>354</code> - Start mail input</li>
+                            <li><code>550</code> - Mailbox unavailable</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">POP3 (Post Office Protocol v3)</h4>
+                <div class="detail-box">
+                    <strong>Función:</strong> RECEPCIÓN/Descarga de correo desde servidor → cliente
+                </div>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Protocolo:</strong> TCP</li>
+                    <li><strong>Puerto:</strong> 110 (sin cifrar), 995 (SSL/TLS)</li>
+                    <li><strong>Fases:</strong>
+                        <ol class="list-decimal pl-5 mt-2">
+                            <li><strong>Autorización:</strong> USER + PASS</li>
+                            <li><strong>Transacción:</strong> STAT, LIST, RETR, DELE</li>
+                            <li><strong>Actualización:</strong> QUIT (aplica cambios)</li>
+                        </ol>
+                    </li>
+                    <li><strong>Comandos principales:</strong>
+                        <div class="cmd-box mt-2">USER nombre              # Identificar usuario
+PASS contraseña          # Contraseña
+STAT                     # Estado (num mensajes, bytes)
+LIST                     # Listar mensajes
+RETR 1                   # Descargar mensaje 1
+DELE 1                   # Marcar mensaje 1 para borrar
+QUIT                     # Cerrar (ejecuta borrados)</div>
+                    </li>
+                    <li><strong>Respuestas:</strong> <code>+OK</code> (éxito) / <code>-ERR</code> (error)</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Formato de Mensaje de Correo (RFC 822)</h4>
+                <div class="cmd-box">From: remitente@dominio.com
+To: destinatario@dominio.com
+Subject: Asunto del mensaje
+Date: Mon, 9 Dec 2024 14:30:00 +0100
+Message-ID: <unique@id.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+
+(línea en blanco)
+
+Cuerpo del mensaje en texto plano.</div>
+
+                <div class="warning-box">
+                    <strong>MIME (Multipurpose Internet Mail Extensions):</strong> Permite enviar archivos binarios (imágenes, PDFs) codificados en Base64 dentro del correo ASCII.
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">5. HTTP (HyperText Transfer Protocol)</h3>
+                <div class="alert-box">
+                    <strong>⚡ PROTOCOLO WEB:</strong> Cliente (navegador) ↔ Servidor (Apache, Nginx)
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Características</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Protocolo:</strong> TCP</li>
+                    <li><strong>Puerto:</strong> 80 (HTTP), 443 (HTTPS)</li>
+                    <li><strong>Stateless:</strong> No mantiene estado entre peticiones (sin memoria)</li>
+                    <li><strong>Formato:</strong> Mensajes de texto ASCII con cabeceras + cuerpo opcional</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Métodos HTTP</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Método</th><th>Función</th><th>Uso</th></tr></thead>
+                        <tbody>
+                            <tr><td class="font-bold text-green-400">GET</td><td>Solicitar recurso</td><td>Obtener página, imagen, etc.</td></tr>
+                            <tr><td class="font-bold text-blue-400">POST</td><td>Enviar datos</td><td>Formularios, login, subir archivos</td></tr>
+                            <tr><td class="font-bold text-yellow-400">HEAD</td><td>Solo cabeceras</td><td>Verificar si existe sin descargar</td></tr>
+                            <tr><td class="font-bold text-purple-400">PUT</td><td>Crear/actualizar</td><td>Subir archivo al servidor</td></tr>
+                            <tr><td class="font-bold text-red-400">DELETE</td><td>Eliminar recurso</td><td>Borrar archivo del servidor</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Códigos de Respuesta HTTP</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Código</th><th>Significado</th><th>Descripción</th></tr></thead>
+                        <tbody>
+                            <tr><td class="font-bold text-green-400">200</td><td>OK</td><td>Petición exitosa</td></tr>
+                            <tr><td class="font-bold text-blue-400">301</td><td>Moved Permanently</td><td>Recurso movido permanentemente</td></tr>
+                            <tr><td class="font-bold text-blue-400">304</td><td>Not Modified</td><td>Usar versión en caché</td></tr>
+                            <tr><td class="font-bold text-yellow-400">400</td><td>Bad Request</td><td>Petición malformada</td></tr>
+                            <tr><td class="font-bold text-red-400">404</td><td>Not Found</td><td>Recurso no encontrado</td></tr>
+                            <tr><td class="font-bold text-purple-400">500</td><td>Internal Server Error</td><td>Error del servidor</td></tr>
+                            <tr><td class="font-bold text-purple-400">503</td><td>Service Unavailable</td><td>Servidor sobrecargado</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">HTTP/1.0 vs HTTP/1.1</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-red-400 block mb-2">HTTP/1.0 (No persistente)</strong>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>• 1 objeto = 1 conexión TCP</li>
+                            <li>• Ineficiente: overhead de conexión repetido</li>
+                            <li>• Cada objeto: 2 RTT (1 para TCP, 1 para HTTP)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <strong class="text-green-400 block mb-2">HTTP/1.1 (Persistente)</strong>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>• Múltiples objetos = 1 conexión TCP</li>
+                            <li>• Eficiente: reutiliza conexión</li>
+                            <li>• Pipelining: envía peticiones sin esperar respuestas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="detail-box mt-6">
+                    <strong>Cookies:</strong> Mecanismo para mantener estado en HTTP stateless. El servidor envía <code>Set-Cookie</code> y el cliente lo devuelve en futuras peticiones con <code>Cookie</code>.
+                </div>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">6. Otras Aplicaciones Importantes</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Aplicación</th><th>Puerto</th><th>Protocolo</th><th>Función</th></tr></thead>
+                        <tbody>
+                            <tr><td class="font-bold">Telnet</td><td>23</td><td>TCP</td><td>Terminal remota (inseguro, usar SSH)</td></tr>
+                            <tr><td class="font-bold text-green-400">SSH</td><td>22</td><td>TCP</td><td>Terminal remota cifrada</td></tr>
+                            <tr><td class="font-bold">NNTP</td><td>119</td><td>TCP</td><td>Grupos de noticias (Usenet)</td></tr>
+                            <tr><td class="font-bold">SNMP</td><td>161</td><td>UDP</td><td>Gestión de dispositivos de red</td></tr>
+                            <tr><td class="font-bold">NTP</td><td>123</td><td>UDP</td><td>Sincronización de tiempo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================== TEMA 10 ===================== -->
+        <section id="t10" class="theory-card">
+            <div class="theory-header">
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-globe text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 10: NAT e IPv6</h2>
+            </div>
+            <div class="theory-body">
+                
+                <h3 class="text-xl font-bold text-white mb-4">1. NAT (Network Address Translation)</h3>
+                <div class="alert-box">
+                    <strong>⚡ MOTIVACIÓN:</strong> Escasez de direcciones IPv4 públicas + Seguridad + Ocultar topología interna
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Terminología NAT</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Término</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-blue-400">Interna Local</td>
+                                <td>IP privada del host en red interna</td>
+                                <td>192.168.1.10</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-green-400">Interna Global</td>
+                                <td>IP pública que representa al host interno</td>
+                                <td>200.1.1.20</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-yellow-400">Externa Local</td>
+                                <td>IP de host externo vista desde interna</td>
+                                <td>179.9.8.80</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-purple-400">Externa Global</td>
+                                <td>IP pública real del host externo</td>
+                                <td>179.9.8.80</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="detail-box">
-                    <strong>⚠️ Excepción: Núcleo Colapsado</strong>
-                    <p class="mt-1 text-sm text-slate-300">En redes pequeñas, se fusionan las capas de <strong>Distribución y Núcleo</strong>. Reduce costes pero limita la escalabilidad.</p>
+                    <strong>Rangos Privados RFC 1918:</strong>
+                    <ul class="list-disc pl-5 mt-2">
+                        <li><code>10.0.0.0/8</code> (10.0.0.0 - 10.255.255.255) - Clase A</li>
+                        <li><code>172.16.0.0/12</code> (172.16.0.0 - 172.31.255.255) - Clase B</li>
+                        <li><code>192.168.0.0/16</code> (192.168.0.0 - 192.168.255.255) - Clase C</li>
+                    </ul>
+                    Estas IPs NO son enrutables en Internet.
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-4 mt-8">2. Principios de Diseño</h3>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Tipos de NAT</h4>
+                
+                <div class="bg-slate-800 p-4 rounded border border-slate-700 mb-4">
+                    <strong class="text-blue-400 block mb-2">NAT Estático</strong>
+                    <p class="text-sm text-slate-300 mb-2">Mapeo fijo 1:1 entre IP privada e IP pública.</p>
+                    <div class="cmd-box text-xs">192.168.1.10 → 200.1.1.20 (siempre)
+192.168.1.11 → 200.1.1.21 (siempre)</div>
+                    <p class="text-xs text-slate-500">Uso: Servidores internos que necesitan IP pública fija</p>
+                </div>
+
+                <div class="bg-slate-800 p-4 rounded border border-slate-700 mb-4">
+                    <strong class="text-green-400 block mb-2">NAT Dinámico</strong>
+                    <p class="text-sm text-slate-300 mb-2">Pool de IPs públicas, asignación dinámica según demanda.</p>
+                    <div class="cmd-box text-xs">Pool: 200.1.1.20-30 (10 IPs públicas)
+Host A → 200.1.1.20 (mientras dure la sesión)
+Host B → 200.1.1.21 (mientras dure la sesión)</div>
+                    <p class="text-xs text-slate-500">Limitación: Máximo tantos hosts simultáneos como IPs en pool</p>
+                </div>
+
+                <div class="bg-slate-800 p-4 rounded border border-slate-700 mb-4">
+                    <strong class="text-purple-400 block mb-2">PAT - Port Address Translation (NAT Overload)</strong>
+                    <p class="text-sm text-slate-300 mb-2">Múltiples hosts internos comparten 1 sola IP pública usando puertos.</p>
+                    <div class="cmd-box text-xs">192.168.1.10:1331 → 200.1.1.20:3333
+192.168.1.11:1555 → 200.1.1.20:2222
+192.168.1.12:1888 → 200.1.1.20:4444
+
+Misma IP pública, diferentes puertos de origen</div>
+                    <p class="text-xs text-green-500">✅ Solución más usada: ~65,000 hosts con 1 IP pública</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>PAT modifica:</strong> Dirección IP origen + Puerto origen en la cabecera TCP/UDP
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Port Forwarding</h4>
+                <p class="text-slate-300 mb-4">Permite acceso desde Internet a servicios internos (servidor web, FTP, etc.).</p>
+                <div class="cmd-box text-xs">Tráfico externo: ExternalIP:80 → se redirige → 192.168.1.100:8080
+Ejemplo: Servidor web interno en puerto 8080 accesible desde Internet en puerto 80</div>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">2. IPv6</h3>
+                <div class="alert-box">
+                    <strong>⚡ RAZÓN PRINCIPAL:</strong> Agotamiento de direcciones IPv4 (32 bits = ~4.3 mil millones)
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Motivaciones y Mejoras</h4>
                 <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
-                    <li><strong>Diámetro de la Red:</strong> Número de saltos entre origen y destino. Objetivo: Bajo y predecible.</li>
-                    <li><strong>Agregado de Ancho de Banda:</strong> Uso de <strong>EtherChannel</strong> para combinar enlaces físicos en uno lógico. Vital en uplinks.</li>
-                    <li><strong>Redundancia:</strong> Duplicar enlaces y equipos. Obligatorio en Distribución y Núcleo.</li>
+                    <li><strong>Espacio de direcciones:</strong> 128 bits = 2^128 = 3.4×10^38 direcciones (~670 millones de IPs por mm² de la Tierra)</li>
+                    <li><strong>Cabecera simplificada:</strong> 40 bytes fijos (vs 20-60 variables en IPv4)</li>
+                    <li><strong>Sin fragmentación en routers:</strong> Solo en origen (Path MTU Discovery obligatorio)</li>
+                    <li><strong>Sin checksum:</strong> Eliminado para acelerar procesamiento (delegado a L2 y L4)</li>
+                    <li><strong>Sin broadcast:</strong> Solo unicast, multicast y anycast</li>
+                    <li><strong>Autoconfiguración:</strong> SLAAC (Stateless Address Autoconfiguration)</li>
+                    <li><strong>Seguridad integrada:</strong> IPsec es obligatorio (opcional en IPv4)</li>
+                    <li><strong>QoS mejorado:</strong> Campos Traffic Class y Flow Label</li>
                 </ul>
 
-                <h3 class="text-xl font-bold text-white mb-4">3. Factores de Forma</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
-                        <strong class="text-blue-400 block mb-1">Fija</strong>
-                        <span class="text-sm text-slate-400">Puertos inamovibles (24/48). Acceso.</span>
-                    </div>
-                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
-                        <strong class="text-blue-400 block mb-1">Modular</strong>
-                        <span class="text-sm text-slate-400">Chasis + Tarjetas. Escalable. Núcleo.</span>
-                    </div>
-                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
-                        <strong class="text-blue-400 block mb-1">Apilable</strong>
-                        <span class="text-sm text-slate-400">StackWise. Plano de control único.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Notación de Direcciones IPv6</h4>
+                <div class="cmd-box">Formato: 8 grupos de 4 dígitos hexadecimales separados por :
 
-        <!-- TEMA 5: STP -->
-        <section id="t5" class="theory-card">
-            <div class="theory-header">
-                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-network-wired text-blue-400 text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">TEMA 5: STP (Spanning Tree)</h2>
-            </div>
-            <div class="theory-body">
-                <div class="alert-box">
-                    <strong class="text-red-400 text-lg"><i class="fa-solid fa-triangle-exclamation"></i> Riesgos sin STP</strong>
-                    <ul class="list-disc pl-5 mt-2 text-slate-300 text-sm">
-                        <li><strong>Tormentas de Broadcast:</strong> Tramas girando infinitamente (Ethernet no tiene TTL).</li>
-                        <li><strong>Inestabilidad de tabla MAC:</strong> La misma MAC se aprende por puertos distintos.</li>
-                        <li><strong>Tramas Duplicadas:</strong> Recepción múltiple de un mismo paquete.</li>
+Ejemplo completo:
+2001:0DB8:0000:0000:0000:0000:0042:8329
+
+Regla 1: Omitir ceros a la izquierda de cada grupo
+2001:DB8:0:0:0:0:42:8329
+
+Regla 2: Comprimir grupos consecutivos de ceros con ::
+2001:DB8::42:8329
+
+⚠️ IMPORTANTE: :: solo puede aparecer UNA vez por dirección</div>
+
+                <div class="warning-box">
+                    <strong>Ejemplo con IPv4 embebida:</strong>
+                    <div class="cmd-box text-xs mt-2">::FFFF:192.168.1.1  (IPv4-mapped IPv6)</div>
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Estructura de Dirección IPv6 Unicast Global</h4>
+                <div class="cmd-box text-xs">|<----- 48 bits ----->|<- 16b ->|<------- 64 bits ------->|
+|  Global Routing   | Subnet |     Interface ID      |
+|     Prefix        |   ID   |   (generalmente EUI-64)|
+2001:0DB8:ABCD      :1234    :0000:0000:0000:0001</div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Tipos de Direcciones IPv6</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Tipo</th><th>Prefijo</th><th>Alcance</th><th>Uso</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-green-400">Unicast Global</td>
+                                <td>2000::/3</td>
+                                <td>Internet</td>
+                                <td>Direcciones públicas enrutables</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-blue-400">Link-Local</td>
+                                <td>FE80::/10</td>
+                                <td>Enlace local</td>
+                                <td>Comunicación en mismo segmento (no enrutable)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-yellow-400">Unique Local</td>
+                                <td>FC00::/7</td>
+                                <td>Organización</td>
+                                <td>Privadas (equivalente RFC 1918)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-purple-400">Multicast</td>
+                                <td>FF00::/8</td>
+                                <td>Grupo</td>
+                                <td>Múltiples interfaces (reemplaza broadcast)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-red-400">Loopback</td>
+                                <td>::1/128</td>
+                                <td>Host local</td>
+                                <td>Equivalente a 127.0.0.1</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-gray-400">No especificada</td>
+                                <td>::/128</td>
+                                <td>-</td>
+                                <td>Ausencia de dirección (equivalente a 0.0.0.0)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="detail-box">
+                    <strong>Direcciones Multicast Importantes:</strong>
+                    <ul class="list-disc pl-5 mt-2 text-sm">
+                        <li><code>FF02::1</code> - Todos los nodos del enlace local</li>
+                        <li><code>FF02::2</code> - Todos los routers del enlace local</li>
+                        <li><code>FF05::2</code> - Todos los routers del sitio</li>
                     </ul>
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-4 mt-8">1. Algoritmo STP (Paso a Paso)</h3>
-                <div class="space-y-4">
-                    <div class="bg-slate-800 p-4 rounded border-l-4 border-blue-500">
-                        <h4 class="font-bold text-white">PASO 1: Elección del Puente Raíz (Root Bridge)</h4>
-                        <p class="text-sm text-slate-400 mt-1">Solo hay UNO por VLAN. Gana el <strong>BID más bajo</strong>.</p>
-                        <code class="block mt-2 text-center">BID = Prioridad (2B) + MAC (6B)</code>
-                        <p class="text-xs text-slate-500 mt-2 text-center">Prioridad Default: 32768. Desempate: MAC más baja.</p>
-                    </div>
-                    
-                    <div class="bg-slate-800 p-4 rounded border-l-4 border-blue-500">
-                        <h4 class="font-bold text-white">PASO 2: Elección de Puertos Raíz (RP)</h4>
-                        <p class="text-sm text-slate-400 mt-1">Cada switch No-Raíz elige <strong>1 puerto</strong> (mejor camino al Raíz).</p>
-                        <p class="text-xs font-bold text-blue-400 mt-2">Desempate: Costo > BID Vecino > Prioridad Puerto Vecino > ID Puerto.</p>
-                    </div>
-
-                    <div class="bg-slate-800 p-4 rounded border-l-4 border-blue-500">
-                        <h4 class="font-bold text-white">PASO 3: Puertos Designados (DP) y Bloqueo</h4>
-                        <p class="text-sm text-slate-400 mt-1">1 DP por segmento (mejor costo). El resto se bloquea.</p>
-                        <p class="text-xs font-bold text-green-400 mt-2">TRUCO: Todos los puertos del Root Bridge son DP (Forwarding).</p>
-                    </div>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Cabecera IPv6 (40 bytes fijos)</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Campo</th><th>Tamaño</th><th>Descripción</th></tr></thead>
+                        <tbody>
+                            <tr><td>Version</td><td>4 bits</td><td>Valor: 6</td></tr>
+                            <tr><td>Traffic Class</td><td>8 bits</td><td>Prioridad/QoS (equivalente a ToS en IPv4)</td></tr>
+                            <tr><td>Flow Label</td><td>20 bits</td><td>Identificador de flujo para QoS</td></tr>
+                            <tr><td>Payload Length</td><td>16 bits</td><td>Longitud de datos (sin cabecera)</td></tr>
+                            <tr><td>Next Header</td><td>8 bits</td><td>Tipo de cabecera siguiente o protocolo</td></tr>
+                            <tr><td>Hop Limit</td><td>8 bits</td><td>TTL (decrementado por cada router)</td></tr>
+                            <tr><td>Source Address</td><td>128 bits</td><td>Dirección IPv6 origen</td></tr>
+                            <tr><td>Destination Address</td><td>128 bits</td><td>Dirección IPv6 destino</td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-4 mt-8">2. Costos y Temporizadores (MEMORIZAR)</h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="table-wrapper">
-                        <table>
-                            <thead><tr><th>Velocidad</th><th>Costo IEEE (Nuevo)</th></tr></thead>
-                            <tbody>
-                                <tr><td>10 Gbps</td><td class="font-bold text-green-400">2</td></tr>
-                                <tr><td>1 Gbps</td><td class="font-bold text-green-400">4</td></tr>
-                                <tr><td>100 Mbps</td><td class="font-bold text-green-400">19</td></tr>
-                                <tr><td>10 Mbps</td><td class="font-bold text-green-400">100</td></tr>
-                            </tbody>
-                        </table>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Cabeceras de Extensión IPv6</h4>
+                <p class="text-slate-300 mb-4">IPv6 usa cabeceras opcionales encadenadas (como una lista enlazada):</p>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Hop-by-Hop Options:</strong> Procesada por todos los routers (ej: Jumbo Payload)</li>
+                    <li><strong>Routing:</strong> Especifica ruta explícita (source routing)</li>
+                    <li><strong>Fragment:</strong> Fragmentación (solo por origen)</li>
+                    <li><strong>Destination Options:</strong> Procesada solo por destino</li>
+                    <li><strong>Authentication Header (AH):</strong> Autenticación (IPsec)</li>
+                    <li><strong>ESP:</strong> Cifrado de datos (IPsec)</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">ICMPv6</h4>
+                <div class="alert-box">
+                    <strong>ICMPv6 integra:</strong> ICMP (mensajes error/control) + ARP (descubrimiento vecinos) + IGMP (multicast)
+                </div>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Neighbor Discovery (ND):</strong> Reemplaza ARP de IPv4
+                        <ul class="list-disc pl-5 mt-2">
+                            <li>Neighbor Solicitation (NS): Buscar vecino</li>
+                            <li>Neighbor Advertisement (NA): Responder con MAC</li>
+                            <li>Router Solicitation/Advertisement: Descubrir routers</li>
+                        </ul>
+                    </li>
+                    <li><strong>MLD (Multicast Listener Discovery):</strong> Gestión de grupos multicast (equivalente a IGMP)</li>
+                    <li><strong>Packet Too Big:</strong> Informa MTU cuando paquete es demasiado grande (PMTU Discovery)</li>
+                    <li><strong>Echo Request/Reply:</strong> Ping (igual que IPv4)</li>
+                </ul>
+
+                <div class="detail-box">
+                    <strong>Path MTU Discovery:</strong> Como IPv6 no permite fragmentación en routers, el origen debe descubrir el MTU mínimo del camino enviando paquetes y recibiendo mensajes ICMPv6 "Packet Too Big" si excede algún MTU.
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================== TEMA 11 ===================== -->
+        <section id="t11" class="theory-card">
+            <div class="theory-header">
+                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-exchange-alt text-blue-400 text-xl"></i></div>
+                <h2 class="text-2xl font-bold text-white">TEMA 11: Nivel de Transporte (TCP/UDP)</h2>
+            </div>
+            <div class="theory-body">
+                
+                <h3 class="text-xl font-bold text-white mb-4">1. Conceptos Generales del Nivel de Transporte</h3>
+                <div class="alert-box">
+                    <strong>⚡ FUNCIÓN:</strong> Comunicación extremo a extremo entre PROCESOS (aplicaciones), no entre hosts
+                </div>
+                
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Puertos:</strong> Identificadores de 16 bits (0-65535) que identifican aplicaciones/servicios</li>
+                    <li><strong>Rangos de puertos:</strong>
+                        <ul class="list-disc pl-5 mt-2">
+                            <li><strong>0-1023:</strong> Bien conocidos (HTTP:80, FTP:21, SSH:22, SMTP:25, DNS:53)</li>
+                            <li><strong>1024-49151:</strong> Registrados (aplicaciones específicas)</li>
+                            <li><strong>49152-65535:</strong> Dinámicos/privados/efímeros</li>
+                        </ul>
+                    </li>
+                    <li><strong>Conexión identificada por tupla:</strong> (IP origen, Puerto origen, IP destino, Puerto destino)</li>
+                    <li><strong>Multiplexación:</strong> Varios procesos comparten el mismo nivel de red (IP)</li>
+                    <li><strong>Demultiplexación:</strong> Entregar datos al proceso correcto según puerto destino</li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">2. UDP (User Datagram Protocol)</h3>
+                <div class="alert-box">
+                    <strong>⚡ LEMA UDP:</strong> "Best effort" - Hago lo que puedo, sin garantías
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Características UDP</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-red-900/20 p-4 rounded border border-red-700">
+                        <strong class="text-red-400 block mb-2">❌ Lo que NO hace UDP</strong>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>• NO orientado a conexión (sin handshake)</li>
+                            <li>• NO fiable (sin ACKs, sin retransmisiones)</li>
+                            <li>• NO garantiza orden (puede llegar desordenado)</li>
+                            <li>• NO control de flujo</li>
+                            <li>• NO control de congestión</li>
+                        </ul>
                     </div>
-                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
-                        <h4 class="text-lg font-bold text-white mb-3">Temporizadores 802.1D</h4>
-                        <ul class="space-y-2 text-sm text-slate-300">
-                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Hello Time</span> <span class="text-blue-400 font-mono">2 seg</span></li>
-                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Max Age</span> <span class="text-blue-400 font-mono">20 seg</span></li>
-                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Forward Delay</span> <span class="text-blue-400 font-mono">15 seg</span></li>
-                            <li class="flex justify-between pt-2 text-yellow-400 font-bold"><span>Convergencia Total</span> <span>50 seg</span></li>
+                    <div class="bg-green-900/20 p-4 rounded border border-green-700">
+                        <strong class="text-green-400 block mb-2">✅ Ventajas UDP</strong>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>• <strong>Rápido:</strong> Sin overhead de establecimiento</li>
+                            <li>• <strong>Simple:</strong> Cabecera de solo 8 bytes</li>
+                            <li>• <strong>Bajo retardo:</strong> Sin esperas por ACKs</li>
+                            <li>• <strong>Broadcast/Multicast:</strong> Permitidos</li>
+                            <li>• <strong>Control total:</strong> Aplicación decide qué hacer</li>
                         </ul>
                     </div>
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-2 mt-8">3. Estados (802.1D) y Variantes</h3>
-                <ul class="list-disc pl-5 text-sm text-slate-300 mb-6">
-                    <li><strong>Blocking (20s):</strong> Solo BPDU.</li>
-                    <li><strong>Listening (15s):</strong> Prepara elección.</li>
-                    <li><strong>Learning (15s):</strong> Aprende MACs.</li>
-                    <li><strong>Forwarding:</strong> Datos y MACs.</li>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Cabecera UDP (8 bytes)</h4>
+                <div class="cmd-box text-xs">0                   16                  31
++-------------------+-------------------+
+|   Puerto Origen   |  Puerto Destino   |  (16 bits cada uno)
++-------------------+-------------------+
+|     Longitud      |     Checksum      |  (16 bits cada uno)
++-------------------+-------------------+
+|                                       |
+|          Datos de Aplicación          |
+|                                       |</div>
+
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Puerto Origen:</strong> 16 bits (OPCIONAL - si no hay respuesta, puede ser 0)</li>
+                    <li><strong>Puerto Destino:</strong> 16 bits (OBLIGATORIO)</li>
+                    <li><strong>Longitud:</strong> 16 bits (cabecera + datos, mínimo 8 bytes)</li>
+                    <li><strong>Checksum:</strong> 16 bits (opcional en IPv4, obligatorio en IPv6)</li>
                 </ul>
 
                 <div class="detail-box">
-                    <strong>Tecnologías Avanzadas:</strong>
-                    <ul class="list-disc pl-5 mt-2 text-sm text-slate-300">
-                        <li><strong>PortFast:</strong> Salta a Forwarding ya. Solo puertos de acceso (PC). Evita error DHCP.</li>
-                        <li><strong>PVST+:</strong> Instancia STP por VLAN (Balanceo de carga).</li>
-                        <li><strong>RSTP (802.1w):</strong> Rápido. Estados: Discarding, Learning, Forwarding.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- TEMA 6 -->
-        <section id="t6" class="theory-card">
-            <div class="theory-header">
-                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-tags text-blue-400 text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">TEMA 6: VLANs y 802.1Q</h2>
-            </div>
-            <div class="theory-body">
-                <h3 class="text-xl font-bold text-white mb-4">1. Clasificación de VLANs</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
-                        <strong class="text-blue-400">VLAN de Datos</strong><br>
-                        <span class="text-xs text-slate-400">Usuarios normales.</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
-                        <strong class="text-red-400">VLAN 1 (Default)</strong><br>
-                        <span class="text-xs text-slate-400">Todos los puertos nacen aquí. Tráfico control. Insegura.</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
-                        <strong class="text-yellow-400">VLAN Nativa</strong><br>
-                        <span class="text-xs text-slate-400">Tráfico SIN ETIQUETA (Untagged) en Trunks. Default=1.</span>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded border border-slate-700">
-                        <strong class="text-purple-400">VLAN de Voz</strong><br>
-                        <span class="text-xs text-slate-400">Prioridad (QoS), < 150ms delay.</span>
-                    </div>
+                    <strong>Cálculo del Checksum:</strong> Incluye pseudo-cabecera (IP origen, IP destino, protocolo, longitud UDP) + cabecera UDP + datos. Detecta errores de transmisión.
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-4">2. La Trama 802.1Q</h3>
-                <p class="mb-2 text-slate-300">Inserta un <strong>Tag de 4 Bytes</strong> (32 bits).</p>
-                <div class="cmd-box text-center text-sm">
-[ Dest | Orig | TAG (4B) | Tipo | Datos | FCS ]
-                </div>
-                <div class="bg-slate-900 p-4 rounded border border-slate-700 text-sm">
-                    <strong class="text-white block mb-2">Estructura del TAG:</strong>
-                    <ul class="space-y-1 text-slate-300">
-                        <li><span class="text-blue-400 font-mono">TPID (16 bits):</span> Valor <strong>0x8100</strong>.</li>
-                        <li><span class="text-blue-400 font-mono">TCI (16 bits):</span>
-                            <ul class="pl-4 list-disc">
-                                <li><strong>Prioridad (3 bits):</strong> QoS 802.1p.</li>
-                                <li><strong>CFI (1 bit):</strong> Token Ring.</li>
-                                <li><strong>VID (12 bits):</strong> ID de VLAN (hasta 4096).</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <h3 class="text-xl font-bold text-white mb-2 mt-6">3. Rangos de ID</h3>
-                <ul class="list-disc pl-5 text-sm text-slate-300">
-                    <li><strong>Normal (1-1005):</strong> En <code>vlan.dat</code>. VTP OK. (1002-1005 reservados).</li>
-                    <li><strong>Extendido (1006-4094):</strong> En <code>running-config</code>. VTP Transparente requerido.</li>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Aplicaciones Típicas UDP</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>DNS:</strong> Consultas rápidas (si falla, reintenta la aplicación)</li>
+                    <li><strong>DHCP:</strong> Configuración rápida de red</li>
+                    <li><strong>Streaming:</strong> Audio/video en tiempo real (pérdida tolerable)</li>
+                    <li><strong>VoIP:</strong> Llamadas telefónicas por IP (velocidad > fiabilidad)</li>
+                    <li><strong>Juegos online:</strong> Baja latencia crítica</li>
+                    <li><strong>SNMP:</strong> Gestión de red simple</li>
+                    <li><strong>TFTP:</strong> Transferencia simple de archivos</li>
                 </ul>
-            </div>
-        </section>
 
-        <!-- TEMA 7 -->
-        <section id="t7" class="theory-card">
-            <div class="theory-header">
-                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-server text-blue-400 text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">TEMA 7: VTP (VLAN Trunking Protocol)</h2>
-            </div>
-            <div class="theory-body">
-                <p class="mb-4 text-slate-300">Protocolo Cisco para sincronizar VLANs. Usa tramas L2 multicast.</p>
+                <h3 class="text-xl font-bold text-white mb-4 mt-10">3. TCP (Transmission Control Protocol)</h3>
+                <div class="alert-box">
+                    <strong>⚡ LEMA TCP:</strong> "Confiable, ordenado, sin pérdidas" - Garantías totales
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Características TCP</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>Orientado a conexión:</strong> Handshake antes de enviar datos</li>
+                    <li><strong>Fiable:</strong> ACKs + retransmisiones garantizan entrega</li>
+                    <li><strong>Ordenado:</strong> Números de secuencia por cada byte</li>
+                    <li><strong>Full-duplex:</strong> Datos bidireccionales simultáneos</li>
+                    <li><strong>Control de flujo:</strong> Receptor controla tasa del emisor (ventana deslizante)</li>
+                    <li><strong>Control de congestión:</strong> Emisor adapta tasa según estado de la red</li>
+                    <li><strong>Byte stream:</strong> Flujo continuo, sin fronteras de mensaje</li>
+                    <li><strong>Point-to-point:</strong> 1 emisor, 1 receptor (no broadcast/multicast)</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Cabecera TCP (20-60 bytes)</h4>
+                <div class="cmd-box text-xs">0                   16                  31
++-------------------+-------------------+
+|   Puerto Origen   |  Puerto Destino   |
++-------------------+-------------------+
+|        Número de Secuencia (32b)      |  ← Identifica primer byte de datos
++-------------------+-------------------+
+|    Número de Reconocimiento (32b)     |  ← Siguiente byte esperado
++-------------------+-------------------+
+| Offset|Reserv|Flags|    Ventana      |
++-------------------+-------------------+
+|     Checksum      | Puntero Urgente   |
++-------------------+-------------------+
+|        Opciones (si hay)              |
++-------------------+-------------------+</div>
 
                 <div class="table-wrapper">
                     <table>
-                        <thead><tr><th>Modo</th><th>Crea VLANs?</th><th>Sincroniza?</th><th>Reenvía?</th><th>Guarda en</th></tr></thead>
+                        <thead><tr><th>Campo</th><th>Tamaño</th><th>Descripción</th></tr></thead>
                         <tbody>
-                            <tr><td class="text-green-400 font-bold">Servidor</td><td>SÍ</td><td>SÍ</td><td>SÍ</td><td>NVRAM (vlan.dat)</td></tr>
-                            <tr><td class="text-blue-400 font-bold">Cliente</td><td>NO</td><td>SÍ</td><td>SÍ</td><td>RAM (Volátil)</td></tr>
-                            <tr><td class="text-gray-400 font-bold">Transparente</td><td>SÍ (Local)</td><td>NO</td><td>SÍ</td><td>NVRAM</td></tr>
+                            <tr><td>Puerto Origen/Destino</td><td>16 bits c/u</td><td>Identifican procesos</td></tr>
+                            <tr><td>Sequence Number</td><td>32 bits</td><td>Número del primer byte de datos</td></tr>
+                            <tr><td>ACK Number</td><td>32 bits</td><td>Siguiente byte esperado (si ACK=1)</td></tr>
+                            <tr><td>Data Offset</td><td>4 bits</td><td>Tamaño cabecera en palabras de 32 bits</td></tr>
+                            <tr><td>Flags</td><td>6 bits</td><td>URG, ACK, PSH, RST, SYN, FIN</td></tr>
+                            <tr><td>Window</td><td>16 bits</td><td>Espacio libre en buffer receptor</td></tr>
+                            <tr><td>Checksum</td><td>16 bits</td><td>Obligatorio (incluye pseudo-cabecera)</td></tr>
+                            <tr><td>Urgent Pointer</td><td>16 bits</td><td>Si URG=1, offset de datos urgentes</td></tr>
+                            <tr><td>Opciones</td><td>0-40 bytes</td><td>MSS, Window Scale, SACK, Timestamps</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="alert-box mt-6">
-                    <strong class="text-red-400 text-xl"><i class="fa-solid fa-bomb"></i> Número de Revisión (Revision Number)</strong>
-                    <p class="mt-2 text-slate-300 text-sm">Contador que sube +1 por cambio. Los switches <strong>obedecen a la revisión más alta</strong>.</p>
-                    <p class="mt-2 font-bold text-white text-sm">Riesgo: Switch viejo con revisión alta borra VLANs de la red.</p>
-                    <p class="text-sm text-slate-300"><strong>Reset:</strong> Cambiar Dominio o pasar a Transparente.</p>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Flags TCP (Bits de Control)</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Flag</th><th>Significado</th><th>Uso</th></tr></thead>
+                        <tbody>
+                            <tr><td class="font-bold text-blue-400">SYN</td><td>Sincronización</td><td>Establecimiento de conexión (handshake)</td></tr>
+                            <tr><td class="font-bold text-green-400">ACK</td><td>Acknowledgment</td><td>Campo ACK number es válido</td></tr>
+                            <tr><td class="font-bold text-red-400">FIN</td><td>Finish</td><td>Cierre ordenado de conexión</td></tr>
+                            <tr><td class="font-bold text-red-400">RST</td><td>Reset</td><td>Cierre abrupto (error o rechazo)</td></tr>
+                            <tr><td class="font-bold text-yellow-400">PSH</td><td>Push</td><td>Entregar datos inmediatamente a aplicación</td></tr>
+                            <tr><td class="font-bold text-purple-400">URG</td><td>Urgent</td><td>Datos urgentes presentes (ej: Ctrl+C)</td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-2 mt-6">Mensajes VTP</h3>
-                <ul class="list-disc pl-5 text-sm text-slate-300">
-                    <li><strong>Summary:</strong> Cada 5 min. Lleva Revisión.</li>
-                    <li><strong>Subset:</strong> Lleva detalles de VLANs.</li>
-                    <li><strong>Request:</strong> Cliente pide datos.</li>
-                    <li><strong>Pruning:</strong> Poda tráfico innecesario.</li>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Establecimiento de Conexión (3-Way Handshake)</h4>
+                <div class="cmd-box">Cliente                                      Servidor
+  │                                            │
+  │ (1) SYN (seq=x) ──────────────────────────>│  Cliente solicita conexión
+  │                                            │  ISN aleatorio x
+  │                                            │
+  │<─ (2) SYN-ACK (seq=y, ack=x+1) ───────────│  Servidor acepta y sincroniza
+  │                                            │  ISN aleatorio y, ACK de x
+  │                                            │
+  │ (3) ACK (ack=y+1) ────────────────────────>│  Cliente confirma
+  │                                            │
+  │         ✅ CONEXIÓN ESTABLECIDA            │
+  │ <────── Intercambio de datos ────────────> │</div>
+
+                <div class="detail-box">
+                    <strong>ISN (Initial Sequence Number):</strong> Se elige aleatoriamente para evitar que segmentos de conexiones antiguas se confundan con la actual.
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Cierre de Conexión (4-Way Handshake)</h4>
+                <div class="cmd-box">Cliente                                      Servidor
+  │                                            │
+  │ (1) FIN (seq=x) ───────────────────────────>│  Cliente quiere cerrar
+  │                                            │
+  │<─ (2) ACK (ack=x+1) ───────────────────────│  Servidor confirma
+  │                                            │  (puede seguir enviando)
+  │                                            │
+  │<─ (3) FIN (seq=y) ─────────────────────────│  Servidor quiere cerrar
+  │                                            │
+  │ (4) ACK (ack=y+1) ─────────────────────────>│  Cliente confirma
+  │                                            │
+  │         ✅ CONEXIÓN CERRADA                │</div>
+
+                <div class="warning-box">
+                    <strong>Cierre Abrupto (RST):</strong> Se usa para cancelar inmediatamente sin esperar ACKs. Ambos liberan recursos al instante. Se usa en errores o rechazos.
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Control de Flujo (Ventana Deslizante)</h4>
+                <div class="alert-box">
+                    <strong>Objetivo:</strong> Evitar que el emisor sature al receptor enviando más rápido de lo que puede procesar.
+                </div>
+
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>RcvWindow:</strong> Campo Window en cabecera = espacio libre en buffer receptor</li>
+                    <li><strong>Regla:</strong> Emisor NO puede tener más datos sin ACK que el valor de RcvWindow</li>
+                    <li><strong>ACKs acumulativos:</strong> ACK N significa "recibí todo hasta N-1, espero N ahora"</li>
+                    <li><strong>Window = 0:</strong> Receptor lleno, emisor se detiene (pero envía sondas periódicas)</li>
                 </ul>
-            </div>
-        </section>
 
-        <!-- TEMA 8 -->
-        <section id="t8" class="theory-card">
-            <div class="theory-header">
-                <div class="bg-blue-600/20 p-2 rounded-lg"><i class="fa-solid fa-route text-blue-400 text-xl"></i></div>
-                <h2 class="text-2xl font-bold text-white">TEMA 8: Enrutamiento Inter-VLAN</h2>
-            </div>
-            <div class="theory-body">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
-                        <h4 class="text-xl font-bold text-purple-400 mb-3 border-b border-slate-600 pb-2">ROAS (Router-on-a-Stick)</h4>
-                        <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300 mb-4">
-                            <li>Router externo + 1 Trunk.</li>
-                            <li>Usa <strong>Subinterfaces</strong> (<code>Fa0/0.10</code>).</li>
-                            <li>Obligatorio: <code>encapsulation dot1q 10</code>.</li>
-                            <li>Interfaz física SIN IP.</li>
-                            <li><strong>Desventaja:</strong> Cuello de botella.</li>
-                        </ul>
-                    </div>
+                <div class="cmd-box text-xs">Ejemplo:
+RcvWindow = 4000 bytes
+Emisor puede enviar máximo 4000 bytes sin recibir ACK
+Si envía 3000 y recibe ACK → puede enviar otros 4000
+Si RcvWindow = 0 → emisor para (pero envía window probes)</div>
 
-                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
-                        <h4 class="text-xl font-bold text-blue-400 mb-3 border-b border-slate-600 pb-2">Switch Multicapa (SVI)</h4>
-                        <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300 mb-4">
-                            <li>Hardware ASIC (Rápido).</li>
-                            <li>Usa <strong>SVI</strong> (<code>interface vlan 10</code>).</li>
-                            <li>Obligatorio: <code>ip routing</code>.</li>
-                            <li>Puerto Enrutado: <code>no switchport</code>.</li>
-                        </ul>
-                    </div>
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Temporizadores y Retransmisión</h4>
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>RTT (Round Trip Time):</strong> Tiempo ida + vuelta de un segmento</li>
+                    <li><strong>RTT estimado:</strong> Media móvil ponderada
+                        <div class="cmd-box text-xs mt-2">RTT_estimado = (1-α) × RTT_estimado + α × RTT_medido
+α = 0.125 (1/8) típicamente
+
+Deviation = (1-β) × Deviation + β × |RTT_medido - RTT_estimado|
+β = 0.25 (1/4) típicamente
+
+Timeout = RTT_estimado + 4 × Deviation</div>
+                    </li>
+                    <li><strong>Algoritmo de Karn:</strong> Ignorar RTT de segmentos retransmitidos (ambigüedad: ¿ACK de original o retransmisión?)</li>
+                    <li><strong>Exponential Backoff:</strong> Tras cada timeout, duplicar el valor de timeout (1s → 2s → 4s → 8s...)</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Control de Congestión</h4>
+                <div class="alert-box">
+                    <strong>Control de Flujo vs Control de Congestión:</strong><br>
+                    • Flujo = Proteger al RECEPTOR (no saturarlo)<br>
+                    • Congestión = Proteger a la RED (no saturar routers intermedios)
                 </div>
+
+                <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+                    <li><strong>cwnd (Congestion Window):</strong> Ventana de congestión del emisor</li>
+                    <li><strong>Ventana efectiva:</strong> min(cwnd, RcvWindow)</li>
+                    <li><strong>ssthresh (Slow Start Threshold):</strong> Umbral para cambiar de algoritmo</li>
+                </ul>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Slow Start</h4>
+                <div class="cmd-box">Inicio: cwnd = 1 MSS, ssthresh = 64 KB (o RcvWindow)
+
+Por cada ACK recibido: cwnd = cwnd + 1 MSS
+  → Crecimiento EXPONENCIAL: 1 → 2 → 4 → 8 → 16...
+
+Detener cuando:
+  • cwnd ≥ ssthresh  → Pasar a Congestion Avoidance
+  • Timeout          → Reducir ssthresh y reiniciar</div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Congestion Avoidance (AIMD)</h4>
+                <div class="cmd-box">Cuando cwnd ≥ ssthresh:
+
+Por cada RTT: cwnd = cwnd + 1 MSS
+  → Crecimiento LINEAL: +1 MSS por RTT
+
+AIMD: Additive Increase, Multiplicative Decrease
+  • Incremento aditivo: +1 por RTT
+  • Decremento multiplicativo: /2 tras pérdida</div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Reacción ante Pérdidas</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Evento</th><th>Acción</th><th>Interpretación</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-red-400">Timeout</td>
+                                <td>ssthresh = cwnd/2<br>cwnd = 1 MSS<br>Reiniciar Slow Start</td>
+                                <td>Congestión severa</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-yellow-400">3 ACKs duplicados</td>
+                                <td>ssthresh = cwnd/2<br>cwnd = ssthresh<br>Fast Retransmit + Recovery</td>
+                                <td>Congestión leve (TCP Reno)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="detail-box">
+                    <strong>Fast Retransmit:</strong> 3 ACK duplicados = pérdida detectada. Retransmitir sin esperar timeout.<br>
+                    <strong>Fast Recovery (TCP Reno):</strong> No volver a cwnd=1, sino a ssthresh (congestion avoidance).
+                </div>
+
+                <h4 class="text-lg font-bold text-white mb-2 mt-6">Comparativa TCP vs UDP</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Característica</th><th>TCP</th><th>UDP</th></tr></thead>
+                        <tbody>
+                            <tr><td>Conexión</td><td class="text-green-400">Orientado (3-way handshake)</td><td class="text-red-400">Sin conexión</td></tr>
+                            <tr><td>Fiabilidad</td><td class="text-green-400">Fiable (ACK + retx)</td><td class="text-red-400">No fiable</td></tr>
+                            <tr><td>Orden</td><td class="text-green-400">Ordenado (seq numbers)</td><td class="text-red-400">Sin orden garantizado</td></tr>
+                            <tr><td>Control de flujo</td><td class="text-green-400">Sí (ventana deslizante)</td><td class="text-red-400">No</td></tr>
+                            <tr><td>Control de congestión</td><td class="text-green-400">Sí (slow start, CA)</td><td class="text-red-400">No</td></tr>
+                            <tr><td>Cabecera</td><td class="text-yellow-400">20-60 bytes</td><td class="text-green-400">8 bytes</td></tr>
+                            <tr><td>Velocidad</td><td class="text-red-400">Más lento</td><td class="text-green-400">Más rápido</td></tr>
+                            <tr><td>Overhead</td><td class="text-red-400">Alto</td><td class="text-green-400">Mínimo</td></tr>
+                            <tr><td>Broadcast/Multicast</td><td class="text-red-400">No soporta</td><td class="text-green-400">Sí soporta</td></tr>
+                            <tr><td>Uso típico</td><td class="text-blue-400">Web, Email, FTP, SSH</td><td class="text-blue-400">DNS, DHCP, Streaming, VoIP</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning-box mt-6">
+                    <strong>🎯 Regla de Oro:</strong><br>
+                    • ¿Necesitas que TODOS los datos lleguen correctos y ordenados? → <strong>TCP</strong><br>
+                    • ¿Prefieres velocidad aunque se pierda algo? → <strong>UDP</strong>
+                </div>
+
             </div>
         </section>
 
-        <!-- SIMULADOR INFINITO -->
+        <!-- ===================== SIMULADOR ===================== -->
         <section id="simulator" class="mt-24 mb-20">
             <div class="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl p-12 shadow-2xl text-center border-2 border-indigo-500/30">
-                <h2 class="text-5xl font-black text-white mb-6 tracking-tight">SIMULADOR INFINITO</h2>
-                <p class="text-blue-200 mb-10 text-xl">Banco de preguntas masivo. Barajado inteligente. Nunca el mismo test.</p>
+                <h2 class="text-5xl font-black text-white mb-6">SIMULADOR DE EXAMEN</h2>
+                <p class="text-blue-200 mb-10 text-xl">Banco de 80+ preguntas. Respuestas barajadas en cada intento. Nunca el mismo test.</p>
                 
-                <div id="quiz-container" class="bg-white text-slate-900 rounded-2xl p-10 max-w-4xl mx-auto text-left shadow-2xl min-h-[500px] relative">
+                <div id="quiz-container" class="bg-white text-slate-900 rounded-2xl p-10 max-w-4xl mx-auto text-left shadow-2xl min-h-[500px]">
                     
-                    <!-- Pantalla Inicio -->
                     <div id="quiz-start" class="text-center py-16">
-                        <div class="text-7xl text-blue-600 mb-8 animate-bounce"><i class="fa-solid fa-bolt"></i></div>
-                        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white text-2xl font-bold py-5 px-16 rounded-full transition shadow-xl hover:shadow-blue-600/40 transform hover:scale-105">
+                        <div class="text-7xl text-blue-600 mb-8 animate-bounce"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white text-2xl font-bold py-5 px-16 rounded-full transition shadow-xl transform hover:scale-105">
                             GENERAR TEST ALEATORIO
                         </button>
-                        <p class="text-base text-slate-500 mt-8 font-medium">Se generarán 10 preguntas únicas de un banco de 60+.</p>
+                        <p class="text-base text-slate-500 mt-8 font-medium">10 preguntas únicas barajadas del banco completo.</p>
                     </div>
 
-                    <!-- Pantalla Pregunta -->
                     <div id="quiz-question" class="hidden">
-                        <div class="flex justify-between items-center mb-8 pb-6 border-b border-slate-100">
-                            <span class="text-xs font-bold text-white bg-slate-800 px-4 py-1.5 rounded-full tracking-widest uppercase" id="q-topic">TEMA X</span>
+                        <div class="flex justify-between items-center mb-8 pb-6 border-b">
+                            <span class="text-xs font-bold text-white bg-slate-800 px-4 py-1.5 rounded-full" id="q-topic">TEMA X</span>
                             <span class="text-blue-600 font-black text-xl" id="q-counter">1/10</span>
                         </div>
-                        
                         <h3 class="text-2xl font-bold text-slate-800 mb-10 leading-snug" id="q-text">...</h3>
-                        
                         <div id="q-options" class="space-y-4"></div>
-
-                        <div id="feedback" class="hidden mt-8 p-6 rounded-xl border border-slate-200 bg-slate-50 feedback-panel">
+                        <div id="feedback" class="hidden mt-8 p-6 rounded-xl border bg-slate-50">
                             <div class="flex gap-5">
-                                <div id="fb-icon" class="text-4xl pt-1"></div>
+                                <div id="fb-icon" class="text-4xl"></div>
                                 <div>
                                     <h4 id="fb-title" class="font-black text-xl mb-2"></h4>
                                     <p id="fb-text" class="text-base text-slate-700 leading-relaxed"></p>
                                 </div>
                             </div>
                         </div>
-
-                        <button id="btn-next" onclick="nextQuestion()" class="hidden w-full mt-10 bg-slate-900 hover:bg-black text-white text-lg font-bold py-4 rounded-xl transition shadow-lg flex justify-center items-center gap-3">Siguiente Pregunta <i class="fa-solid fa-arrow-right"></i></button>
+                        <button id="btn-next" onclick="nextQuestion()" class="hidden w-full mt-10 bg-slate-900 hover:bg-black text-white text-lg font-bold py-4 rounded-xl transition shadow-lg">Siguiente Pregunta <i class="fa-solid fa-arrow-right ml-2"></i></button>
                     </div>
 
-                    <!-- Pantalla Resultados -->
                     <div id="result-screen" class="hidden text-center py-12">
                         <h3 class="text-4xl font-black text-slate-800 mb-8">Resultados Finales</h3>
-                        <div class="inline-flex items-center justify-center w-48 h-48 rounded-full border-[10px] border-blue-600 mb-8 bg-blue-50 shadow-inner">
+                        <div class="inline-flex items-center justify-center w-48 h-48 rounded-full border-[10px] border-blue-600 mb-8 bg-blue-50">
                             <span id="score-display" class="text-7xl font-black text-blue-600"></span>
                         </div>
                         <p id="score-msg" class="text-2xl text-slate-700 mb-12 font-bold px-8"></p>
@@ -436,73 +989,105 @@
     </main>
 
     <script>
-        /* --- BANCO DE DATOS MASIVO (60+ PREGUNTAS ÚNICAS) --- */
         const masterQuestionBank = [
-            // --- TEMA 4: JERÁRQUICAS ---
-            { t: "T4", q: "¿Cuál es la función PRINCIPAL de la Capa de Núcleo (Core)?", o: ["Conmutación de alta velocidad", "Filtrado de paquetes", "Conexión de usuarios", "Routing Inter-VLAN"], c: 0, e: "El Núcleo es el backbone. Solo debe mover datos rápido." },
-            { t: "T4", q: "En el modelo jerárquico, ¿dónde se deben aplicar las ACLs y políticas?", o: ["Distribución", "Acceso", "Núcleo", "Internet"], c: 0, e: "La capa de Distribución es el punto de control inteligente." },
-            { t: "T4", q: "¿Qué término describe el número de saltos entre dos puntos de la red?", o: ["Diámetro de la red", "Ancho de banda", "Latencia", "Convergenia"], c: 0, e: "El diámetro mide los saltos. Debe ser bajo." },
-            { t: "T4", q: "¿Qué tecnología combina varios enlaces físicos en uno lógico?", o: ["EtherChannel", "STP", "VTP", "OSPF"], c: 0, e: "EtherChannel agrega ancho de banda y da redundancia." },
-            { t: "T4", q: "¿Qué factor de forma permite gestionar varios switches como una sola unidad lógica?", o: ["Apilable (Stackable)", "Modular", "Fijo", "Rack"], c: 0, e: "Los switches apilables comparten el plano de control (StackWise)." },
-            { t: "T4", q: "¿Qué capa es responsable de la seguridad de puerto (Port Security)?", o: ["Acceso", "Distribución", "Núcleo", "WAN"], c: 0, e: "La seguridad se aplica en el borde, donde se conecta el usuario." },
-            { t: "T4", q: "¿Dónde se agrupan los servidores en un diseño moderno?", o: ["Granja de Servidores (Data Center)", "Capa de Acceso", "DMZ", "Capa de Núcleo directo"], c: 0, e: "Se conectan a switches de alta gama en un bloque de servicios." },
-            { t: "T4", q: "¿Qué tarea está PROHIBIDA en la capa de Núcleo?", o: ["Inspección de paquetes profunda", "Redundancia", "QoS básico", "Routing rápido"], c: 0, e: "Cualquier cosa que use mucha CPU está prohibida en el Core." },
+            // TEMA 9: APLICACIONES (25 preguntas)
+            { t: "T9", q: "¿Qué protocolo usa DHCP?", o: ["UDP", "TCP", "ICMP", "ARP"], c: 0, e: "DHCP usa UDP puertos 67 (servidor) y 68 (cliente)." },
+            { t: "T9", q: "Orden correcto de mensajes DHCP:", o: ["DISCOVER→OFFER→REQUEST→ACK", "REQUEST→OFFER→ACK→DISCOVER", "OFFER→DISCOVER→REQUEST→ACK", "ACK→REQUEST→OFFER→DISCOVER"], c: 0, e: "DORA: Discover, Offer, Request, ACK. El cliente puede usar la IP tras el ACK." },
+            { t: "T9", q: "Rango de IPs de APIPA:", o: ["169.254.0.0/16", "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"], c: 0, e: "APIPA usa 169.254.x.x cuando no hay servidor DHCP disponible." },
+            { t: "T9", q: "Puerto DNS:", o: ["53", "25", "80", "110"], c: 0, e: "DNS usa puerto 53 (UDP para consultas, TCP para transferencias de zona)." },
+            { t: "T9", q: "Registro DNS para nombre→IPv4:", o: ["A", "AAAA", "MX", "CNAME"], c: 0, e: "A = IPv4, AAAA = IPv6, MX = mail, CNAME = alias, PTR = reverso." },
+            { t: "T9", q: "Registro DNS para servidor de correo:", o: ["MX", "A", "NS", "PTR"], c: 0, e: "MX indica el servidor de correo del dominio con prioridad." },
+            { t: "T9", q: "Puerto de control FTP:", o: ["21", "20", "22", "25"], c: 0, e: "FTP: Puerto 21 = control (comandos), Puerto 20 = datos (archivos)." },
+            { t: "T9", q: "Puerto de datos FTP:", o: ["20", "21", "22", "23"], c: 0, e: "Puerto 20 para transferencia de archivos en FTP." },
+            { t: "T9", q: "En FTP modo activo, ¿quién inicia conexión de datos?", o: ["Servidor", "Cliente", "Ambos", "Ninguno"], c: 0, e: "Modo activo: servidor inicia datos. Modo pasivo: cliente inicia ambas." },
+            { t: "T9", q: "Puerto SMTP:", o: ["25", "110", "80", "143"], c: 0, e: "SMTP usa puerto 25 para envío de correo (587 con STARTTLS)." },
+            { t: "T9", q: "Puerto POP3:", o: ["110", "25", "143", "993"], c: 0, e: "POP3 usa puerto 110 para recepción (995 con SSL)." },
+            { t: "T9", q: "Protocolo para enviar correo:", o: ["SMTP", "POP3", "IMAP", "HTTP"], c: 0, e: "SMTP = envío, POP3/IMAP = recepción de correo." },
+            { t: "T9", q: "Protocolo para recibir correo:", o: ["POP3", "SMTP", "FTP", "DNS"], c: 0, e: "POP3 o IMAP descargan correo del servidor al cliente." },
+            { t: "T9", q: "¿Qué permite MIME en correo?", o: ["Enviar archivos binarios", "Solo texto ASCII", "Comprimir mensajes", "Cifrar correo"], c: 0, e: "MIME codifica binario (Base64) para enviarlo como texto ASCII." },
+            { t: "T9", q: "Puerto HTTP:", o: ["80", "443", "8080", "21"], c: 0, e: "HTTP usa 80, HTTPS usa 443 (HTTP sobre TLS/SSL)." },
+            { t: "T9", q: "Método HTTP para solicitar recurso:", o: ["GET", "POST", "PUT", "DELETE"], c: 0, e: "GET solicita, POST envía datos, PUT crea/actualiza, DELETE elimina." },
+            { t: "T9", q: "Código HTTP para 'OK':", o: ["200", "404", "301", "500"], c: 0, e: "200=OK, 404=NotFound, 301=Moved, 500=ServerError, 304=NotModified." },
+            { t: "T9", q: "Código HTTP para 'Not Found':", o: ["404", "200", "500", "403"], c: 0, e: "404 = recurso no encontrado en el servidor." },
+            { t: "T9", q: "¿Qué es HTTP stateless?", o: ["No guarda estado entre peticiones", "Mantiene sesión activa", "Requiere login siempre", "Usa cookies obligatorio"], c: 0, e: "Cada petición HTTP es independiente, sin memoria de anteriores." },
+            { t: "T9", q: "Diferencia HTTP/1.0 vs HTTP/1.1:", o: ["1.1 usa conexiones persistentes", "1.0 más rápido", "1.1 solo GET", "1.0 con cookies"], c: 0, e: "HTTP/1.1 reutiliza conexión TCP para múltiples objetos (persistente)." },
+            { t: "T9", q: "Puerto SSH:", o: ["22", "23", "21", "80"], c: 0, e: "SSH (seguro/cifrado) usa 22, Telnet (inseguro) usa 23." },
+            { t: "T9", q: "Puerto Telnet:", o: ["23", "22", "80", "443"], c: 0, e: "Telnet 23 es inseguro (texto plano), preferir SSH 22." },
+            { t: "T9", q: "Comando FTP para descargar archivo:", o: ["RETR", "GET", "STOR", "LIST"], c: 0, e: "RETR descarga, STOR sube, LIST lista archivos." },
+            { t: "T9", q: "Respuesta SMTP para 'OK':", o: ["250", "220", "354", "550"], c: 0, e: "250=OK, 220=Ready, 354=Start mail, 550=Mailbox unavailable." },
+            { t: "T9", q: "Comando POP3 para listar mensajes:", o: ["LIST", "STAT", "RETR", "DELE"], c: 0, e: "LIST lista mensajes, STAT muestra total, RETR descarga, DELE marca para borrar." },
             
-            // --- TEMA 5: STP (Valores y Algoritmo) ---
-            { t: "T5", q: "En STP 802.1D, ¿cuánto dura el temporizador Max Age?", o: ["20 segundos", "15 segundos", "2 segundos", "50 segundos"], c: 0, e: "Max Age = 20s. Forward Delay = 15s. Hello = 2s." },
-            { t: "T5", q: "¿Cuál es el tiempo TOTAL de convergencia en STP clásico (Listen+Learn+MaxAge)?", o: ["50 segundos", "30 segundos", "20 segundos", "2 segundos"], c: 0, e: "20s (Max Age) + 15s (Listen) + 15s (Learn) = 50s." },
-            { t: "T5", q: "¿Qué costo tiene un enlace de 10 Gbps según IEEE revisado?", o: ["2", "1", "4", "19"], c: 0, e: "10G=2, 1G=4, 100M=19." },
-            { t: "T5", q: "¿Qué costo tiene un enlace de 100 Mbps según IEEE revisado?", o: ["19", "10", "100", "4"], c: 0, e: "100Mbps = 19." },
-            { t: "T5", q: "¿Qué criterio es el PRIMERO para elegir el Root Bridge?", o: ["Menor BID", "Mayor MAC", "Menor IP", "Mayor prioridad"], c: 0, e: "Gana el switch con el Bridge ID más bajo." },
-            { t: "T5", q: "Si dos switches tienen la misma prioridad, ¿qué desempata el Root Bridge?", o: ["La MAC más baja", "La MAC más alta", "El puerto más bajo", "La IP más alta"], c: 0, e: "BID = Prioridad + MAC. Si prioridad igual, gana MAC baja." },
-            { t: "T5", q: "¿Qué parte del BID cambia por defecto en Cisco (PVST+)?", o: ["Prioridad + ID VLAN", "Solo MAC", "Solo Prioridad", "Nada"], c: 0, e: "La prioridad (2 bytes) incluye el ID de VLAN (Sys ID Ext)." },
-            { t: "T5", q: "¿Cuántos Puertos Raíz tiene un switch que NO es Root?", o: ["Uno", "Dos", "Ninguno", "Uno por enlace"], c: 0, e: "Solo un mejor camino hacia el Root." },
-            { t: "T5", q: "¿Qué estado de puerto STP aprende MACs pero NO envía datos?", o: ["Learning", "Listening", "Blocking", "Forwarding"], c: 0, e: "Learning puebla la tabla MAC antes de abrir." },
-            { t: "T5", q: "¿Qué hace la función PortFast?", o: ["Salta a Forwarding inmediatamente", "Desactiva STP", "Aumenta la velocidad", "Prioriza voz"], c: 0, e: "Evita los 30s de espera. Solo para PC/Teléfonos." },
-            { t: "T5", q: "¿Qué estado NO existe en RSTP (802.1w)?", o: ["Blocking", "Discarding", "Learning", "Forwarding"], c: 0, e: "RSTP usa 'Discarding' en lugar de Blocking/Listening." },
+            // TEMA 10: NAT e IPv6 (20 preguntas)
+            { t: "T10", q: "¿Qué resuelve NAT?", o: ["Escasez de IPs públicas", "Fragmentación", "Enrutamiento", "DNS"], c: 0, e: "NAT permite múltiples hosts privados compartir pocas IPs públicas." },
+            { t: "T10", q: "Rango privado RFC 1918 clase A:", o: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16"], c: 0, e: "10.x.x.x (clase A), 172.16-31.x.x (clase B), 192.168.x.x (clase C)." },
+            { t: "T10", q: "Rango privado RFC 1918 clase B:", o: ["172.16.0.0/12", "10.0.0.0/8", "192.168.0.0/16", "169.254.0.0/16"], c: 0, e: "172.16.0.0 a 172.31.255.255 (clase B privada)." },
+            { t: "T10", q: "Rango privado RFC 1918 clase C:", o: ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12", "169.254.0.0/16"], c: 0, e: "192.168.0.0 a 192.168.255.255 (clase C privada)." },
+            { t: "T10", q: "NAT estático:", o: ["1 IP privada ↔ 1 IP pública fija", "Pool dinámico", "Múltiples hosts→1 IP", "Sin traducción"], c: 0, e: "Mapeo fijo uno a uno, usado para servidores internos." },
+            { t: "T10", q: "PAT traduce:", o: ["IP + puerto origen", "Solo IP origen", "Solo puerto", "IP destino"], c: 0, e: "PAT (overload) usa puertos para diferenciar hosts internos con 1 IP pública." },
+            { t: "T10", q: "¿Cuántos hosts soporta PAT con 1 IP pública?", o: ["~65000", "254", "1024", "Ilimitados"], c: 0, e: "~65536 puertos teóricos (menos reservados = ~65000 prácticos)." },
+            { t: "T10", q: "Bits de dirección IPv6:", o: ["128", "32", "64", "256"], c: 0, e: "IPv6 = 128 bits vs IPv4 = 32 bits. 2^128 direcciones." },
+            { t: "T10", q: "Tamaño cabecera IPv6:", o: ["40 bytes fijos", "20 bytes", "Variable 20-60", "60 bytes"], c: 0, e: "IPv6 siempre 40 bytes fijos (extensiones aparte)." },
+            { t: "T10", q: "¿IPv6 tiene checksum en cabecera?", o: ["No", "Sí", "Opcional", "Solo en datos"], c: 0, e: "IPv6 elimina checksum de cabecera (delegado a L2 y L4)." },
+            { t: "T10", q: "¿Quién fragmenta en IPv6?", o: ["Solo origen", "Solo routers", "Ambos", "Nadie"], c: 0, e: "IPv6 no permite fragmentación en routers, solo en origen (PMTU Discovery)." },
+            { t: "T10", q: "Notación correcta IPv6:", o: ["2001:DB8::1", "2001:DB8:0:0:1", "2001.DB8.0.1", "2001-DB8-1"], c: 0, e: "Grupos hex con : y :: para comprimir ceros (una vez solo)." },
+            { t: "T10", q: "Prefijo IPv6 unicast global:", o: ["2000::/3", "FE80::/10", "FF00::/8", "FC00::/7"], c: 0, e: "2000::/3 son públicas enrutables en Internet." },
+            { t: "T10", q: "Prefijo IPv6 link-local:", o: ["FE80::/10", "2000::/3", "FF00::/8", "::1/128"], c: 0, e: "FE80:: para comunicación local en el mismo enlace (no enrutable)." },
+            { t: "T10", q: "Prefijo IPv6 multicast:", o: ["FF00::/8", "FE80::/10", "2000::/3", "FC00::/7"], c: 0, e: "FF00:: a FFFF:: son direcciones multicast." },
+            { t: "T10", q: "Dirección IPv6 loopback:", o: ["::1", "127.0.0.1", "FE80::1", "FF02::1"], c: 0, e: "::1 equivale a 127.0.0.1 de IPv4 (interfaz loopback)." },
+            { t: "T10", q: "¿IPv6 tiene broadcast?", o: ["No, usa multicast", "Sí, igual que IPv4", "Sí pero limitado", "Opcional"], c: 0, e: "IPv6 elimina broadcast, reemplazado completamente por multicast." },
+            { t: "T10", q: "ICMPv6 reemplaza a:", o: ["ICMP+ARP+IGMP", "Solo ICMP", "Solo ARP", "TCP"], c: 0, e: "ICMPv6 integra funciones de ICMP, ARP e IGMP de IPv4." },
+            { t: "T10", q: "Neighbor Discovery en IPv6 reemplaza:", o: ["ARP", "DNS", "DHCP", "NAT"], c: 0, e: "ND (Neighbor Discovery) descubre vecinos sin necesidad de ARP." },
+            { t: "T10", q: "Máximo de :: en dirección IPv6:", o: ["1 vez", "2 veces", "3 veces", "Ilimitado"], c: 0, e: ":: solo puede aparecer una vez para evitar ambigüedad." },
 
-            // --- TEMA 6: VLANs ---
-            { t: "T6", q: "¿Cuál es el valor hexadecimal del TPID en 802.1Q?", o: ["0x8100", "0x8200", "0x0800", "0xFFFF"], c: 0, e: "0x8100 identifica la trama etiquetada." },
-            { t: "T6", q: "¿Cuántos bits tiene el campo VLAN ID (VID)?", o: ["12 bits", "16 bits", "8 bits", "4 bits"], c: 0, e: "12 bits permiten 4096 VLANs." },
-            { t: "T6", q: "¿Qué pasa con el tráfico de la VLAN Nativa en un Trunk?", o: ["No lleva etiqueta", "Se etiqueta con ID 1", "Se bloquea", "Lleva doble etiqueta"], c: 0, e: "Por diseño, la nativa es 'untagged'." },
-            { t: "T6", q: "¿Qué VLAN viene por defecto en todos los puertos Cisco?", o: ["VLAN 1", "VLAN 100", "Ninguna", "VLAN 99"], c: 0, e: "VLAN 1 es la default y lleva tráfico de control." },
-            { t: "T6", q: "¿Dónde se guardan las VLANs de rango extendido (1006+)?", o: ["running-config", "vlan.dat", "flash", "ROM"], c: 0, e: "Las extendidas no caben en vlan.dat, van en la config." },
-            { t: "T6", q: "¿Qué IDs de VLAN están reservados para Token Ring/FDDI?", o: ["1002-1005", "1-5", "4000-4005", "100-105"], c: 0, e: "Son legados históricos inamovibles." },
-            { t: "T6", q: "¿Qué característica es crítica para una VLAN de Voz?", o: ["Retardo < 150ms", "Sin QoS", "Ancho de banda bajo", "Sin etiqueta"], c: 0, e: "La voz necesita prioridad y bajo retardo." },
-
-            // --- TEMA 7: VTP ---
-            { t: "T7", q: "¿Qué hace un cliente VTP si ve una Revisión mayor?", o: ["Pide actualización (Request)", "Ignora", "Pasa a Transparente", "Borra su Flash"], c: 0, e: "Sabe que su BD es vieja y pide la nueva." },
-            { t: "T7", q: "¿Dónde guarda la config un switch VTP Transparente?", o: ["NVRAM (startup-config)", "vlan.dat", "RAM", "Servidor"], c: 0, e: "Guarda localmente, no en la base de datos compartida." },
-            { t: "T7", q: "¿Qué peligro tiene conectar un switch con Revisión Alta?", o: ["Borra todas las VLANs de la red", "Crea un bucle", "Apaga el dominio", "Nada"], c: 0, e: "El servidor actual se sincronizará con él y perderá sus datos." },
-            { t: "T7", q: "¿Qué modo VTP crea VLANs pero NO las comparte?", o: ["Transparente", "Servidor", "Cliente", "Off"], c: 0, e: "Transparente es local. Reenvía anuncios de otros, pero no los suyos." },
-            { t: "T7", q: "¿Qué mensaje VTP lleva la lista completa de VLANs?", o: ["Subset Advertisement", "Summary Advertisement", "Request", "Hello"], c: 0, e: "El Summary solo lleva la revisión; el Subset lleva los datos." },
-            { t: "T7", q: "¿Qué hace VTP Pruning?", o: ["Evita tráfico broadcast innecesario", "Borra VLANs viejas", "Corta cables físicos", "Resetea la revisión"], c: 0, e: "Poda el tráfico hacia switches que no tienen usuarios en esa VLAN." },
-            
-            // --- TEMA 8: ROUTING ---
-            { t: "T8", q: "¿Qué comando activa el routing en un Switch L3?", o: ["ip routing", "router ospf", "no switchport", "encapsulation dot1q"], c: 0, e: "Sin 'ip routing', el switch es solo L2." },
-            { t: "T8", q: "¿Qué requiere una interfaz física en Router-on-a-Stick?", o: ["Estar sin IP y encendida", "Tener IP", "Ser trunk L2", "Nada"], c: 0, e: "La IP va en las subinterfaces, no en la física." },
-            { t: "T8", q: "¿Cómo se llama la interfaz virtual de una VLAN en un switch L3?", o: ["SVI", "VLAN Port", "Subinterfaz", "Tunnel"], c: 0, e: "Switch Virtual Interface (interface vlan X)." },
-            { t: "T8", q: "¿Qué comando convierte un puerto de switch en puerto de router?", o: ["no switchport", "ip routing", "port-channel", "mode trunk"], c: 0, e: "Desactiva las funciones L2 del puerto." },
-            { t: "T8", q: "En ROAS, ¿dónde se configura la encapsulación 802.1Q?", o: ["En la subinterfaz", "En el switch", "En la interfaz física", "En el PC"], c: 0, e: "encapsulation dot1q <id> en la subinterfaz." },
-            
-            // --- VARIACIONES Y EXTRAS ---
-            { t: "T5", q: "Si el costo al Root es igual en dos puertos, ¿qué desempata?", o: ["BID del vecino", "Prioridad propia", "MAC propia", "Velocidad"], c: 0, e: "1. Costo, 2. BID Vecino, 3. Prioridad Puerto Vecino, 4. ID Puerto Vecino." },
-            { t: "T5", q: "¿Qué prioridad STP es la predeterminada?", o: ["32768", "1", "4096", "100"], c: 0, e: "Es el valor base." },
-            { t: "T6", q: "¿Cuántos bytes añade la etiqueta 802.1Q a la trama?", o: ["4 Bytes", "2 Bytes", "128 Bytes", "1 Byte"], c: 0, e: "4 Bytes (32 bits)." },
-            { t: "T6", q: "¿Qué campo de 802.1Q se usa para la prioridad (CoS)?", o: ["TCI (PRI)", "TPID", "VID", "CFI"], c: 0, e: "Los 3 bits de PRI están dentro del TCI." },
-            { t: "T7", q: "¿Cada cuánto se envía un VTP Summary por defecto?", o: ["5 minutos", "30 segundos", "1 hora", "10 minutos"], c: 0, e: "Cada 5 minutos o cuando hay un cambio." }
+            // TEMA 11: TCP/UDP (40 preguntas)
+            { t: "T11", q: "Bits de un puerto:", o: ["16", "8", "32", "24"], c: 0, e: "Puertos = 16 bits → rango 0 a 65535." },
+            { t: "T11", q: "Puertos bien conocidos:", o: ["0-1023", "1024-49151", "49152-65535", "0-65535"], c: 0, e: "0-1023 reservados para servicios estándar (HTTP, FTP, SSH, etc.)." },
+            { t: "T11", q: "Tamaño cabecera UDP:", o: ["8 bytes", "20 bytes", "40 bytes", "Variable"], c: 0, e: "UDP mínima: origen(2) + destino(2) + longitud(2) + checksum(2) = 8 bytes." },
+            { t: "T11", q: "¿UDP es orientado a conexión?", o: ["No", "Sí", "Depende", "A veces"], c: 0, e: "UDP = sin conexión, sin handshake, sin estado." },
+            { t: "T11", q: "¿UDP garantiza entrega?", o: ["No", "Sí", "Solo en LAN", "Con retransmisiones"], c: 0, e: "UDP no fiable: sin ACKs, sin retransmisiones, best effort." },
+            { t: "T11", q: "¿UDP garantiza orden?", o: ["No", "Sí", "Solo secuencial", "Con números de secuencia"], c: 0, e: "UDP puede llegar desordenado, sin números de secuencia." },
+            { t: "T11", q: "¿UDP tiene control de flujo?", o: ["No", "Sí", "Opcional", "Solo en IPv6"], c: 0, e: "UDP sin control de flujo ni congestión, mínimo overhead." },
+            { t: "T11", q: "Ventaja principal de UDP:", o: ["Bajo retardo", "Fiabilidad", "Control flujo", "Orden garantizado"], c: 0, e: "UDP rápido: sin overhead de conexión, control ni retransmisiones." },
+            { t: "T11", q: "Aplicación típica UDP:", o: ["DNS", "HTTP", "FTP", "SMTP"], c: 0, e: "DNS, DHCP, streaming, VoIP, juegos usan UDP por velocidad." },
+            { t: "T11", q: "Checksum UDP es:", o: ["Opcional en IPv4", "Obligatorio siempre", "No existe", "Solo en multicast"], c: 0, e: "En IPv4 opcional, en IPv6 obligatorio." },
+            { t: "T11", q: "¿TCP es orientado a conexión?", o: ["Sí", "No", "Depende", "A veces"], c: 0, e: "TCP requiere 3-way handshake antes de transmitir datos." },
+            { t: "T11", q: "Tamaño mínimo cabecera TCP:", o: ["20 bytes", "8 bytes", "40 bytes", "60 bytes"], c: 0, e: "Mínimo 20 bytes sin opciones, máximo 60 bytes con opciones." },
+            { t: "T11", q: "¿TCP garantiza entrega?", o: ["Sí", "No", "Solo en LAN", "Depende"], c: 0, e: "TCP fiable: ACKs + retransmisiones garantizan entrega completa." },
+            { t: "T11", q: "¿TCP garantiza orden?", o: ["Sí", "No", "A veces", "Opcional"], c: 0, e: "TCP usa números de secuencia por byte para mantener orden." },
+            { t: "T11", q: "TCP usa control de flujo mediante:", o: ["Ventana deslizante", "Temporizadores", "Checksum", "Flags"], c: 0, e: "Receptor indica tamaño de ventana (espacio libre en buffer)." },
+            { t: "T11", q: "Pasos en 3-way handshake TCP:", o: ["SYN → SYN-ACK → ACK", "SYN → ACK → SYN-ACK", "ACK → SYN → ACK", "SYN → SYN → ACK"], c: 0, e: "Cliente SYN, Servidor SYN-ACK, Cliente ACK. Tras esto, conexión establecida." },
+            { t: "T11", q: "Flag TCP para establecer conexión:", o: ["SYN", "ACK", "FIN", "RST"], c: 0, e: "SYN = sincronización en handshake de establecimiento." },
+            { t: "T11", q: "Flag TCP para cerrar conexión ordenadamente:", o: ["FIN", "SYN", "RST", "PSH"], c: 0, e: "FIN = cierre ordenado (4-way), RST = cierre abrupto." },
+            { t: "T11", q: "Flag TCP para cierre abrupto:", o: ["RST", "FIN", "SYN", "URG"], c: 0, e: "RST cancela inmediatamente sin esperar confirmaciones." },
+            { t: "T11", q: "¿Cuántos FIN en cierre TCP normal?", o: ["2 (uno por sentido)", "1", "4", "3"], c: 0, e: "4-way handshake: FIN→ACK→FIN→ACK. 2 FIN (uno por dirección)." },
+            { t: "T11", q: "Campo TCP que indica siguiente byte esperado:", o: ["ACK number", "Sequence number", "Window", "Checksum"], c: 0, e: "ACK number = próximo byte que el receptor espera recibir." },
+            { t: "T11", q: "Campo TCP que identifica primer byte de datos:", o: ["Sequence number", "ACK number", "Window", "Offset"], c: 0, e: "Sequence number = posición del primer byte en el stream de datos." },
+            { t: "T11", q: "Campo TCP para control de flujo:", o: ["Window", "Sequence", "ACK", "Checksum"], c: 0, e: "Window = espacio libre en buffer del receptor (bytes disponibles)." },
+            { t: "T11", q: "ACKs TCP son:", o: ["Acumulativos", "Selectivos", "Individuales", "Opcionales"], c: 0, e: "ACK N = recibí todo hasta N-1, espero N ahora (acumulativo)." },
+            { t: "T11", q: "RTT significa:", o: ["Round Trip Time", "Real Time Transfer", "Router Transmission Time", "Random Time Timeout"], c: 0, e: "RTT = tiempo de ida + vuelta de un segmento." },
+            { t: "T11", q: "Timeout TCP se calcula como:", o: ["RTT_estimado + 4×Deviation", "RTT fijo", "RTT×2", "RTT/2"], c: 0, e: "RTT estimado + margen (4× desviación) para acomodar variabilidad." },
+            { t: "T11", q: "Algoritmo de Karn en TCP:", o: ["Ignora RTT de retransmisiones", "Duplica timeout", "Reinicia conexión", "Usa RTT fijo"], c: 0, e: "Evita ambigüedad: ¿ACK de original o retransmisión? Ignora RTT de retx." },
+            { t: "T11", q: "Ventana de congestión (cwnd) controla:", o: ["Tasa de envío para no saturar red", "Buffer receptor", "Número de conexiones", "Tamaño de paquetes"], c: 0, e: "cwnd limita datos en tránsito para evitar congestión en red." },
+            { t: "T11", q: "Slow Start inicia con cwnd:", o: ["1 MSS", "10 MSS", "64 KB", "Ventana receptor"], c: 0, e: "Comienza conservador: 1 MSS, luego crece exponencialmente." },
+            { t: "T11", q: "Crecimiento cwnd en Slow Start:", o: ["Exponencial", "Lineal", "Constante", "Logarítmico"], c: 0, e: "Duplica cada RTT: 1→2→4→8→16... (exponencial)." },
+            { t: "T11", q: "Crecimiento cwnd en Congestion Avoidance:", o: ["Lineal (+1 por RTT)", "Exponencial", "Constante", "Duplica"], c: 0, e: "Aumenta 1 MSS por RTT tras superar threshold (lineal)." },
+            { t: "T11", q: "AIMD significa:", o: ["Additive Increase Multiplicative Decrease", "Average Internet Management Data", "Automatic IP Management Device", "Advanced Integration Module"], c: 0, e: "Congestion Avoidance: incremento aditivo, decremento multiplicativo." },
+            { t: "T11", q: "Ante timeout, TCP hace:", o: ["threshold=cwnd/2, cwnd=1", "cwnd=cwnd/2", "threshold=cwnd, cwnd=0", "Cierra conexión"], c: 0, e: "Reduce threshold a mitad, reinicia cwnd=1 (Slow Start)." },
+            { t: "T11", q: "Fast Retransmit se activa con:", o: ["3 ACKs duplicados", "1 timeout", "5 ACKs", "Ventana=0"], c: 0, e: "3 ACK duplicados indica pérdida sin esperar timeout completo." },
+            { t: "T11", q: "TCP es:", o: ["Full-duplex", "Half-duplex", "Simplex", "Multiplex"], c: 0, e: "Datos bidireccionales simultáneos (full-duplex)." },
+            { t: "T11", q: "TCP trata datos como:", o: ["Byte stream", "Mensajes", "Paquetes", "Bloques"], c: 0, e: "Flujo continuo de bytes, sin preservar fronteras de mensaje." },
+            { t: "T11", q: "Diferencia clave TCP vs UDP:", o: ["TCP fiable, UDP no", "UDP más lento", "TCP sin checksum", "UDP orientado a conexión"], c: 0, e: "TCP garantiza entrega ordenada y completa, UDP no (best effort)." },
+            { t: "T11", q: "Protocolo más rápido:", o: ["UDP", "TCP", "Iguales", "Depende"], c: 0, e: "UDP sin overhead de conexión, control ni retransmisiones = más rápido." },
+            { t: "T11", q: "Protocolo ideal para streaming video:", o: ["UDP", "TCP", "ICMP", "ARP"], c: 0, e: "Streaming prefiere velocidad sobre fiabilidad (pérdidas tolerables)." },
+            { t: "T11", q: "Protocolo ideal para transferencia archivo:", o: ["TCP", "UDP", "ICMP", "IGMP"], c: 0, e: "Archivos necesitan entrega completa y ordenada (TCP fiable)." },
         ];
 
-        /* --- MOTOR DEL SIMULADOR --- */
         let currentQuiz = [];
         let currentIndex = 0;
         let score = 0;
 
         function startQuiz() {
-            // 1. Barajar todo el banco
             const shuffled = masterQuestionBank.map(q => ({...q})).sort(() => 0.5 - Math.random());
-            
-            // 2. Barajar las opciones de cada pregunta
             currentQuiz = shuffled.slice(0, 10).map(q => {
                 const correctAnswer = q.o[q.c];
                 const options = [...q.o].sort(() => 0.5 - Math.random());
@@ -512,8 +1097,6 @@
 
             currentIndex = 0;
             score = 0;
-
-            // 3. UI Update
             document.getElementById('quiz-start').classList.add('hidden');
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('quiz-question').classList.remove('hidden');
@@ -522,19 +1105,15 @@
 
         function loadQuestion() {
             const q = currentQuiz[currentIndex];
-            
-            // Textos
             document.getElementById('q-topic').innerText = q.t;
             document.getElementById('q-counter').innerText = `${currentIndex + 1}/10`;
             document.getElementById('q-text').innerText = q.q;
             
-            // Reset UI
             const optsContainer = document.getElementById('q-options');
             optsContainer.innerHTML = '';
             document.getElementById('feedback').classList.add('hidden');
             document.getElementById('btn-next').classList.add('hidden');
 
-            // Generar Opciones
             q.o.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
@@ -558,18 +1137,19 @@
                 btn.classList.add('correct');
                 fbIcon.innerHTML = '<i class="fa-solid fa-circle-check text-green-500"></i>';
                 fbTitle.innerText = "¡CORRECTO!";
-                fbTitle.className = "font-black text-xl mb-1 text-green-600";
-                feedbackEl.className = "mt-8 p-6 rounded-xl border border-green-200 bg-green-50 block shadow-lg feedback-panel";
+                fbTitle.className = "font-black text-xl mb-2 text-green-600";
+                feedbackEl.className = "mt-8 p-6 rounded-xl border border-green-200 bg-green-50 block";
             } else {
                 btn.classList.add('incorrect');
                 buttons[qData.c].classList.add('correct');
                 fbIcon.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-500"></i>';
-                fbTitle.innerText = "ERROR";
-                fbTitle.className = "font-black text-xl mb-1 text-red-600";
-                feedbackEl.className = "mt-8 p-6 rounded-xl border border-red-200 bg-red-50 block shadow-lg feedback-panel";
+                fbTitle.innerText = "INCORRECTO";
+                fbTitle.className = "font-black text-xl mb-2 text-red-600";
+                feedbackEl.className = "mt-8 p-6 rounded-xl border border-red-200 bg-red-50 block";
             }
 
             document.getElementById('fb-text').innerText = qData.e;
+            feedbackEl.classList.remove('hidden');
             document.getElementById('btn-next').classList.remove('hidden');
         }
 
@@ -585,15 +1165,14 @@
         function showResults() {
             document.getElementById('quiz-question').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
-            
-            const scoreDisplay = document.getElementById('score-display');
-            scoreDisplay.innerText = `${score}/10`;
+            document.getElementById('score-display').innerText = `${score}/10`;
             
             let msg = "";
-            if(score === 10) msg = "¡INCREÍBLE! 🏆 Nivel Experto.";
-            else if(score >= 9) msg = "¡Excelente! Casi perfecto.";
-            else if(score >= 7) msg = "Buen trabajo. Repasa los fallos.";
-            else msg = "Sigue practicando. La repetición es clave.";
+            if(score === 10) msg = "¡PERFECTO! 🏆 Dominio total del temario.";
+            else if(score >= 9) msg = "¡Excelente! Casi perfecto, repasa los fallos.";
+            else if(score >= 7) msg = "¡Bien! Buen nivel, refuerza conceptos erróneos.";
+            else if(score >= 5) msg = "Aprobado. Necesitas estudiar más la teoría.";
+            else msg = "Insuficiente. Estudia la guía completa arriba.";
             
             document.getElementById('score-msg').innerText = msg;
         }
