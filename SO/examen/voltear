@@ -1,0 +1,211 @@
+#!/bin/bash
+
+ERR_NOT_NUMBER=1
+ERR_OUT_OF_RANGE=2
+
+MIN_HIJOS=1
+MAX_HIJOS=20
+
+
+NotNumber(){
+	#----------------------------------
+	# NO TOCAR - PODEIS USARLA EN CheckArguments() para determinar si un parámetro no es numérico
+	# Parámetros: 
+	#    $1 : parametro a comprobar
+	# Salida:
+	#    0  : si es numérico
+	#    1  : si no es numérico
+	#----------------------------------
+	if ! [ "$1" -eq "$1" ] 2>/dev/null; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+
+Sintaxis(){
+	#----------------------------------
+	# NO TOCAR
+	#----------------------------------
+	#Debe de mostrar la sintaxis de uso del programa, con la explicación de los parametros.
+	echo "-------------------------------------------------------------------------------------------"
+	echo "voltear <fichero_bmp> <numHijos>"
+	echo ""
+	echo "Los parametros son obligatorios:"
+	echo "fichero_bmp   : Es el nombre del fichero .bmp a lanzar (sin la extensión .bmp)"
+	echo "numHijos      : Es el número de hijos que van a procesar en paralelo la imagen."
+	echo "                El valor mínimo para este parámetro es $MIN_HIJOS"
+	echo "                El valor máximo para este parámetro es $MAX_HIJOS"
+	echo "-------------------------------------------------------------------------------------------"
+}
+
+MostrarResultados(){
+	# Recibe como parametro el numero de hijos
+	#----------------------------------
+	# BEGIN TU CODIGO
+	#----------------------------------
+		# Muestra las lineas que ha procesado cada hijo con un texto con el siguiente formato "El hijo H ha procesado L lineas" para cada hijo
+		ixMinimo=0
+		ixMaximo=0
+		maximo=0
+		minimo=99999
+		total=0
+		echo
+		for ((i = 0; i < $1; i++)); do
+			lineas=${hijos[$i]}
+			total=$(($total+$lineas))
+			if [ $lineas -gt $maximo ]; then
+				ixMaximo=$i
+				maximo=$lineas
+			fi
+			if [ $lineas -lt $minimo ]; then
+				ixMinimo=$i
+				minimo=$lineas
+			fi
+			echo "El hijo $i ha procesado $lineas lineas"
+		done
+		echo 
+
+		# Muestra cual es el hijo que más lineas ha procesado
+		# Con un texto como "El hijo H ha sido el mas trabajador con L lineas procesadas"
+		echo "El hijo $ixMaximo ha sido el mas trabajador con ${hijos[$ixMaximo]} lineas procesadas"
+
+		# Muestra cual es el hijo que menos lineas ha procesado
+		# Con un texto como "El hijo H ha sido el mas vago con L lineas procesadas"
+		echo "El hijo $ixMinimo ha sido el mas vago con ${hijos[$ixMinimo]} lineas procesadas"
+
+		echo
+		# Muestra el numero total de lineas procesadas que es la suma del array hijos
+		# Con un texto como "El numero total de lineas procesadas ha sido: L"
+		echo "El numero total de lineas procesadas ha sido: $total"
+	#----------------------------------
+	# END TU CODIGO
+	#----------------------------------
+}
+
+#***************************************************************************
+# Completar las siguientes funciones según el enunciado
+#***************************************************************************
+
+Clean(){
+	#----------------------------------
+	# BEGIN TU CODIGO
+	#----------------------------------
+	#Debe borrar todos los ficheros de resultados anteriores, imagen volteada y fichero de resultados
+
+	rm $1.txt 2> /dev/null
+	rm $1_NEG.bmp 2> /dev/null
+	#----------------------------------
+	# END TU CODIGO
+	#----------------------------------
+}
+
+CheckArguments(){
+	#----------------------------------
+	# BEGIN TU CODIGO
+	#----------------------------------
+
+	#Comprobamos que el número de parametros es 2
+	if [ $# -ne 2 ]; then
+		echo "Error número de parametros incorrecto"
+		Sintaxis
+		exit 1
+	fi
+
+	#Comprobamos que el el fichero fichero_bmp.bmp existe
+	if [ -e $1 ]; then
+	  echo "El fichero $1.bmp no existe"
+	  Sintaxis
+	  exit 1
+	fi
+
+	#Comprobamos que el parámetro numHijos es un número
+	if NotNumber $2 ; then
+	  echo "El parámetro <numHijos> debe ser un número"
+	  Sintaxis
+	  exit 1
+	fi
+
+	#Comprobamos el rango del parámetro numHijos
+	if [ $2 -lt $MIN_HIJOS ] || [ $2 -gt $MAX_HIJOS ] ; then
+		echo "El parametro <numHijos> debe estar en el intervalo [$MIN_HIJOS..$MAX_HIJOS]"
+		Sintaxis
+		exit 1
+	fi
+
+	#----------------------------------
+	# END TU CODIGO
+	#----------------------------------
+}
+
+LeerFichero(){
+	unset hijos
+	# Recibe como parametro el nombre del fichero a leer. 
+	fichero=$1
+
+	# Lo lee linea a linea contabiliza en el array hijos el numero de lineas procesadas por cada hijo.
+	# El array hijos es visible desde fuera de la funcion, no hace falta devolver nada solo rellenarlo
+	hijos=()
+
+	while read linea; do
+		#----------------------------------
+		# BEGIN TU CODIGO
+		#----------------------------------
+			# En cada iteración del bucle la variable linea tiene una linea del fichero
+			# Asignaremos esto a una variable para poder comprobar en un if 
+			ixHijo=$(echo $linea | tr -s ' ' | cut -f 1 -d ';' | cut -f 2 -d ' ')
+			hijos[$ixHijo]=$((hijos[$ixHijo] + 1))
+
+		#----------------------------------
+		# END TU CODIGO
+		#----------------------------------
+	done < $fichero
+}
+
+#----------------------------------------------
+# MAIN
+#----------------------------------------------
+
+#----------------------------------
+# BEGIN TU CODIGO
+#----------------------------------
+	#Comprobar los argumentos llamando a CheckArguments
+	CheckArguments $*
+#----------------------------------
+# END TU CODIGO
+#----------------------------------
+
+#Una vez comprobado que todo correcto asignamos los parametros a variables
+BMP_FILE=$1
+NUM_HIJOS=$2
+
+#----------------------------------
+# BEGIN TU CODIGO
+#----------------------------------
+	#Limpiar los ficheros de ejecuciones anteriores llamando a Clean
+	Clean $1
+#----------------------------------
+# END TU CODIGO
+#----------------------------------
+
+#----------------------------------
+# BEGIN TU CODIGO
+#----------------------------------
+	#Realizar la llamada al ejecutable imagen (parte c, sólo una llamada)
+	imagen ${BMP_FILE} $NUM_HIJOS 
+#----------------------------------
+# END TU CODIGO
+#----------------------------------
+
+#----------------------------------
+# BEGIN TU CODIGO
+#----------------------------------
+	#LLamar a la LeerFichero para leer el fichero de resultados $1.txt
+	#Llamar a la función MostrarResultados que hay que completar 
+	LeerFichero ${BMP_FILE}.txt
+	MostrarResultados $NUM_HIJOS
+#----------------------------------
+# END TU CODIGO
+#----------------------------------
+

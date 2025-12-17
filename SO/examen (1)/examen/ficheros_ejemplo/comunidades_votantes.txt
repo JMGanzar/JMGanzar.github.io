@@ -1,0 +1,19 @@
+Andalucía,7002934
+Aragón,1036377
+Asturias,758915
+Baleares,920475
+Canarias,1710613
+Cantabria,458719
+Castilla y León,1808470
+Castilla-La Mancha,1497959
+Cataluña,6058396
+Ceuta,61674
+Comunidad de Madrid,5632099
+Comunidad Valenciana,4055636
+Extremadura,875253
+Galicia,2244289
+La Rioja,244326
+Melilla,65134
+Murcia,1341540
+Navarra,531775
+País Vasco,1888615
