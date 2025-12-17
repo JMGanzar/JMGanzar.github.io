@@ -1,0 +1,146 @@
+#!/bin/bash
+
+function linea(){
+echo
+echo "---------------------------------------"
+echo
+};
+
+function fin(){
+linea
+exit $1
+};
+
+linea
+
+
+#Bucles
+
+for i in 1 2 3 4 5
+do 
+        echo $i
+done
+
+linea
+ 
+for i in ls "echo Hola" dos tres cuatro
+do 
+        echo $i
+done
+
+linea
+
+for i in "uno dos tres cuatro"
+do 
+        echo $i
+done
+
+linea
+
+for i in "uno" "dos" "tres" "cuatro"
+do 
+        echo $i
+done
+
+linea
+
+echo {0..9}
+echo {0..9..2}
+linea
+for i in {0..9}
+do 
+        echo $i
+done
+
+
+linea
+
+seq 1 5
+
+linea
+
+for i in $(seq 1 5); do
+            echo item: $i
+done
+
+
+linea
+
+for i in `seq 1 5`; do
+            echo item: $i
+done
+
+linea
+
+for i in $(ls); do
+            echo "fichero: $i"
+done
+linea
+
+
+lista=`ls`
+for fichero in $lista
+do
+        echo $fichero
+done
+
+linea
+
+for file in *
+do 
+        echo $file 
+done
+linea
+
+quitar='../'
+for file in ../*.c
+do 
+	#echo $file        
+	#echo ${file/$quitar/''} 
+	cat $file >> todosjuntos
+done
+
+
+linea
+
+# Salir de un bucle for
+ 
+for i in {0..100}
+do
+        echo $i
+        if [ $i -eq 15 ]; then
+                break
+        fi
+done
+
+# Estilo C
+for (( i=1; i<=100; i++ ))
+do
+   echo "Ciclo: $i"
+   if [ $i -eq 15 ]; then
+      break
+   fi
+done
+
+
+linea
+
+#While
+CONTADOR=0
+maximo=10
+         while [  $CONTADOR -lt $maximo ]; do
+             echo El contador es $CONTADOR
+             let CONTADOR=CONTADOR+1 
+         done
+
+linea
+
+#Until
+CONTADOR=20
+         until [  $CONTADOR -lt 10 ]; do
+             echo CONTADOR $CONTADOR
+             let CONTADOR-=1
+         done
+
+linea
+

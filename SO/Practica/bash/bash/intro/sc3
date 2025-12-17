@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+#Este script realiza una copia de seguridad muy simple
+#
+#Supone que existe el directorio backup dentro del directorio de trabajo
+#La extensión .tgz es la habitual para un tar comprimido
+#Las extensiones .tar.gz son las habituales para un tar luego comprimido con gzip
+
+#Realiza el tar comprimido de todo lo que cuelga de $HOME
+tar -czf ./backup/mibackup.tgz --exclude=".*" --exclude-backups $HOME  
+
+#Realiza el tar y lo guarda en ./backup
+tar -cf ./backup/mibackup.tar --exclude=".*" --exclude-backups $HOME   
+
+#Comprime con gzip el fichero mibackup.tar y le aÃ±ade la extension .gz
+gzip ./backup/mibackup.tar            
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+#Este script presenta distintos bucles
+#
+
+CONTADOR=0
+while [ $CONTADOR -lt 10 ]; do
+      echo El contador es $CONTADOR
+      let CONTADOR=CONTADOR+1        #Esto funciona en unix, pero no en cygwin
+      CONTADOR=`expr $CONTADOR + 1`  #Esto tambien funciona en cygwin
+done
+
+CONTADOR=20
+until [ $CONTADOR -lt 10 ]; do
+  echo CONTADOR $CONTADOR           
+  let CONTADOR-=1                    #Esto funciona en unix, pero no en cygwin
+  CONTADOR=`expr $CONTADOR - 1`      #Esto tambien funciona en cygwin
+done

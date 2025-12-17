@@ -1,0 +1,88 @@
+#!/bin/bash
+
+sintaxis(){
+echo "----------------------------------------------------------------------------"
+echo "seg sirve para hacer copias de seguridad y mostrar el contenido de las mismas"
+echo "seg [-l file] backupdir"
+echo
+echo "-l file : Es opcional y file es el nombre del fichero de backup que queremos listar"
+echo "Si se omite la opción [-l file] el primer parámetro será el nombre del directorio donde crear el backup"
+echo "Si el backupdir no existe se crea el directorio dentro del home del usuario y el backup se crea dentro de el"
+echo "Si el backupdir existe el backupdir se crea dentro de el"
+echo "Si se omite el backupdir, el backup se crea en el home del usuario."
+echo "----------------------------------------------------------------------------"
+}
+
+procesado=false; #Determina si se ha procesado una combinación de parametros correcta
+
+userHome=~  #El Home del usuario
+
+if [ $# -eq 0 ]; then
+    # Al no llevar parámetros se creará el backup en el Home del usuario
+    backupDir=$userHome
+    procesado=true;
+    modo=c #Establecemos modo creacion
+elif [ $# -eq 1 ]; then
+    if [ "$1" != "-l" ]; then
+        #Una única opción y el directorio sera el $1 dentro del Home del usuario
+        procesado=true;
+        modo=c #Establecemos modo creacion
+        backupDir=${userHome}/$1
+    fi
+elif [ $# -gt 2 ];then
+    #Número excesivo de parámetros
+    echo "Número excesivo de parámetros"
+    sintaxis
+    exit
+fi
+
+if ! $procesado; then
+    while getopts ":l:" opt; do
+      case $opt in
+        l)
+          echo "-l Modo listado" 
+          modo=l # Establecemos modo listado
+          backupFile=$OPTARG
+          echo "Fichero de backup [$backupFile]"
+          procesado=true;
+          ;;
+        :)
+          echo "-l necesita un argumento" 
+          ;;
+        \?)
+          echo "Opción inválida: -$OPTARG" >&2
+          ;;
+      esac
+    done
+fi
+
+# Si procesado es falso mostramos sintaxis y salimos
+if ! $procesado; then
+    sintaxis
+    exit    
+fi
+
+# Aqui comienza el tratamiento del script
+
+if [ $modo == "c" ]; then
+    #Modo creación. Creamos el fichero de backup con el nombre que procede concatenando .tar
+    # Componemos el nombre del fichero de backup
+    printf -v backupFile "%s_home" $(date +%Y%m%d)
+    
+    #Si el directorio no existe lo creamos
+    if [ ! -d $backupDir ]; then
+        echo "Creando directorio de backup en $backupDir"
+        mkdir $backupDir
+    fi
+    echo "Creando Backup $backupDir/$backupFile"
+    tar -cPf $backupDir/$backupFile.tar --exclude-backups --exclude=".*"  $userHome
+    gzip $backupDir/$backupFile.tar
+else
+    #Modo listado 
+    echo "Listando $backupFile"
+    tarFile=$(gzip -l $backupFile | tail -n1 | cut -c48-)
+    gzip -d $backupFile 
+    tar -tf $tarFile
+    gzip $tarFile
+fi
+

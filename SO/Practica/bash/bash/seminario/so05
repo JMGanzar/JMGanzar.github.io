@@ -1,0 +1,48 @@
+#!/bin/bash
+
+function linea(){
+echo
+echo "---------------------------------------"
+echo
+};
+
+function fin(){
+linea
+exit $1
+};
+
+linea
+
+# cadenas : 
+#Tratamiento de cadenas "Quitar ./ de la salida"
+cadena=$0
+echo "cadena=$cadena"
+buscamos='./'
+echo "Busco=$buscamos"
+reemplazamos=''
+echo "Lo reemplazo con [$reemplazamos]"
+echo "El resultado es  [${cadena/$buscamos/$reemplazamos}]"
+
+programa=${cadena/$buscamos/$reemplazamos}
+
+echo $programa es el nombre del programa
+
+# Tratamiento de cadenas
+
+cadena="Hola Caracola"
+echo "[${cadena:2:4}]"
+
+linea
+
+# Leer de la entrada estandar
+echo "Por favor introduzca su nombre:"
+read nombre
+echo "Bienvenido $nombre"
+
+echo -n "Introduce tu apellido seguido de tu nombre:"
+read apellido nombre
+echo "Bienvenido a Elche $nombre $apellido"
+
+read -p"Introduce tu apellido seguido de tu nombre:" apellido  nombre
+echo "Bienvenido a Elche $nombre $apellido"
+

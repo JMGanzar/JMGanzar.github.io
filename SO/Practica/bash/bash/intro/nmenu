@@ -1,0 +1,73 @@
+#!/bin/bash
+
+CargaOpciones(){
+  ix=0
+  while read linea
+  do
+	numero=$(echo $linea | cut -d";" -f1)
+	texto=$(echo $linea | cut -d";" -f2)
+	scs[$ix]=$numero
+	ops[$ix]="$texto"
+	let ix=ix+1
+  done < opciones
+}
+
+MostrarOpciones(){
+    clear
+	echo ----------------------- SELECTOR DE CODIGO FUENTE ------------------------------------------------------------
+	echo --------------------------------------------------------------------------------------------------------------
+
+	numOpciones=${#ops[@]}
+	for (( o=0; o<=$numOpciones-1; o++ ))
+	do  
+		sc=sc${scs[$o]}
+		texto=${ops[$o]}
+		printf "%4d - %5s - %s\n" ${scs[$o]} $sc "$texto"
+	done
+
+	echo --
+	echo -- 0 Salir
+	echo --------------------------------------------------------------------------------------------------------------
+}
+
+PedirOpcion(){
+	echo -n Introduzca su opcion \: ; read opcion
+	#Si la opción es la 0 salimos
+	if [ $opcion -eq 0 ]; then
+	 clear
+	 exit 0
+	fi
+	SC=sc$opcion
+}
+
+MostrarCodigoFuente(){
+	clear
+	echo -------------------------------------------------------------------------------------------------------------
+	echo CODIGO FUENTE DE $SC   
+	echo -------------------------------------------------------------------------------------------------------------
+	let numLinea=1
+	while IFS='' read -r linea; do
+	printf "%4d: %s\n" $numLinea "$linea"
+	let numLinea=numLinea+1
+	done < $SC
+	echo -------------------------------------------------------------------------------------------------------------
+
+	echo -n "Pulsa return para volver al menu o 0 para salir : " ; read dummy
+	if [ $dummy -eq 0 ]; then
+		clear
+		exit 0
+	fi 
+}
+
+CargaOpciones	
+while true; do
+	MostrarOpciones
+	PedirOpcion
+	MostrarCodigoFuente 
+done
+
+
+
+	
+
+

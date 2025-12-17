@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+#Este script realiza una copia de seguridad del directorio $HOME colocando la fecha de ejecucion
+#
+#Utiliza una variable donde define el nombre del fichero destino de la copia de seguridad
+
+FICH=./backup/$(date +%Y%m%d)_mibackup.tgz
+tar -czf $FICH --exclude=".*" --exclude-backups $HOME
+

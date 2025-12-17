@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+#Este script muestra 
+#     La comparacion de numericos  
+#     El uso de la instruccion if y 
+#     La sustitucion de parametros
+#     Comprobacion de parametros nulos
+#     -eq -ne -lt -le -gt -ge
+#
+
+if [ 5 -eq 3 ]; then
+   echo Los numeros son iguales
+else
+   echo Los numeros son distintos
+fi
+
+NUM=8
+#La comparacion falla si el parametro $1 es vacio o no se pasa
+if [ $NUM -eq $1 ]; then          
+   echo Los numeros son iguales
+else
+   echo Los numeros son distintos
+fi
+
+#La comparacion falla si el parametro $1 es vacio o no se pasa
+if [ $NUM -eq "$1" ]; then          
+   echo Los numeros son iguales
+else
+   echo Los numeros son distintos
+fi
+
+#Con test tambien funciona
+#La comparacion no tiene sentido si el parametro no se pasa
+if test "$1" -gt $NUM; then             
+   echo El parametro es mayor que $NUM
+else 
+   echo El parametro es menor o igual que $NUM
+fi
+
+#Se resuelve con test -z
+if test -z $1; then
+   echo No se ha pasado el parametro 1 o es nulo
+elif test $1 -gt $NUM; then
+   echo El parametro es mayor que $NUM
+else
+   echo El parametro es menor o igual que $NUM
+fi
+   

@@ -1,0 +1,3 @@
+   echo file_name: es el nombre del fichero de entrada
+   echo 
+else

@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Este script muestra el uso de case
+# 
+
+if test -z $1; then
+   echo Error: debe introducir una palabra
+   exit
+fi
+case "$1" in
+    hola) echo hola
+          ;;
+    adios|bye) echo bye;;
+    *[rR]*)  echo Tiene una r;; #No funcionn en cygwin
+    *[!rR]*) echo No tiene r;; #No funciona en cygwin
+esac
+
+

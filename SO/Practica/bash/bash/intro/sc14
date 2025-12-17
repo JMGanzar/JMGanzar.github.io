@@ -1,0 +1,23 @@
+#!/bin/bash
+#!/bin/sh
+# si la lista-de-palabras se omite, el bucle se 
+# ejecuta una vez por cada argumento (asume $*)
+# Crear los ficheros pasados como argumento
+
+if test -z "$1"; then
+   echo Error: Debe pasar al menos un nombre de fichero para crear
+   exit
+fi
+
+# for y  
+# es equivalenta a 
+# for y in "$@"
+# donde y es simplemente el iterador del for
+# la redirección > $y es equivalente a touch $y
+for y in "$@"
+do
+  echo Creando el fichero $y
+  > $y
+  rm $y
+done
+

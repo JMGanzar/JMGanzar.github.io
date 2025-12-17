@@ -1,0 +1,32 @@
+#!/bin/bash
+for i in {0..26..2}
+do
+    echo $i
+done
+
+if [[ $# != 2 ]]; then
+   echo Necesito dos parámetros numéricos
+else
+	echo El bucle va de $1 a $2
+
+	for file in * ; do
+	  echo El fichero se llama $file
+	done
+
+	echo hacemos otro bucle
+
+	contador=1
+	for (( i=$1; i<=$2; i++)); do
+	  echo Creando elemento $contador
+	  datos[$contador]=$i
+	  (( contador+=1 ))
+	done
+	
+	datos[10]=10
+
+	echo Terminamos el array y lo mostramos
+	for (( i=0; i<=15; i++ )); do
+	  echo El indice $i del array vale ${datos[$i]}
+	done
+	
+fi 

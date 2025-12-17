@@ -1,0 +1,30 @@
+#!/bin/bash
+
+sintaxis(){
+echo "-------------------------------------------------------"
+echo "tick"
+echo 
+echo "Muestra los segundos durante un minuto y luego termina"
+echo "-------------------------------------------------------"
+exit
+}
+
+if [ "$1" == "-help" ]; then
+	sintaxis
+fi
+
+TIME_LIMIT=60
+INTERVAL=1 
+echo
+echo "Pulsa Control-C para salir antes de $TIME_LIMIT segundos."
+echo
+while [ "$SECONDS" -le "$TIME_LIMIT" ]
+do
+	if [ "$SECONDS" -eq 1 ]; then
+		uniddes=segundo
+	else
+		unidades=segundos
+	fi
+	echo "El script se ha ejecutador durante $SECONDS $unidades."
+	sleep $INTERVAL
+done

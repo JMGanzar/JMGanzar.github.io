@@ -1,0 +1,58 @@
+#!/bin/bash
+
+function linea(){
+echo
+echo "---------------------------------------"
+echo
+};
+
+function fin(){
+linea
+exit $1
+};
+
+linea
+
+# Sustitución de comandos
+seq 1 5
+lista=$(seq 1 5)
+echo "La lista es [" $lista "]"
+
+#Comillas contrarias :
+#    Las comillas contrarias significan ejecutar el comando y sustituir por la salida.
+#
+#    TODAY=`(set \`date\`; echo $1)` 
+
+
+ANYO=$(date | cut -d' ' -f6)
+echo ANYO=$ANYO
+ANYO=`date | cut -d' ' -f6`
+echo ANYO=$ANYO
+
+DIASEM=`(set \`date\`; echo $1)` 
+echo DIASEM=$DIASEM
+ANYO=`(set \`date\`; echo $6)`
+echo ANYO=$ANYO
+
+for i in `seq 1 10`
+do
+   echo i=$i
+done
+
+for i in 1 2 3 4 5
+do
+   echo i=$i
+done
+
+for i in `seq 1 $#`
+do
+  echo Parametro $i=$1;
+  shift
+done
+
+# Asignación de ejecución a variable
+a=$(echo 'hello' | tr '[:lower:]' '[:upper:]')
+b=$(echo 'WORLD' | tr '[:upper:]' '[:lower:]')
+echo "$a, $b"
+
+

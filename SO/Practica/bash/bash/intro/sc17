@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+#Ejecuta un comando
+#
+
+echo -n Introduzca un comando : 
+read command
+eval $command
+
+

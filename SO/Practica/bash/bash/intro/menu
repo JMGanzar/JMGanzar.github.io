@@ -1,0 +1,62 @@
+#!/bin/bash
+tput clear
+dummy=1
+opcion=1
+num_opciones=`wc -l <opciones`
+while [ $opcion -gt 0 ] && [ $opcion -le $num_opciones ]
+do
+  echo ----------------------- SELECTOR DE CODIGO FUENTE ------------------------------------------------------------
+  echo --------------------------------------------------------------------------------------------------------------
+  printf "%4d-%5s #%s\n" 1 sc1 "Hola mundo sin variable"
+  printf "%4d-%5s #%s\n" 2 sc2 "Hola mundo utilizando una variable"
+  printf "%4d-%5s #%s\n" 3 sc3 "Backup muy simple"
+  printf "%4d-%5s #%s\n" 4 sc4 "Backup con fecha"
+  printf "%4d-%5s #%s\n" 5 sc5 "Comparacion de cadenas, Comando if, y sustitucion de parametros."
+  printf "%4d-%5s #%s\n" 6 sc6 "Comparacion de numericos, Comando if, sustitucion de parametros y comprobacion de parametros nulos"
+  printf "%4d-%5s #%s\n" 7 sc7 "Condiciones de existencia de ficheros"
+  printf "%4d-%5s #%s\n" 8 sc8 "Borrado de un directorio"
+  printf "%4d-%5s #%s\n" 9 sc9 "Bucle al estilo C"
+  printf "%4d-%5s #%s\n" 10 sc10 "Bucles While y Until OJO no ejecutar en cygwin"
+  printf "%4d-%5s #%s\n" 11 sc11 "Fecha, usuario y directorio de trabajo"
+  printf "%4d-%5s #%s\n" 12 sc12 "Instruccion Case"
+  printf "%4d-%5s #%s\n" 13 sc13 "Indica si los usuarios pasados como parametro estan conectados"
+  printf "%4d-%5s #%s\n" 14 sc14 "Crea los ficheros pasados como parametro"
+  printf "%4d-%5s #%s\n" 15 sc15 "Ejecuta en background un script que espera a la existencia de un fichero para realizar backup"
+  printf "%4d-%5s #%s\n" 16 sc16 "Ejecuta un script en background"
+  printf "%4d-%5s #%s\n" 17 sc17 "Ejecuta un comando"
+  printf "%4d-%5s #%s\n" 18 sc18 "Llamada a funciones con y sin parametros"
+  printf "%4d-%5s #%s\n" 19 sc19 "Creación de un menú con select"
+  printf "%4d-%5s #%s\n" 20 sc20 "Otro ejemplo de menú con select y array en las opciones"
+  printf "%4d-%5s #%s\n" 21 sc21 "Otro ejemplo de menu con select que muestra siempre el menú"
+  printf "%4d-%5s #%s\n" 22 sc22 "Trabajando con arrays"
+  echo --
+  echo -- 0 Salir
+  echo --------------------------------------------------------------------------------------------------------------
+  echo -n Introduzca su opcion \: ; read opcion
+  if test $opcion -eq 0 
+  then
+     tput clear
+     exit 0
+  fi
+  SC=sc$opcion
+  tput clear
+  echo -------------------------------------------------------------------------------------------------------------
+  echo CODIGO FUENTE DE $SC   
+  echo -------------------------------------------------------------------------------------------------------------
+  let numLinea=1
+  while IFS='' read -r linea; do
+    printf "%4d: %s\n" $numLinea "$linea"
+    let numLinea=numLinea+1
+  done < $SC
+  
+  echo -------------------------------------------------------------------------------------------------------------
+  echo -n "Pulsa return para volver al menu o 0 para salir : " ; read dummy
+  if test $dummy -eq 0 
+  then 
+     tput clear
+     exit 0
+  fi 
+  tput clear
+done
+
+

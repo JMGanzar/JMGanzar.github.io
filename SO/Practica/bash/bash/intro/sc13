@@ -1,0 +1,15 @@
+#!/bin/bash
+# por cada usuario dado como argumento se
+# comprueba si est conectado o no y se da
+# el mensaje apropiado
+for i in $*
+do
+  if who | grep -s $i > /dev/null
+  then
+    echo $i esta conectado
+  else
+    echo $i no esta conectado
+  fi
+done
+
+

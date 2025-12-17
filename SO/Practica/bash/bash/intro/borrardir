@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+#Este script realiza el borrado de todos los ficheros normales de un directorio, si este existe
+#
+#Presenta el bucle for con acceso al directorio de trabajo
+#Presenta la condicion multiple
+#
+
+if test -z $1; then
+   echo Error: Debe introducir un nombre de directorio
+elif test -d $1; then
+   cd $1
+   echo Atencion!!!
+   echo Atencion!!!
+   echo -n Esta seguro que quiere borrar todos los ficheros del directorio $1 \(s/n\):; read sino
+   if [ "$sino" = "s" ] || [ "$sino" = "S" ]; then
+      CONT=0
+      for i in * 
+      do
+          if test -f $i; then
+             rm $i
+             let CONT+=1  #Esto no funciona en cygwin.
+          fi
+      done
+      echo Se han borrado $CONT ficheros del directorio $1
+   else
+     :  #Esto es la sentencia vacia, el comando nulo
+     echo No se ha realizado el borrado
+   fi
+fi
+   

@@ -1,0 +1,18 @@
+#!/bin/sh
+# lineas_a acepta un unico parametro, si hay mas de uno muestra error "Error lineas_a: Numero incorrecto de
+# parametros" El script se queda con las lineas 5 a 8 del fichero de entrada y crea un fichero de salida con las 3
+# lineas llamado como el fichero pasado por parametro mas .lineas 
+
+#Comprobamos que el numero de parametros es 2
+#(contando con el comando) sino, mostramos error y se sale
+
+if [ $# -ne 1 ] #Si el numero de parametros no es 1 se produce error 
+then
+   echo Error lineas_a: Nmero incorrecto de parmetros
+   echo Sintaxis: lineas_a \<file_name\>
+   echo donde:f
+   echo file_name: es el nombre del fichero de entrada
+   echo 
+else
+   head -n8 $1 | tail -n4 > $1.lineas 
+fi

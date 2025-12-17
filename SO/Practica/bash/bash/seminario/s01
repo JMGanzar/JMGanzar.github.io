@@ -1,0 +1,430 @@
+#!/bin/bash
+
+function linea(){
+echo
+echo "---------------------------------------"
+echo
+};
+
+function fin(){
+linea
+exit $1
+};
+
+function round()
+{
+echo $(printf %.$2f $(echo "scale=$2;(((10^$2)*$1)+0.5)/(10^$2)" | bc))
+};
+
+tput clear
+
+# comando_echo : 
+echo "Bienvenido al Seminario Bash"
+
+linea
+
+# variables : 
+a=3
+b=Hola
+c="Hola Caracola"
+echo a=$a
+echo b=$b
+echo c=$c
+
+echo La variable a vale $a
+echo 'La variable a vale $a'
+echo "La variable a vale $a"
+
+# Los espacios dan error
+a= 3
+a= "Hola Mundo"
+a ="Hola Mundo"
+a = "Hola Mundo"
+a="Hola Mundo"
+echo $a
+
+linea
+
+# Concatenación de nombres de variables
+basebot="R2"
+echo "robot es $basebotD2"
+echo "robot es ${basebot}D2"
+
+linea
+
+
+# Basic arithmetic using let
+let a=5+4
+echo a=$a # 9
+
+let "a = 5 + 4"  #usamos espacios
+echo a=$a # 9
+
+let a++
+echo a=$a # 10
+
+let "a = 4 * 5"
+echo a=$a # 20
+
+let "a = $1 + 30"
+echo a=$a # 30 + first command line argument
+
+let a--
+echo a=$a # 30 + first command line argument - 1
+
+valor=$a
+modulo=5
+let resto=$valor%$modulo
+let "dividido = $valor / 5"
+echo "$valor / 5 es $dividido"
+echo "$valor % $modulo es $resto"
+
+let "ampliado=$resto * 5"
+echo "resto=$resto * 5 = $ampliado"
+
+linea
+
+# Basic arithmetic using expr
+expr 5 + 4
+expr "5 + 4"
+expr 5+4
+expr 5 \* $1
+expr $1 / 5
+expr 11 % 2
+a=$( expr $1 - 3 )
+echo $a
+
+linea
+
+# Basic arithmetic using double parentheses
+a=$(( 4 + 5 ))
+echo $a # 9
+a=$((3+5))
+echo $a # 8
+b=$(( a + 3 ))  #No necesitamos $
+echo $b # 11
+b=$(( $a + 4 ))
+echo $b # 12
+(( b++ ))
+echo $b # 13
+(( b += 3 ))
+echo $b # 16
+a=$(( 4 * 5 ))
+echo $a # 20
+a=$(($a / 5))
+echo $a  # 4
+
+linea 
+
+# Show the length of a variable.
+a='Hello World'
+echo ${#a} # 11
+b=4953
+echo ${#b} # 4
+
+# Usando la standar input como entrada a la calculadora
+echo "9.45 / 2.327" | bc
+echo "9.45 / 2.327" | bc -l 
+echo "scale=7; 9.45 / 2.327" | bc # scale permite definir la precisión (trunca)
+value=$(echo "9.45 / 2.327" | bc -l)
+echo $value
+round $value 7
+
+# parámetros :
+echo $0 es el nombre del programa
+
+echo $1 es el primer parámetro
+echo $2 es el segundo parámetro
+echo $3 es el tercer parámetro
+
+linea
+
+# Sustitución de comandos
+seq 1 5
+echo $(seq 1 5)
+
+#Comillas contrarias :
+#    Las comillas contrarias significan ejecutar el comando y sustituir por la salida.
+#
+#    TODAY=`(set \`date\`; echo $1)` 
+
+
+ANYO=$(date | cut -d' ' -f6)
+echo $ANYO
+ANYO=`date | cut -d' ' -f6`
+echo $ANYO
+
+DIASEM=`(set \`date\`; echo $1)` 
+echo $DIASEM
+ANYO=`(set \`date\`; echo $6)`
+echo $ANYO
+
+
+# Asignación de ejecución a variable
+a=$(echo 'hello' | tr '[:lower:]' '[:upper:]')
+b=$(echo 'WORLD' | tr '[:upper:]' '[:lower:]')
+echo "$a, $b"
+
+
+# cadenas : 
+#Tratamiento de cadenas "Quitar ./ de la salida"
+cadena=$0
+buscamos='./'
+reemplazamos=''
+echo ${cadena/$buscamos/$reemplazamos}
+
+programa=${cadena/$buscamos/$reemplazamos}
+
+echo $programa es el nombre del programa
+
+# Tratamiento de cadenas
+
+cadena="Hola Caracola"
+echo "[${cadena:2:1}]"
+
+linea
+
+# Leer de la entrada estandar
+#echo "Por favor introduzca su nombre:"
+#read nombre
+#echo "Bienvenido $nombre"
+
+#echo -n "Introduce tu apellido seguido de tu nombre:"
+#read apellido nombre
+#echo "Bienvenido a Elche $nombre $apellido"
+
+#read -p"Introduce tu apellido seguido de tu nombre:" apellido nombre
+#echo "Bienvenido a Elche $nombre $apellido"
+
+
+#Bucles
+
+for i in 1 2 3 4 5
+do 
+        echo $i
+done
+
+ 
+for i in uno dos tres cuatro
+do 
+        echo $i
+done
+
+ 
+for i in "uno dos tres cuatro"
+do 
+        echo $i
+done
+
+for i in "uno" "dos" "tres" "cuatro"
+do 
+        echo $i
+done
+
+linea
+echo {0..9}
+echo {0..9..2}
+
+for i in {0..9}
+do 
+        echo $i
+done
+
+linea
+
+seq 1 5
+
+linea
+
+for i in $(seq 1 5); do
+            echo item: $i
+done
+
+linea
+
+for i in `seq 1 5`; do
+            echo item: $i
+done
+
+linea
+
+for i in $(ls); do
+            echo "fichero: $i"
+done
+linea
+
+lista=`ls`
+for fichero in $lista
+do
+        echo $fichero
+done
+
+for file in *
+do 
+        echo $file 
+done
+
+quitar='../'
+for file in ../*.c
+do 
+	echo $file        
+	echo ${file/$quitar/''} 
+done
+
+linea
+
+# Salir de un bucle for
+ 
+for i in {0..100}
+do
+        echo $i
+        if [ $i -eq 15 ]; then
+                break
+        fi
+done
+
+# Estilo C
+for (( i=1; i<=100; i++ ))
+do
+   echo "Ciclo: $i"
+   if [ $i -eq 15 ]; then
+      break
+   fi
+done
+
+linea
+
+#While
+CONTADOR=0
+         while [  $CONTADOR -lt 10 ]; do
+             echo El contador es $CONTADOR
+             let CONTADOR=CONTADOR+1 
+         done
+
+linea
+
+#Until
+CONTADOR=20
+         until [  $CONTADOR -lt 10 ]; do
+             echo CONTADOR $CONTADOR
+             let CONTADOR-=1
+         done
+
+linea
+
+#Arrays
+
+for element in $array  
+do
+    echo "$element"
+done
+
+for element in ${array[*]}  
+do
+    echo "$element"
+done
+
+for element in ${array[@]}  
+do
+    echo "$element"
+done
+
+
+linea
+
+for element in "${array[*]}"  # Se tratan como una cadena
+do
+    echo "$element"
+done
+
+for element in "${array[@]}" # Se tratan como cadenas independientes
+do
+    echo "$element"
+done
+
+
+numeros=(1 2 3 4 5)
+
+declare -a numeros=(1 2 3 4 5)
+
+echo ${!numeros[*]}  #muestra los índices del array
+
+numeros=(1 2 3 4 5)
+numeros[10]=6
+echo "Contenido del array:"
+echo ${numeros[*]}
+echo "Índices del array:"
+echo ${!numeros[*]}
+
+numeros=(1 2 3 4 5)
+echo ${#numeros[*]}  #Número de elementos en un array
+
+numeros=(Primero Segundo Tercero)
+echo ${numeros[*]}
+echo ${#numeros[1]}  #Tamaño de un elmento
+
+#utilizando rangos
+cifrasLetras=( {A..Z} {a..z} {0..9} )
+echo ${cifrasLetras[*]}
+
+#Meter el listado de archivos en un array
+ficheros=(`ls ..`)
+echo ${ficheros[*]}
+echo ${#ficheros[*]}
+
+unset ficheros
+
+ficheros=`ls ..` # si olviddamos los paréntesis seria una cadena
+echo ${ficheros[*]}
+echo ${#ficheros[*]}
+
+
+#IFS  default <space><tab><newline>
+echo "longitud de IFS es echo ${#IFS}" 
+echo "[$IFS]"
+OLDIFS=$IFS
+
+linea
+
+string="Paris,Francia,Europa"
+array[0]=Paris
+array[1]=Francia
+array[2]=Europa
+
+echo $array
+echo ${array[@]}
+echo ${array[*]}
+
+linea
+
+for element in "${array[@]}"
+do
+    echo "$element"
+done
+
+#para obtener el índice y el valor
+for index in "${!array[@]}"
+do
+    echo "$index ${array[index]}"
+done
+
+unset "array[1]"
+array[42]=Earth
+
+echo "Número de elmentos ${#array[@]}"
+for index in "${!array[@]}"
+do
+    echo "$index ${array[index]}"
+done
+
+#último índice
+echo "${array[-1]}"
+
+echo "${array[@]: -1:1}"
+
+
+
+IFS=$OLDIFS
+
+linea
+

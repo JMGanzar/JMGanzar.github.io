@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+#Este script es para ejecutar en background a mano
+#
+#Queda a la espera de que exista el fichero marca
+#En el momento que el fichero existe entonces lo borra y realiza un backup
+
+FILE=marca
+until test -f $FILE
+do
+  sleep 10
+done
+
+rm marca
+echo Comienza la realización del Backup
+
+#sc4
+echo "SE HA REALIZADO EL BACKUP ..."
+
+echo Fin de la realización del backup
+exit
+
+

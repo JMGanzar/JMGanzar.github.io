@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+#Este script muestra por pantalla "hola mundo"
+#
+#
+echo hola mundo 
+echo Adios.  
+

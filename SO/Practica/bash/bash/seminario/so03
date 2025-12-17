@@ -1,0 +1,53 @@
+#!/bin/bash
+
+function linea(){
+echo
+echo "---------------------------------------"
+echo
+};
+
+function fin(){
+linea
+exit $1
+};
+
+function round()
+{
+  valor=$(echo "scale=$2;(((10^$2)*$1)+0.5)/(10^$2)" | bc -l)
+  echo $valor
+};
+
+linea
+
+# Show the length of a variable.
+a=Hello ; ls
+a='Hello World'
+echo a=$a
+echo "length(a)=${#a}" # 11
+b=4953
+echo b=$b
+echo "length(b)=${#b}" # 4
+
+# Usando la standar input como entrada a la calculadora
+echo "9.45 / 2.327" | bc
+echo "9.45 / 2.327" | bc -l 
+echo "scale=7; 9.45 / 2.327" | bc # scale permite definir la precisión (trunca)
+value=$(echo "9.45 / 2.327" | bc -l)
+echo value=$value
+round $value 7
+roundedvalue=$(round $value 7)
+echo roundedvalue=$roundedvalue
+roundedvalue=`round $value 7`
+echo roundedvalue=$roundedvalue
+
+printf "%s  %02d\n" "Hola Caracola"  3
+
+# parámetros :
+echo $0 es el nombre del programa
+
+echo $1 es el primer parámetro
+echo $2 es el segundo parámetro
+echo $3 es el tercer parámetro
+
+linea
+

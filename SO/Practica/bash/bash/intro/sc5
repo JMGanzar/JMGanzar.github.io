@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+#Este script muestra 
+#     La comparacion de cadenas de caracteres, 
+#     El uso de la instruccion if y 
+#     La sustitucion de parametros
+#
+
+
+if [ "hola" = "hola" ]; then
+   echo Las cadenas son iguales
+fi
+
+CAD=hola
+ #La comparacion falla si el parametro $1 es vacio o no se pasa
+if [ $CAD = $1 ]; then         
+   echo Las cadenas son iguales
+else
+   echo Las cadenas son distintas
+fi
+
+echo esto no funciona
+#Lo siguiente arregla ese problema
+
+if [ $CAD = "$1" ]; then
+   echo Las cadenas son iguales
+else
+   echo Las cadenas son distintas
+fi
+echo esto si funciono
+
+#Tambien se puede preguntas si son distintas
+if [ $CAD != "$1" ]; then
+   echo Las cadenas son distintas
+else
+   echo Las cadenas son iguales
+fi
+
+#Lo mismo se obtiene con la negación
+if ! [ $CAD = "$1" ]; then
+   echo Las cadenas son distintas
+else
+   echo Las cadenas son iguales
+fi

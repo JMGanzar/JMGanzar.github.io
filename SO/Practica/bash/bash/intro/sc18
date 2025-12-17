@@ -1,0 +1,22 @@
+#!/bin/bash
+salir() {
+  echo return simplemente retorna de la función
+  return
+}
+
+salir_de_verdad(){
+   echo Ahora si salimos de verdad
+   exit 17
+}
+
+e() {
+  echo $1
+}
+
+e Hola
+e Mundo
+salir
+echo Hola
+salir_de_verdad
+echo Caracola
+

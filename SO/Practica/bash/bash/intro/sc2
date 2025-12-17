@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+#Este script muestra por pantall el valor de la variable CAD
+#
+CAD="Hola Mundo"  #La cadena de texto debe ir entre comillas dobles
+echo $CAD
+

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+sintaxis(){
+echo "-----------------------------"
+echo "ocultos <directorio>"
+echo 
+echo "Opciones:"
+echo "   -help"
+echo "   Si se proporciona la opción no se puede pasar más parámetros"
+echo 
+echo "Muestra los ficheros ocultos de el directorio pasado como parámetro"
+echo "-----------------------------"
+exit
+}
+
+#Comprobamos que pasan un directorio
+if [ $# -lt 1 ]; then
+	echo "Falta el directorio a mostrar"
+	sintaxis
+elif [ $# -gt 1 ]; then
+	echo "Sólo se permite un parámetro"
+	sintaxis 
+fi
+
+if [ "$1" == "-help" ]; then
+   sintaxis
+fi
+
+
+if [ ! -d $1 ]; then
+   echo "El parámetro no corresponde con un directorio"
+   sintaxis
+fi
+
+ls -ld $1/.*

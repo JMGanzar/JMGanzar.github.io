@@ -1,0 +1,77 @@
+#!/bin/bash
+# enlaces: lista archivos que son enlace simbólico o tienen enlaces hard
+# simbólicos: en ls -l se busca que empiece con l
+
+Sintaxis(){
+	echo "---------------------------"
+	echo "Muestra los enlaces soft o hard de un directorio"
+	echo "Únicamente procesa los ficheros incluidos en el directorio"
+	echo "no los directorios"
+	echo 
+	echo "enlaces <opciones> <directorio>"
+	echo "opciones: "
+	echo "   -s: Muestra los soft links"
+	echo "   -h: Muestra los hard links"
+	echo 
+	echo "directorio: nombre del directorio del cual mostrar los enlaces"
+	echo "---------------------------"
+}
+
+CheckDir(){
+#Comprobamos que el parámetro es un directorio
+#en caso contrario mostramos sintaxis
+if [ ! -d $1 ]
+then
+  echo Error: enlaces: $1 no es un directorio
+  exit
+fi
+}
+
+CheckOptions(){
+#Comprobamos que el número de opciones es la correcta
+#en caso contrario mostramos sintaxis
+	if [ $# -gt 2 ] & [ $# -lt 1 ]; then
+		Sintaxis
+		exit
+	fi
+}
+
+#Comienza el script
+#Comprobamos opciones
+CheckOptions $*
+
+#Usamos getopts para gestionar las opciones
+while getopts ":s:h:?" opt; do
+  case $opt in
+    s|S)
+      OPCION=s;
+      DIRECTORIO=$OPTARG
+      CheckDir $DIRECTORIO
+      ls -l $DIRECTORIO | grep "^l"
+      ;;
+    h|H)
+      OPCION=h;
+      DIRECTORIO=$OPTARG
+      CheckDir $DIRECTORIO
+      while read linea; do
+	    #Sólo procesamos los ficheros por lo que comprobamos si es directorio
+		if [ ! -d $DIRECTORIO/$linea ];then
+		    #El comando stat -c %h indica el número de nombres para un mismo inode (un inode son 
+			#los datos en si de un fichero). Si tenemos más de un fichero para los mismos datos
+			#tenemos un hard link 
+			esHard=$(stat -c %h $DIRECTORIO/$linea)
+			if [ $esHard -gt 1 ]; then
+				ls -l $DIRECTORIO/$linea
+			fi
+		fi
+      done < <(ls -1 $DIRECTORIO)  # ls -1 (uno) muestra un fichero en cada linea
+	  ;;
+    ?)
+	  Sintaxis
+      ;;
+    \?)
+      echo "Opción inválida: -$OPTARG" >&2
+      ;;
+  esac
+done
+

@@ -1,0 +1,69 @@
+#!/bin/bash
+#!/bin/bash
+
+#Ejemplo de utilización de arrays en bash
+#
+#
+# ${valores[*]}         # Muestra todos los valores de un array
+# ${!valores[*]}        # Muestra todos los indices de un array
+# ${#valores[*]}        # Devuelve el numero de valores en un array
+# ${#valores[0]}        # Devuelve la longitud del indice 0
+
+# definimos un array de valores
+valores=("primero" "segundo" "tercero")
+
+# añadimos un nuevo valor en la posicion 3 del array
+valores[3]="quarto"
+
+# añadimos un nuevo valor en la posicion 5 del array
+valores[5]="quinto"
+
+printf "\nCantidad de valores dentro del array\n"
+printf "   %s\n" ${#valores[*]}
+
+printf "\nMostramos un valor dado\n"
+printf "   %s\n" ${valores[2]}
+
+printf "\nMostramos la longitud del indice 2\n"
+printf "   %s\n" ${#valores[2]}
+
+# recorremos todos los valores del array
+printf "\nmostramos todos los valores\n"
+for item in ${valores[*]}
+do
+    printf "   %s\n" $item
+done
+
+# recorremos todos los indices del array
+printf "\nMostramos todos los indices\n"
+for index in ${!valores[*]}
+do
+    printf "   %d\n" $index
+done
+
+# mostramos los indices y sus valores
+printf "\nMostramos todos los indices con sus valores\n"
+for index in ${!valores[*]}
+do
+    printf "%4d: %s\n" $index ${valores[$index]}
+done
+
+# definimos un array numérico
+valores=(1 2 3 4 5 65)
+
+# mostramos los indices y sus valores
+printf "\nMostramos todos los indices con sus valores\n"
+for index in ${!valores[*]}
+do
+    printf "%4d: %2d\n" $index ${valores[$index]}
+done
+
+# sumamos todos los valore del array
+printf "\nSumamos los valores del array anterior\n"
+let total=0
+for index in ${!valores[*]}
+do
+    let total=total+${valores[$index]}
+done
+echo La suma es $total
+

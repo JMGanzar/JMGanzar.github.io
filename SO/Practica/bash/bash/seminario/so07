@@ -1,0 +1,109 @@
+#!/bin/bash
+
+function linea(){
+echo
+echo "---------------------------------------"
+echo
+};
+
+function fin(){
+linea
+exit $1
+};
+
+linea
+
+
+#Arrays
+array=(1 2 3 4 5)
+echo $array
+echo ${array[*]}
+echo ${array[4]}
+
+
+for element in $array  
+do
+    echo elemento="$element"
+done
+
+linea
+
+
+for element in ${array[*]}  
+do
+    echo elemento="$element"
+done
+
+linea
+
+for element in ${array[@]}  
+do
+    echo Element="$element"
+done
+
+
+
+linea
+
+for element in "${array[*]}"  # Se tratan como una cadena
+do
+    echo Element="$element"
+done
+
+linea
+
+for element in "${array[@]}" # Se tratan como cadenas independientes
+do
+    echo Element="$element"
+done
+
+linea 
+
+numeros=(1 2 3 4 5)
+
+declare -a numeros=(1 2 3 4 5)
+
+echo ${numeros[@]}
+echo ${!numeros[*]}  #muestra los índices del array
+
+linea
+
+numeros=(1 2 3 4 5)
+numeros[10]=6
+echo "Contenido del array:"
+echo ${numeros[*]}
+echo "Índices del array:"
+echo ${!numeros[*]}
+
+
+
+numeros=(1 2 3 4 5)
+echo ${#numeros[*]}  #Número de elementos en un array
+
+linea
+
+numeros=(Primero Segundo Tercero hola ñasljdk añlsdkf ñalskdasdfasdfasdff)
+echo ${numeros[*]}
+echo ${#numeros[6]}  #Tamaño de un elmento
+
+linea
+
+#utilizando rangos
+cifrasLetras=( {A..Z} {a..z} {0..9} )
+echo ${cifrasLetras[*]}
+
+linea
+
+#Meter el listado de archivos en un array
+ficheros=(`ls `)
+echo ${ficheros[*]}
+echo ${#ficheros[*]}
+
+linea
+unset ficheros
+
+ficheros=`ls ` # si olviddamos los paréntesis seria una cadena
+echo ${ficheros[*]}
+echo ${#ficheros[*]}
+
+

@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+#Este script muestra 
+#     Condiciones de existencia de ficheros  
+#     El uso de la instruccion if
+#     La sustitucion de parametros
+#     Comprobacion de parametros nulos
+#
+
+if test -z $1; then
+   echo Error: Debe introducir un nombre de fichero
+elif test -f $1; then
+   echo El fichero $1 existe y es un fichero normal
+   if [ -x $1 ]; then
+      echo Además es ejecutable
+   fi
+elif test -d $1; then
+   echo El fichero $1 existe y es un directorio
+else
+   echo El fichero no es ni directorio ni fichero normal, o no existe
+fi
+   

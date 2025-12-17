@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+#Lo mismo que sc15, pero lo lanza en background de forma automática
+#
+
+sh sc15 &
+

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+function linea(){
+  echo
+  echo "---------------------------------------"
+  echo
+}
+
+function fin(){
+  linea
+  exit $1
+}
+
+echo "Hola Mundo"
+echo "Mi fuente se llama $0 y me han pasado $# parametros"
+echo "[$1][$2]"
+
+linea
+
+# variables : 
+a=3
+b=Hola
+c="Hola Caracola"
+echo a=$a
+echo b=$b
+echo c=$c
+
+echo La variable a vale $a
+echo 'La variable a vale $a'
+echo "La variable a vale $a"
+
+fin
+
+linea
+
+# Los espacios dan error
+#a= 3
+#a= "Hola Mundo"
+#a ="Hola Mundo"
+#a = "Hola Mundo"
+a="Hola Mundo"
+echo $a
+
+# Concatenación de nombres de variables
+objeto=taza
+echo "Objeto en plural es ${objeto}s"  ${objeto}s
+
+basebot="R2"
+echo "robot es $basebotD2"
+echo "robot es ${basebot}D2"
+
+linea
+
+

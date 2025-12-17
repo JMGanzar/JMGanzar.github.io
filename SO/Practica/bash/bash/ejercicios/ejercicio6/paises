@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+	echo "Falta el fichero de pasaje"
+fi
+
+paises=$(cut -d$'\t' -f3 $1 | uniq)
+
+
+for pais in $paises; do
+	grep $pais $1 | cut -d$'\t' -f1-2 >> $pais
+done
