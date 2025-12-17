@@ -1,0 +1,8 @@
+#!/bin/bash 
+function myfun() {
+valor=$(echo "( $1 / $2 ) * 100 " | bc -l)
+pp=$(expr index $valor .)
+echo ${valor:0:$pp}${valor:$pp:2}
+}
+fres=$(myfun 1 3)
+echo "fres: "$fres

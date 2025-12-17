@@ -1,0 +1,123 @@
+#!/bin/bash
+
+#Funcion que muestra la sintaxis del programa 
+Sintaxis(){
+	#----------------------------------
+	# NO TOCAR - USARLA para mostrar la sintaxis si hay error en los parametros
+	#----------------------------------
+    echo "----------------------------------------------------" 
+	echo "gen_textura <nombre_imagen_bmp> <lado> <distancia>"
+	echo "Genera una imagen cuadrada con textura"
+    echo ""
+	echo "nombre_imagen_bmp"
+	echo "   Nombre del fichero que se genera. Sin la extensión .bmp"
+    echo "   Si el fichero existe se pregunta si se sobreescribe."
+	echo "lado"
+	echo "   Tamaño del lado de la imagen, debe ser uno de: 128,256,512,1024"
+	echo "distancia"
+	echo "   Parametro que modifica la textura, valores validos en el intervalo [1..128]"
+    echo "----------------------------------------------------" 
+    echo ""
+}
+
+CheckArguments(){
+	#----------------------------------
+	# ESTA FUNCIÓN HAY QUE COMPLETARLA
+    # Si se detecta un error se informa y se llama a Sintaxis. Además se termina la ejecución.
+	#----------------------------------
+
+	#Comprobamos que el número de parametros sea 3 
+    ...
+
+    #Comprobamos que el nombre de fichero no tiene punto
+    ...
+    #Comprobamos que el segundo parametro (lado) es un numerico
+    ...
+    
+    #Comprobamos que el segundo parametro (lado) es un numerico
+    ...
+
+    #Comprobamos que el parametro lado está entre los posibles valores validos: 128 256 512 1024
+    ...    
+
+    #Comprobamos que el parametro distancia esta en el rango correcto [1..128]
+    ...    
+
+}
+
+function ShowResults(){
+	#----------------------------------
+	# NO TOCAR - USARLA para mostrar los resultados
+	#----------------------------------
+    echo "----RESULTADOS--------------------------------------------"
+    echo
+    printf "Se ha generado la imagen de textura: %s\n" $nombreFichero.bmp
+    printf "El tamaño dela imagen es %s x %s pixels, total: %s pixels\n" $lado $lado $(( $lado * $lado))
+    printf "La distancia de textura es %s\n" $distancia
+    echo 
+    printf "Hijo 0 ha proceso %s pixels: [%8s .. %8s]\n" $carga ${indices_ini[0]} ${indices_end[0]}
+    printf "Hijo 1 ha proceso %s pixels: [%8s .. %8s]\n" $carga ${indices_ini[1]} ${indices_end[1]}
+    printf "Hijo 2 ha proceso %s pixels: [%8s .. %8s]\n" $carga ${indices_ini[2]} ${indices_end[2]}
+    printf "Hijo 3 ha proceso %s pixels: [%8s .. %8s]\n" $carga ${indices_ini[3]} ${indices_end[3]}
+    echo
+    printf "Total Pares         : %s\n" ${resultados[0]}
+    printf "Total Impares       : %s\n" ${resultados[1]}
+    printf "Total Claros (>=128): %s\n" ${resultados[2]}
+    printf "Total Oscuros (<128): %s\n" ${resultados[3]}
+    echo "----------------------------------------------------------"
+}
+
+
+#----------------------------------------------
+# MAIN
+#----------------------------------------------
+# Comprobar los argumentos llamando a CheckArguments 
+# Begin TODO  -----------------------------------------
+   ...
+# End TODO -----------------------------------------
+
+#------------ No tocar (usar las variables que aqui se definen)----------------
+nombreFichero=$1
+lado=$2
+distancia=$3
+#------------
+
+#Comprobar si el fichero existe en cuyo caso preguntar si queremos sobreescribirlo, si contestan No, salir.
+#Tanto si se sobreescribe como si no existe el fichero lanzar el ejecutable imagen con los parametros adecuados.
+# Begin TODO -----------------------------------------
+    #Comprobamos que el fichero existe
+    #Si existe preguntamos si quiere sobreescribir
+    #Si sobreescribe lanzamos la ejecución con los parametros correctos
+    #Si no existe el fichero lanzamos la ejecución con los parametros correctos
+ ...
+# End TODO -----------------------------------------
+
+#------------ No tocar
+#Declaramos los array de resultados, de indices y la carga que usaremos para mostrar los resultados
+#Estos datos se actualizan al cargar los ficheros de resultados.
+resultados=(0 0 0 0)   # resultados=(pares impares claros oscuros)
+indices_ini=(0 0 0 0)  # indices de inicio (pixel desde)
+indices_end=(0 0 0 0)  # indices de fin (pixel hasta)
+carga=0                # numero pixels que procesa cada hijo
+#------------
+
+#Leemos los ficheros de resultados linea a linea y actualizamos los arrarys correspondientes y la variable carga
+# Ver la función ShowResults para entender mejor el contenido de los arrays.
+# Begin TODO -----------------------------------------
+        # Para cada fichero
+        #   En cada iteración del bucle la variable linea tiene una linea del fichero
+        #   Las dos primeras lineas las obiamos pues son el lado y la distancia que ya las tenemos
+        #   El resto de lineas nos sirven para actualizar los valores de resultados, indices y carga
+for fichero in 0 1 2 3 
+do
+    ...
+done
+# End TODO -----------------------------------------
+
+#------------ No tocar
+#Mostramos los resultados
+ShowResults
+#------------
+
+
+

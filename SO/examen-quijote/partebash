@@ -1,0 +1,91 @@
+#!/bin/bash
+
+ERR_NOT_NUMBER=1
+ERR_OUT_OF_RANGE=2
+
+MIN_PASS_LENGTH=1
+MAX_PASS_LENGTH=3
+
+MIN_PARTS=1
+MAX_PARTS=5
+
+
+NotNumber(){
+	#----------------------------------
+	# NO TOCAR - PODEIS USARLA EN CheckArguments() para determinar si un parámetro no es numérico
+	# Parámetros: 
+	#    $1 : parametro a comprobar
+	# Salida:
+	#    0  : si es numérico
+	#    1  : si no es numérico
+	#----------------------------------
+	if ! [ "$1" -eq "$1" ] 2>/dev/null; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+JuntarPartes(){
+	#----------------------------------
+	# NO TOCAR - USARLA para juntar las partes
+	# Parámetros: 
+	#    $1 : Número de partes que hay que juntar
+	# Salida:
+	#    Genera el fichero decrypted
+	#----------------------------------
+	numparts=$1;
+	parts=""
+	for p in `seq 1 $numparts`; do
+		parts="$parts decryptpart$p "
+	done
+ 	cat $parts > decrypted
+}
+
+Clean(){
+	#----------------------------------
+	# ESTA FUNCIÓN HAY QUE COMPLETARLA
+	#----------------------------------
+	...
+}
+
+Sintaxis(){
+	#----------------------------------
+	# ESTA FUNCIÓN HAY QUE COMPLETARLA
+	#----------------------------------
+	...
+}
+
+
+
+CheckArguments(){
+	#----------------------------------
+	# ESTA FUNCIÓN HAY QUE COMPLETARLA
+	#----------------------------------
+	...
+}
+
+#----------------------------------------------
+# MAIN
+#----------------------------------------------
+
+#Comprobar los argumentos llamando a CheckArguments
+...
+
+#Limpiar ejecuciones anteriores llamando a Clean
+...
+
+#Generar un password o key llamando a genpass con la longitud deseada 
+...
+
+#Encriptar el fichero quijote.txt llamando a encriptar pasándole el nombre del fichero quijote.txt y el password
+...
+
+#LLamar a partec para que desencripte el fichero usando el password en n partes
+...
+
+#Llamar a JuntarPartes paśandole como parámetro el número de partes
+...
+
+#Mostrar el fichero decrypted
+...

@@ -1,0 +1,294 @@
+#!/bin/bash
+
+ERR_NOT_NUMBER=1
+ERR_OUT_OF_RANGE=2
+
+MIN_EJECUCIONES=1
+MAX_EJECUCIONES=10
+
+MIN_HIJOS=1
+MAX_HIJOS=10000
+
+MIN_LADO=10
+MAX_LADO=100
+
+
+pctValores() {
+valor=$(echo "( $1 / $2 ) * 100 " | bc -l)
+pp=$(expr index $valor .)
+echo ${valor:0:$pp}${valor:$pp:$3}
+}
+
+NotNumber(){
+	#----------------------------------
+	# NO TOCAR - PODEIS USARLA EN CheckArguments() para determinar si un parámetro no es numérico
+	# Parámetros: 
+	#    $1 : parametro a comprobar
+	# Salida:
+	#    0  : si es numérico
+	#    1  : si no es numérico
+	#----------------------------------
+	if ! [ "$1" -eq "$1" ] 2>/dev/null; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+SumaVectores(){
+	#----------------------------------
+	# NO TOCAR
+	#----------------------------------
+	unset vectorSuma
+
+	numItems=$1
+	shift
+	#capturamos el primer array
+	for ((i=0;i<$numItems;i++)); do
+		a[$i]=$1
+		shift
+	done
+	#capturamos el segundo array
+	for ((i=0;i<$numItems;i++)); do
+		b[$i]=$1
+		shift
+	done
+	#sumamos
+	for ((i=0;i<$numItems;i++)); do
+		vectorSuma[$i]=$((${a[$i]}+${b[$i]}))
+	done
+}
+
+Sintaxis(){
+	#----------------------------------
+	# NO TOCAR
+	#----------------------------------
+	#Debe de mostrar la sintaxis de uso del programa, con la explicación de los parametros.
+	echo "-------------------------------------------------------------------------------------------"
+	echo "partebash <numEjecuciones> <numHijos> <ladoMatriz>"
+	echo ""
+	echo "Los parametros son obligatorios:"
+	echo "numEjecuciones: Es el número de ejecuciones de partec que se van a lanzar"
+	echo "                El valor mínimo para este parámetro es $MIN_EJECUCIONES"
+	echo "                El valor máximo para este parámetro es $MAX_EJECUCIONES"
+	echo "numHijos      : Es el número de hijos que van a procesar en paralelo la matriz de datos."
+	echo "                El valor mínimo para este parámetro es $MIN_HIJOS"
+	echo "                El valor máximo para este parámetro es $MAX_HIJOS"
+	echo "ladoMatriz    : Es el tamaño del lado de la matriz. La matriz tendrá lado x lado elementos."
+	echo "                El valor mínimo para este parámetro es $MIN_LADO"
+	echo "                El valor máximo para este parámetro es $MAX_LADO"
+	echo "-------------------------------------------------------------------------------------------"
+}
+
+MostrarResultados(){
+	#----------------------------------
+	# NO TOCAR
+	#----------------------------------
+	#En el array sumas deben estar los totales, se muestran
+	totalCeros=${sumas[0]}
+	totalPares=${sumas[1]}
+	totalImpares=${sumas[2]}
+	totalValores=$(( ${sumas[0]} + ${sumas[1]} + ${sumas[2]} ))
+	pctCeros=$(pctValores $totalCeros $totalValores 2)
+	pctPares=$(pctValores $totalPares $totalValores 2)
+	pctImpares=$(pctValores $totalImpares $totalValores 2)
+	printf "Total Ceros   : %10d (%s %%)\n" ${sumas[0]} $pctCeros
+	printf "Total Pares   : %10d (%s %%)\n" ${sumas[1]} $pctPares
+	printf "Total Impares : %10d (%s %%)\n" ${sumas[1]} $pctImpares
+	echo "---------------------------"
+	printf "                %10d\n" $totalElementos
+}
+
+#***************************************************************************
+# Completar las siguientes funciones según el enunciado
+#***************************************************************************
+
+Clean(){
+	#----------------------------------
+	# BEGIN TU CODIGO
+	#----------------------------------
+	#Debe borrar todos los ficheros con el patron Pnnnnn_data.txt 
+	#done nnnnn es un número (el PID del proceso que lo creó)
+	rm P*_data.txt 2> /dev/null
+	#----------------------------------
+	# END TU CODIGO
+	#----------------------------------
+}
+
+CheckArguments(){
+	#----------------------------------
+	# BEGIN TU CODIGO
+	#----------------------------------
+
+	#Comprobamos que el número de parametros es 3
+	if [ $# -ne 3 ]; then
+		echo "Error número de parametros incorrecto"
+		Sintaxis
+		exit 1
+	fi
+
+	#Comprobamos que el paŕametro numEjecuciones es un número
+	if NotNumber $1 ; then
+	  echo "El parámetro <numEjecuciones> debe ser un número"
+	  Sintaxis
+	  exit 1
+	fi
+
+	#Comprobamos que el parámetro numHijos es un número
+	if NotNumber $2 ; then
+	  echo "El parámetro <numHijos> debe ser un número"
+	  Sintaxis
+	  exit 1
+	fi
+
+	#Comprobamos que el paŕametro ladoMatriz es un número
+	if NotNumber $3 ; then
+	  echo "El parámetro <ladoMatriz> debe ser un número"
+	  Sintaxis
+	  exit 1
+	fi
+
+	#Comprobamos el rango del parámetro numEjecuciones
+	if [ $1 -lt $MIN_EJECUCIONES ] || [ $1 -gt $MAX_EJECUCIONES ] ; then
+		echo "El parametro <numHijos> debe estar en el intervalo [$MIN_EJECUCIONES..$MAX_EJECUCIONES]"
+		Sintaxis
+		exit 1
+	fi
+
+	#Comprobamos el rango del parámetro numHijos
+	if [ $2 -lt $MIN_HIJOS ] || [ $2 -gt $MAX_HIJOS ] ; then
+		echo "El parametro <numHijos> debe estar en el intervalo [$MIN_HIJOS..$MAX_HIJOS]"
+		Sintaxis
+		exit 1
+	fi
+
+	#Comprobamos el rango del parámetro ladoMatriz
+	if [ $3 -lt $MIN_LADO ] || [ $3 -gt $MAX_LADO ] ; then
+		echo "El parametro <ladoMatriz> debe estar en el intervalo [$MIN_LADO..$MAX_LADO]"
+		Sintaxis
+		exit 1
+	fi
+	#----------------------------------
+	# END TU CODIGO
+	#----------------------------------
+}
+
+LeerFichero(){
+	unset datosLeidos
+	# Recibe como parametro el nombre del fichero a leer. 
+	fichero=$1
+
+	# Lo lee linea a linea y rellena el array datosLeidos con lo leido. Una linea en cada celda.
+	# El array datosLeidos es visible desde fuera de la funcion, no hace falta devolver nada solo rellenarlo
+
+	ix=0 #indice para recorrer el array datos y dejar el dato en su celda
+	while read dato; do
+		#----------------------------------
+		# BEGIN TU CODIGO
+		#----------------------------------
+		# En cada iteración del bucle la variable linea tiene una linea del fichero
+		
+		#Asignaremos esto a una variable para poder comprobar en un if 
+		datosLeidos[$ix]=$dato
+		ix=$((ix+1))
+		#----------------------------------
+		# END TU CODIGO
+		#----------------------------------
+	done < $fichero
+}
+
+#----------------------------------------------
+# MAIN
+#----------------------------------------------
+
+declare -a medias
+declare -a datos
+
+#Inicializamos a ceros un array medias de números donde se actualizará la media de las ejecuciones
+#el array deberá tener 3 elementos para las medias de: ceros, pares e impares
+#
+#Tambien inicializamos a ceros un array datos donde se colocaran los datos leidos de cada fichero (se leeran en bucle)
+#
+# Nota: este array es visible desde las funiones puesto que sean llamadas despues de su inicialización
+#
+for((i = 0; i < 3; i++)); do
+	sumas[$i]=0
+	datos[$i]=0
+done
+
+#----------------------------------
+# BEGIN TU CODIGO
+#----------------------------------
+	#Comprobar los argumentos llamando a CheckArguments
+	CheckArguments $*
+#----------------------------------
+# END TU CODIGO
+#----------------------------------
+
+#Una vez comprobado que todo correcto asignamos los parametros a variables
+NUM_EJECUCIONES=$1
+NUM_HIJOS=$2
+LADO_MATRIZ=$3
+
+#Calculamos el total de elmentos a procesar para obtener posteriormente el porcentaje final.
+totalElementos=$(( $NUM_EJECUCIONES * $LADO_MATRIZ * $LADO_MATRIZ ))
+
+
+#Limpiar los ficheros de ejecuciones anteriores llamando a Clean
+Clean
+
+#----------------------------------
+# BEGIN TU CODIGO
+#----------------------------------
+	#Realizar el bucle de llamadas con NUM_EJECUCIONES llamadas a partec 
+	#Podéis utilizar partec-profesor para probar este script sin tener terminado vuestro codigo en partec
+	#Controlar los posibles errores. 
+	#Si partec devuelve 1 en vez de 0 es que los parámetros que recibe no son correctos, en ese caso
+	#salir el bucle guardando en alguna variable que ha habido error
+	hayError=0
+	for((i = 0; i < $NUM_EJECUCIONES; i++)); do
+		#Lanzamos partec con los parametros
+		partec $NUM_HIJOS $LADO_MATRIZ
+		if [ $? -eq 1 ]; then
+			hayError=1
+			break
+		fi
+	done
+#----------------------------------
+# END TU CODIGO
+#----------------------------------
+
+	#Comprobamos si el bucle anterior termino con o sin error 
+	#Si hubo error se muestra un mensaje por pantalla y se termina (partec ya ha sacado su mensaje de error)
+	#Si no hubo error se procesan los ficheros Pnnnnn_data.txt para calcular las sumas en el array de sumas
+	#Algoritmo: 1. Iterar en un bucle por los ficheros con patron P*_data.txt
+	#              En cada iteracion sumar los datos leidos al array sumas
+	#           2. Tras el bucle  dividir por $totalElementos cada elemento del array sumas
+	#           3. Mostrar la suma de ceros, pares no nulos e impares con la funcion MostarResultados
+
+	#Ayuda:Para sumar dos arrays podeis usar la funcion SumaVectores con la siguiente sintaxis
+	#      SumaVectores <numElem> <array1> <array2>
+	#      Teneis un ejemplo en el script ejemplo_suma_vectores
+	#Ayuda:Para crear un array con los valores de otro hacer
+	#      a=(${b[@]}) 
+	#      recordar que a=( . . . . ) es una forma de declara un array indicando sus elementos
+	#      y que ${b[@]} obtiene todos los elementos del array b
+	#      Ejemplo en el script ejemplo_suma_vectores
+
+	if [ $hayError -eq 1 ]; then
+		echo "Hubo un error en los parámetros pasados. Por favor compruebe que el número de hijos es apropiado."
+	else
+		for file in P*_data.txt; do
+			#----------------------------------
+			# BEGIN TU CODIGO
+			#----------------------------------
+			LeerFichero $file
+			SumaVectores 3 ${sumas[@]} ${datosLeidos[@]}
+			sumas=(${vectorSuma[@]})
+			#----------------------------------
+			# END TU CODIGO
+			#----------------------------------
+		done
+
+		MostrarResultados
+	fi

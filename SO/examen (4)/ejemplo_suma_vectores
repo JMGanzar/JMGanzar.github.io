@@ -1,0 +1,49 @@
+#!/bin/bash
+
+SumVectors(){
+	unset vectorSuma
+
+	numItems=$1
+	shift
+	#capturamos el primer array
+	for ((i=0;i<$numItems;i++)); do
+		a[$i]=$1
+		shift
+	done
+	#capturamos el segundo array
+	for ((i=0;i<$numItems;i++)); do
+		b[$i]=$1
+		shift
+	done
+	#sumamos
+	for ((i=0;i<$numItems;i++)); do
+		vectorSuma[$i]=$((${a[$i]}+${b[$i]}))
+	done
+}
+
+#declaramos los vectores
+a=(1 2 3 4 5)
+b=(5 4 3 2 1)
+
+#mostramos a y b
+echo a: ${a[@]}
+echo b: ${b[@]}
+
+#obtenemos el numero de elmentos de a, el mismo que de b para poder sumarlos
+numElems=${#a[@]}
+
+#Llamamos a la funcion suma que deja el resultado en vectorSuma
+SumVectors $numElems ${a[@]} ${b[@]}
+
+#mostramos el contenido del vector suma
+echo vectorSuma: ${vectorSuma[@]}
+
+#declaramos otro vector con el contenido del vector suma
+c=(${vectorSuma[@]})
+
+#mostramos el vector c
+echo c: ${c[@]}
+
+
+
+

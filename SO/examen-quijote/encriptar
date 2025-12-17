@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ $# -ne 2 ]; then
+	echo "encriptar: Error: no se pasan los paramteros correctamente"
+fi
+
+#borramos ficheros anteriores.
+rm .cryptl 2> /dev/null
+rm .crypt 2> /dev/null
+rm cryptpart* 2> /dev/null
+rm decryptpart* 2> /dev/null
+
+crypt 2 0;
+#encriptamos
+while read linea; do
+	crypted=`crypt 0 $2 "$linea"`
+done < $1

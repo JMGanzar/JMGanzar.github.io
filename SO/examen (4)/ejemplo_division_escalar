@@ -1,0 +1,39 @@
+#!/bin/bash
+
+DivisionVectorEscalar(){
+	unset vResultado
+
+	escalar=$1
+	shift
+	precision=$1
+	shift
+	#capturamos el vector
+	v=($(echo $@))
+
+	#numero de elementos
+	numItems=${#v[@]}
+
+	#multiplicamos
+	for ((i=0;i<$numItems;i++)); do
+		item=${v[$i]}
+		mult=$(echo "scale=$precision; $item /$escalar" | bc)
+		vResultado[$i]=$(echo $mult)
+	done
+}
+
+#declaramos los vectores
+v=(7 6 4 2 1) # vector
+escalar=3     # numero por el que multiplicamos o dividimos
+precision=2   # numero de decimales
+
+#mostramos los datos
+echo v: ${v[@]} 
+echo escalar: $escalar
+echo precision: $precision
+
+#Llamamos a la funcion que divide un vector por un escalar componente a componenteProductoVectorEscalar $escalar $precision ${v[@]} 
+DivisionVectorEscalar $escalar $precision ${v[@]} 
+echo vResultado: ${vResultado[@]}
+
+
+
