@@ -318,6 +318,12 @@
                 👂 ESCUCHAR
             </button>
 
+            <div id="debug-panel" style="display:none; background:#111; border:1px solid #333; border-radius:8px; padding:15px; margin-bottom:15px; font-family:monospace; font-size:0.8em; color:#888; line-height:1.8;">
+                <div>Sync (3000Hz): <span id="dbg-sync" style="color:#00ff88">-</span> &nbsp;|&nbsp; Umbral: <span id="dbg-threshold" style="color:#ffc107">-</span></div>
+                <div>Media espectro: <span id="dbg-avg" style="color:#4da3ff">-</span> &nbsp;|&nbsp; Ratio sync/avg: <span id="dbg-ratio" style="color:#ff88ff">-</span></div>
+                <div>Frames SYNC consecutivos: <span id="dbg-frames" style="color:#ff8844">-</span> / 10</div>
+            </div>
+
             <div id="result-container" style="display: none;">
                 <div class="result-box" id="result-text"></div>
                 <div class="result-actions">
@@ -346,7 +352,7 @@
             freq1: 2000,        // Frecuencia para bit 1
             freqSync: 3000,     // Frecuencia de sincronización
             bitDuration: 0.05,  // 50ms por bit = 20 bits/segundo
-            syncDuration: 0.2,  // Duración del tono de sincronización
+            syncDuration: 0.5,  // Duración del tono de sincronización (500ms — más fácil de detectar)
             volume: 0.3,
             maxDirectLength: 100,
             detectionThreshold: 0.40   // Umbral alto para ignorar ruido ambiente
@@ -367,9 +373,8 @@
 
         // ✅ NUEVO: contador de frames para validar el SYNC
         let syncFrameCount = 0;
-        // SYNC dura 200ms = ~12 frames a 60fps. Pedimos 8 consecutivos: alcanzable con tono real,
-        // imposible con un clic (1-2ms = 0-1 frames con smoothing 0.1)
-        const SYNC_FRAMES_REQUIRED = 8;
+        // SYNC dura 500ms = ~30 frames a 60fps. Pedimos 10 consecutivos.
+        const SYNC_FRAMES_REQUIRED = 10;
 
         // ============================================
         // MODE SWITCHING
@@ -589,6 +594,7 @@
                 btn.classList.add('listening');
 
                 showStatus('listen-status', '👂 Escuchando... Reproduce el sonido', 'info');
+                document.getElementById('debug-panel').style.display = 'block';
 
                 visualize();
                 detectFSK();
@@ -625,6 +631,7 @@
                 microphone = null;
             }
 
+            document.getElementById('debug-panel').style.display = 'none';
             hideStatus('listen-status');
         }
 
@@ -650,9 +657,20 @@
             // ✅ CORREGIDO: el SYNC debe sostenerse Y ser dominante sobre las demás frecuencias.
             // En un clic o estática, TODA la banda recibe energía por igual → ampSync no destaca.
             // En un tono puro de 3000Hz, ampSync es mucho mayor que amp0 y amp1.
+            // Energía media de TODO el espectro
+            // Clic/estática: toda la banda recibe energía → ampSync ≈ avgEnergy → ratio ~1
+            // Tono puro 3000Hz: solo esa frecuencia tiene energía → ratio >> 4
+            const avgEnergy = dataArray.reduce((sum, v) => sum + v, 0) / dataArray.length;
             const syncIsDominant = ampSync > threshold &&
-                                   ampSync > amp0 * 2.0 &&
-                                   ampSync > amp1 * 2.0;
+                                   ampSync > avgEnergy * 4.0;
+
+            // Actualizar debug
+            const ratio = avgEnergy > 0 ? (ampSync / avgEnergy).toFixed(2) : '0';
+            document.getElementById('dbg-sync').textContent = ampSync.toFixed(0);
+            document.getElementById('dbg-threshold').textContent = threshold.toFixed(0);
+            document.getElementById('dbg-avg').textContent = avgEnergy.toFixed(1);
+            document.getElementById('dbg-ratio').textContent = ratio + 'x (necesita >4x)';
+            document.getElementById('dbg-frames').textContent = syncFrameCount;
 
             if (!receivingData) {
                 if (syncIsDominant) {
