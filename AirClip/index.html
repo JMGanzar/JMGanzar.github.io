@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirClip</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 0.9em;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #666;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 400;
+        }
+
+        .mode-btn:hover {
+            border-color: #555;
+            color: #aaa;
+        }
+
+        .mode-btn.active {
+            background: #2a2a2a;
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1em;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        textarea::placeholder {
+            color: #444;
+        }
+
+        .big-btn {
+            width: 100%;
+            padding: 25px;
+            background: #00ff88;
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0a;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .big-btn:hover {
+            background: #00dd77;
+            transform: translateY(-2px);
+        }
+
+        .big-btn:active {
+            transform: translateY(0);
+        }
+
+        .big-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .big-btn.listening {
+            background: #ff4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .status.active {
+            display: block;
+        }
+
+        .status.info {
+            background: rgba(0, 123, 255, 0.1);
+            border: 1px solid rgba(0, 123, 255, 0.3);
+            color: #4da3ff;
+        }
+
+        .status.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+
+        .status.error {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff4444;
+        }
+
+        .status.warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+
+        .result-box {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .secondary-btn {
+            flex: 1;
+            padding: 15px;
+            background: #1a1a1a;
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            color: #00ff88;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .secondary-btn:hover {
+            background: #2a2a2a;
+        }
+
+        .visualizer {
+            width: 100%;
+            height: 80px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visualizer canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .footer {
+            text-align: center;
+            color: #333;
+            margin-top: 40px;
+            font-size: 0.85em;
+        }
+
+        .char-counter {
+            text-align: right;
+            color: #666;
+            font-size: 0.85em;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
+
+        .char-counter.warning {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AIRCLIP</h1>
+        <p class="subtitle">Transmisión de datos por audio</p>
+
+        <div class="mode-switch">
+            <button class="mode-btn active" onclick="switchMode('transmit')">
+                TRANSMITIR
+            </button>
+            <button class="mode-btn" onclick="switchMode('listen')">
+                ESCUCHAR
+            </button>
+        </div>
+
+        <!-- TRANSMIT PANEL -->
+        <div class="panel active" id="transmit-panel">
+            <textarea 
+                id="input-text" 
+                placeholder="Escribe o pega tu texto, URL..."
+                oninput="updateCharCounter()"
+            ></textarea>
+            
+            <div class="char-counter" id="char-counter">0 caracteres</div>
+
+            <div class="status" id="transmit-status"></div>
+
+            <button class="big-btn" id="transmit-btn" onclick="transmit()">
+                🔊 TRANSMITIR
+            </button>
+        </div>
+
+        <!-- LISTEN PANEL -->
+        <div class="panel" id="listen-panel">
+            <div class="visualizer">
+                <canvas id="visualizer-canvas"></canvas>
+            </div>
+
+            <div class="status" id="listen-status"></div>
+
+            <button class="big-btn" id="listen-btn" onclick="toggleListen()">
+                👂 ESCUCHAR
+            </button>
+
+            <div id="result-container" style="display: none;">
+                <div class="result-box" id="result-text"></div>
+                <div class="result-actions">
+                    <button class="secondary-btn" onclick="copyResult()">
+                        📋 COPIAR
+                    </button>
+                    <button class="secondary-btn" id="open-url-btn" onclick="openURL()" style="display: none;">
+                        🔗 ABRIR
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Powered by ggwave · Sin instalación · Open source
+        </div>
+    </div>
+
+    <!-- ggwave library -->
+    <script src="https://cdn.jsdelivr.net/npm/ggwave@1.0.2/ggwave.min.js"></script>
+
+    <script>
+        // ============================================
+        // GLOBAL STATE
+        // ============================================
+        let ggwaveInstance = null;
+        let isListening = false;
+        let audioContext = null;
+        let receivedData = '';
+        const MAX_DIRECT_LENGTH = 100; // Caracteres máximos para transmisión directa
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        async function initGGWave() {
+            if (ggwaveInstance) return ggwaveInstance;
+
+            try {
+                ggwaveInstance = await GGWave.create({
+                    sampleRate: 48000,
+                    volume: 50
+                });
+                console.log('✅ ggwave inicializado');
+                return ggwaveInstance;
+            } catch (error) {
+                console.error('Error inicializando ggwave:', error);
+                throw error;
+            }
+        }
+
+        // ============================================
+        // MODE SWITCHING
+        // ============================================
+        function switchMode(mode) {
+            // Update buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update panels
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(mode + '-panel').classList.add('active');
+
+            // Reset
+            hideStatus('transmit-status');
+            hideStatus('listen-status');
+            
+            if (isListening) {
+                stopListening();
+            }
+        }
+
+        // ============================================
+        // TRANSMIT
+        // ============================================
+        async function transmit() {
+            let text = document.getElementById('input-text').value.trim();
+
+            if (!text) {
+                showStatus('transmit-status', 'Escribe algo primero', 'warning');
+                return;
+            }
+
+            const btn = document.getElementById('transmit-btn');
+            btn.disabled = true;
+
+            try {
+                await initGGWave();
+
+                // Detectar si es URL
+                const isURL = /^https?:\/\//i.test(text);
+
+                // Si el texto es muy largo
+                if (text.length > MAX_DIRECT_LENGTH) {
+                    showStatus('transmit-status', `Texto largo detectado (${text.length} chars). Generando URL temporal...`, 'info');
+                    
+                    // Subir a servicio temporal y obtener URL corta
+                    const shortURL = await uploadAndShorten(text);
+                    
+                    if (shortURL) {
+                        text = shortURL;
+                        showStatus('transmit-status', `✅ URL generada: ${shortURL}. Transmitiendo...`, 'info');
+                    } else {
+                        showStatus('transmit-status', 'Error generando URL. Prueba con texto más corto.', 'error');
+                        btn.disabled = false;
+                        return;
+                    }
+                } else if (isURL && text.length > 50) {
+                    // Acortar URL si es larga
+                    showStatus('transmit-status', 'Acortando URL...', 'info');
+                    const shortened = await shortenURL(text);
+                    if (shortened && shortened.length < text.length) {
+                        text = shortened;
+                    }
+                }
+
+                showStatus('transmit-status', '🔊 Transmitiendo... Acerca el otro dispositivo', 'info');
+
+                // Transmitir con ggwave
+                const waveform = ggwaveInstance.encode(text);
+                await playAudio(waveform);
+
+                showStatus('transmit-status', '✅ Transmisión completada', 'success');
+
+            } catch (error) {
+                showStatus('transmit-status', '❌ Error: ' + error.message, 'error');
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function playAudio(waveform) {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const buffer = audioContext.createBuffer(1, waveform.length, audioContext.sampleRate);
+            const channelData = buffer.getChannelData(0);
+            
+            for (let i = 0; i < waveform.length; i++) {
+                channelData[i] = waveform[i] / 32768.0; // Normalizar
+            }
+
+            const source = audioContext.createBufferSource();
+            source.buffer = buffer;
+            source.connect(audioContext.destination);
+            source.start();
+
+            return new Promise(resolve => {
+                source.onended = resolve;
+            });
+        }
+
+        // ============================================
+        // URL SHORTENING & UPLOAD
+        // ============================================
+        async function shortenURL(url) {
+            try {
+                // Usar TinyURL API
+                const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
+                const shortURL = await response.text();
+                return shortURL || url;
+            } catch (error) {
+                console.error('Error acortando URL:', error);
+                return url;
+            }
+        }
+
+        async function uploadAndShorten(text) {
+            try {
+                // Opción 1: Usar tmpfiles.org (simple y sin auth)
+                const formData = new FormData();
+                const blob = new Blob([text], { type: 'text/plain' });
+                formData.append('file', blob, 'content.txt');
+
+                const response = await fetch('https://tmpfiles.org/api/v1/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.status === 'success' && result.data && result.data.url) {
+                    // tmpfiles.org retorna URL tipo: https://tmpfiles.org/123456
+                    // Necesitamos convertir a: https://tmpfiles.org/dl/123456
+                    let url = result.data.url;
+                    url = url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                    
+                    // Acortar esta URL también
+                    return await shortenURL(url);
+                }
+
+                return null;
+
+            } catch (error) {
+                console.error('Error subiendo contenido:', error);
+                
+                // Fallback: Usar servicio de pastebin alternativo
+                try {
+                    const response = await fetch('https://api.paste.ee/v1/pastes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sections: [{
+                                contents: text
+                            }]
+                        })
+                    });
+
+                    const result = await response.json();
+                    if (result.link) {
+                        return await shortenURL(result.link);
+                    }
+                } catch (fallbackError) {
+                    console.error('Error en fallback:', fallbackError);
+                }
+
+                return null;
+            }
+        }
+
+        // ============================================
+        // LISTEN
+        // ============================================
+        async function toggleListen() {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
+        async function startListening() {
+            try {
+                await initGGWave();
+
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+
+                // Solicitar permiso de micrófono
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false
+                    }
+                });
+
+                const source = audioContext.createMediaStreamSource(stream);
+                const processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+                source.connect(processor);
+                processor.connect(audioContext.destination);
+
+                isListening = true;
+                const btn = document.getElementById('listen-btn');
+                btn.textContent = '⏹️ DETENER';
+                btn.classList.add('listening');
+
+                showStatus('listen-status', '👂 Escuchando... Reproduce el sonido en el otro dispositivo', 'info');
+
+                // Visualizer
+                visualize(source);
+
+                // Process audio
+                processor.onaudioprocess = (e) => {
+                    if (!isListening) return;
+
+                    const inputData = e.inputBuffer.getChannelData(0);
+                    const samples = new Int16Array(inputData.length);
+                    
+                    for (let i = 0; i < inputData.length; i++) {
+                        samples[i] = Math.floor(inputData[i] * 32767);
+                    }
+
+                    // Decodificar con ggwave
+                    const decoded = ggwaveInstance.decode(samples);
+
+                    if (decoded && decoded.length > 0) {
+                        const text = String.fromCharCode.apply(null, decoded);
+                        handleReceivedData(text);
+                        stopListening();
+                    }
+                };
+
+                // Store for cleanup
+                window.currentStream = stream;
+                window.currentProcessor = processor;
+
+            } catch (error) {
+                showStatus('listen-status', '❌ Error: ' + error.message, 'error');
+                console.error(error);
+                isListening = false;
+            }
+        }
+
+        function stopListening() {
+            isListening = false;
+            
+            const btn = document.getElementById('listen-btn');
+            btn.textContent = '👂 ESCUCHAR';
+            btn.classList.remove('listening');
+
+            if (window.currentStream) {
+                window.currentStream.getTracks().forEach(track => track.stop());
+                window.currentStream = null;
+            }
+
+            if (window.currentProcessor) {
+                window.currentProcessor.disconnect();
+                window.currentProcessor = null;
+            }
+
+            hideStatus('listen-status');
+        }
+
+        function handleReceivedData(text) {
+            receivedData = text;
+            document.getElementById('result-text').textContent = text;
+            document.getElementById('result-container').style.display = 'block';
+
+            // Detectar si es URL
+            const isURL = /^https?:\/\//i.test(text);
+            document.getElementById('open-url-btn').style.display = isURL ? 'block' : 'none';
+
+            showStatus('listen-status', '✅ Recibido correctamente', 'success');
+        }
+
+        function visualize(source) {
+            const canvas = document.getElementById('visualizer-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const analyser = audioContext.createAnalyser();
+            analyser.fftSize = 2048;
+            source.connect(analyser);
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function draw() {
+                if (!isListening) return;
+
+                requestAnimationFrame(draw);
+                analyser.getByteTimeDomainData(dataArray);
+
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(0, 0, canvas.width / 2, canvas.height / 2);
+
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#00ff88';
+                ctx.beginPath();
+
+                const sliceWidth = (canvas.width / 2) / bufferLength;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 128.0;
+                    const y = v * (canvas.height / 2) / 2;
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+
+                    x += sliceWidth;
+                }
+
+                ctx.lineTo(canvas.width / 2, canvas.height / 4);
+                ctx.stroke();
+            }
+
+            draw();
+        }
+
+        // ============================================
+        // RESULT ACTIONS
+        // ============================================
+        function copyResult() {
+            navigator.clipboard.writeText(receivedData).then(() => {
+                showStatus('listen-status', '✅ Copiado al portapapeles', 'success');
+                setTimeout(() => hideStatus('listen-status'), 2000);
+            });
+        }
+
+        function openURL() {
+            if (receivedData && /^https?:\/\//i.test(receivedData)) {
+                window.open(receivedData, '_blank');
+            }
+        }
+
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        function updateCharCounter() {
+            const text = document.getElementById('input-text').value;
+            const counter = document.getElementById('char-counter');
+            const len = text.length;
+
+            counter.textContent = `${len} caracteres`;
+
+            if (len > MAX_DIRECT_LENGTH) {
+                counter.textContent += ` (se generará URL temporal)`;
+                counter.classList.add('warning');
+            } else {
+                counter.classList.remove('warning');
+            }
+        }
+
+        function showStatus(id, message, type) {
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.className = `status active ${type}`;
+        }
+
+        function hideStatus(id) {
+            const el = document.getElementById(id);
+            el.className = 'status';
+        }
+    </script>
+</body>
+</html>
