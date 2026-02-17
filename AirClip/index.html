@@ -349,7 +349,7 @@
             syncDuration: 0.2,  // Duración del tono de sincronización
             volume: 0.3,
             maxDirectLength: 100,
-            detectionThreshold: 0.30   // ✅ CORREGIDO: era 0.15, demasiado sensible
+            detectionThreshold: 0.40   // Umbral alto para ignorar ruido ambiente
         };
 
         // ============================================
@@ -367,7 +367,7 @@
 
         // ✅ NUEVO: contador de frames para validar el SYNC
         let syncFrameCount = 0;
-        const SYNC_FRAMES_REQUIRED = 8; // ~130ms a 60fps — filtra clics y estática
+        const SYNC_FRAMES_REQUIRED = 20; // ~330ms a 60fps — el tono de SYNC dura 200ms, sobra margen
 
         // ============================================
         // MODE SWITCHING
@@ -577,7 +577,7 @@
                 microphone = audioContext.createMediaStreamSource(stream);
                 analyser = audioContext.createAnalyser();
                 analyser.fftSize = 8192;
-                analyser.smoothingTimeConstant = 0.3;
+                analyser.smoothingTimeConstant = 0.0; // Sin suavizado: los clics duran 1 frame, no se prolongan
 
                 microphone.connect(analyser);
 
@@ -645,13 +645,18 @@
 
             const threshold = 255 * CONFIG.detectionThreshold;
 
-            // ✅ CORREGIDO: el SYNC debe sostenerse varios frames seguidos
-            // para evitar que un clic o estática lo disparen
+            // ✅ CORREGIDO: el SYNC debe sostenerse Y ser dominante sobre las demás frecuencias.
+            // En un clic o estática, TODA la banda recibe energía por igual → ampSync no destaca.
+            // En un tono puro de 3000Hz, ampSync es mucho mayor que amp0 y amp1.
+            const syncIsDominant = ampSync > threshold &&
+                                   ampSync > amp0 * 2.5 &&
+                                   ampSync > amp1 * 2.5;
+
             if (!receivingData) {
-                if (ampSync > threshold) {
+                if (syncIsDominant) {
                     syncFrameCount++;
                     if (syncFrameCount >= SYNC_FRAMES_REQUIRED) {
-                        console.log('🎯 SYNC sostenido detectado - Iniciando recepción');
+                        console.log('🎯 SYNC sostenido y dominante - Iniciando recepción');
                         receivingData = true;
                         syncFrameCount = 0;
                         receivedBits = '';
@@ -659,7 +664,7 @@
                         showStatus('listen-status', '📡 Recibiendo datos...', 'info');
                     }
                 } else {
-                    syncFrameCount = 0; // si se interrumpe, reinicia la cuenta
+                    syncFrameCount = 0; // si se interrumpe o no es dominante, reinicia
                 }
             }
 
