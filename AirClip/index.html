@@ -367,7 +367,9 @@
 
         // ✅ NUEVO: contador de frames para validar el SYNC
         let syncFrameCount = 0;
-        const SYNC_FRAMES_REQUIRED = 20; // ~330ms a 60fps — el tono de SYNC dura 200ms, sobra margen
+        // SYNC dura 200ms = ~12 frames a 60fps. Pedimos 8 consecutivos: alcanzable con tono real,
+        // imposible con un clic (1-2ms = 0-1 frames con smoothing 0.1)
+        const SYNC_FRAMES_REQUIRED = 8;
 
         // ============================================
         // MODE SWITCHING
@@ -577,7 +579,7 @@
                 microphone = audioContext.createMediaStreamSource(stream);
                 analyser = audioContext.createAnalyser();
                 analyser.fftSize = 8192;
-                analyser.smoothingTimeConstant = 0.0; // Sin suavizado: los clics duran 1 frame, no se prolongan
+                analyser.smoothingTimeConstant = 0.1; // Suavizado mínimo: amortigua clics sin prolongarlos
 
                 microphone.connect(analyser);
 
@@ -649,8 +651,8 @@
             // En un clic o estática, TODA la banda recibe energía por igual → ampSync no destaca.
             // En un tono puro de 3000Hz, ampSync es mucho mayor que amp0 y amp1.
             const syncIsDominant = ampSync > threshold &&
-                                   ampSync > amp0 * 2.5 &&
-                                   ampSync > amp1 * 2.5;
+                                   ampSync > amp0 * 2.0 &&
+                                   ampSync > amp1 * 2.0;
 
             if (!receivingData) {
                 if (syncIsDominant) {
