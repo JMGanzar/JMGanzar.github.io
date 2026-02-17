@@ -269,19 +269,6 @@
             width: 0%;
             transition: width 0.3s;
         }
-
-        .debug-info {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8em;
-            color: #666;
-            max-height: 150px;
-            overflow-y: auto;
-        }
     </style>
 </head>
 <body>
@@ -301,7 +288,7 @@
         <!-- TRANSMIT PANEL -->
         <div class="panel active" id="transmit-panel">
             <textarea 
-                id="input-text" 
+                id="input-text"
                 placeholder="Escribe o pega tu texto, URL..."
                 oninput="updateCharCounter()"
             ></textarea>
@@ -342,8 +329,6 @@
                     </button>
                 </div>
             </div>
-
-            <div class="debug-info" id="debug-info"></div>
         </div>
 
         <div class="footer">
@@ -360,13 +345,11 @@
             freq0: 1000,        // Frecuencia para bit 0
             freq1: 2000,        // Frecuencia para bit 1
             freqSync: 3000,     // Frecuencia de sincronización
-            bitDuration: 0.08,  // 80ms por bit
-            syncDuration: 0.3,  // Duración del tono de sincronización
-            volume: 0.5,
+            bitDuration: 0.05,  // 50ms por bit = 20 bits/segundo
+            syncDuration: 0.2,  // Duración del tono de sincronización
+            volume: 0.3,
             maxDirectLength: 100,
-            detectionThreshold: 100,
-            sampleInterval: 60,  // Muestrear cada 60ms
-            timeout: 10000       // Timeout de 10 segundos
+            detectionThreshold: 0.30   // ✅ CORREGIDO: era 0.15, demasiado sensible
         };
 
         // ============================================
@@ -377,6 +360,14 @@
         let receivedData = '';
         let analyser = null;
         let microphone = null;
+
+        let receivingData = false;
+        let receivedBits = '';
+        let expectedLength = 0;
+
+        // ✅ NUEVO: contador de frames para validar el SYNC
+        let syncFrameCount = 0;
+        const SYNC_FRAMES_REQUIRED = 8; // ~130ms a 60fps — filtra clics y estática
 
         // ============================================
         // MODE SWITCHING
@@ -394,7 +385,6 @@
 
             hideStatus('transmit-status');
             hideStatus('listen-status');
-            document.getElementById('result-container').style.display = 'none';
             
             if (isListening) {
                 stopListening();
@@ -418,7 +408,6 @@
             try {
                 const isURL = /^https?:\/\//i.test(text);
 
-                // Si el texto es muy largo
                 if (text.length > CONFIG.maxDirectLength) {
                     showStatus('transmit-status', `Texto largo detectado (${text.length} chars). Generando URL temporal...`, 'info');
                     
@@ -462,62 +451,42 @@
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            // Convertir texto a binario
             const binary = textToBinary(text);
-            console.log('📤 Transmitiendo:', text);
-            console.log('📊 Binario:', binary);
-            console.log('📏 Longitud:', binary.length, 'bits');
+            console.log('Transmitiendo:', text);
+            console.log('Binario:', binary);
 
-            // Calcular duración total
             const syncSamples = CONFIG.sampleRate * CONFIG.syncDuration;
             const bitSamples = CONFIG.sampleRate * CONFIG.bitDuration;
-            const totalSamples = syncSamples * 2 + (binary.length * bitSamples) + syncSamples; // +1 SYNC final
+            const totalSamples = syncSamples * 2 + (binary.length * bitSamples);
 
-            // Crear buffer de audio
             const buffer = audioContext.createBuffer(1, totalSamples, CONFIG.sampleRate);
             const data = buffer.getChannelData(0);
 
             let offset = 0;
 
             // SYNC inicial
-            console.log('🎵 Generando SYNC inicial (inicio de transmisión)');
             offset = generateTone(data, offset, CONFIG.freqSync, syncSamples);
 
-            // Silencio corto después del SYNC inicial
-            offset += syncSamples * 0.1;
-
             // Bits de datos
-            console.log('📡 Generando bits de datos');
             for (let i = 0; i < binary.length; i++) {
                 const bit = binary[i];
                 const freq = bit === '1' ? CONFIG.freq1 : CONFIG.freq0;
                 offset = generateTone(data, offset, freq, bitSamples);
 
-                // Update progress
                 const progress = ((i + 1) / binary.length) * 100;
                 document.getElementById('transmit-progress-fill').style.width = progress + '%';
             }
 
-            // Silencio corto antes del SYNC final
-            offset += syncSamples * 0.1;
-
-            // SYNC final (marca de fin)
-            console.log('🎵 Generando SYNC final (fin de transmisión)');
+            // SYNC final
             offset = generateTone(data, offset, CONFIG.freqSync, syncSamples);
 
-            console.log('✅ Buffer generado:', offset, 'samples');
-
-            // Reproducir
             const source = audioContext.createBufferSource();
             source.buffer = buffer;
             source.connect(audioContext.destination);
             source.start();
 
             return new Promise(resolve => {
-                source.onended = () => {
-                    console.log('🏁 Reproducción terminada');
-                    resolve();
-                };
+                source.onended = resolve;
             });
         }
 
@@ -531,16 +500,11 @@
 
         function textToBinary(text) {
             let binary = '';
-            
-            // Header: longitud (8 bits)
             binary += text.length.toString(2).padStart(8, '0');
-            
-            // Datos: cada carácter en 8 bits
             for (let i = 0; i < text.length; i++) {
                 const charCode = text.charCodeAt(i);
                 binary += charCode.toString(2).padStart(8, '0');
             }
-            
             return binary;
         }
 
@@ -585,7 +549,7 @@
         }
 
         // ============================================
-        // LISTEN (CON AUTO-STOP)
+        // LISTEN
         // ============================================
         async function toggleListen() {
             if (isListening) {
@@ -594,16 +558,6 @@
                 startListening();
             }
         }
-
-        let lastSampleTime = 0;
-        let receivingData = false;
-        let receivedBits = '';
-        let expectedLength = 0;
-        let syncDetected = false;
-        let syncEndTime = 0;
-        let lastBitTime = 0;
-        let timeoutTimer = null;
-        let syncFinalDetectionWindow = false;
 
         async function startListening() {
             try {
@@ -615,26 +569,17 @@
                     audio: {
                         echoCancellation: false,
                         noiseSuppression: false,
-                        autoGainControl: false
+                        autoGainControl: false,
+                        sampleRate: CONFIG.sampleRate
                     }
                 });
 
                 microphone = audioContext.createMediaStreamSource(stream);
                 analyser = audioContext.createAnalyser();
                 analyser.fftSize = 8192;
-                analyser.smoothingTimeConstant = 0.5;
+                analyser.smoothingTimeConstant = 0.3;
 
                 microphone.connect(analyser);
-
-                // Reset state
-                lastSampleTime = 0;
-                receivingData = false;
-                receivedBits = '';
-                expectedLength = 0;
-                syncDetected = false;
-                syncEndTime = 0;
-                lastBitTime = 0;
-                syncFinalDetectionWindow = false;
 
                 isListening = true;
                 const btn = document.getElementById('listen-btn');
@@ -642,16 +587,6 @@
                 btn.classList.add('listening');
 
                 showStatus('listen-status', '👂 Escuchando... Reproduce el sonido', 'info');
-                debugLog('🎧 Iniciando escucha...');
-
-                // Timeout automático
-                timeoutTimer = setTimeout(() => {
-                    if (isListening) {
-                        debugLog('⏱️ Timeout - Sin señal recibida');
-                        showStatus('listen-status', '⏱️ Timeout - No se detectó señal', 'warning');
-                        stopListening();
-                    }
-                }, CONFIG.timeout);
 
                 visualize();
                 detectFSK();
@@ -667,15 +602,16 @@
 
         function stopListening() {
             isListening = false;
-            
+
+            // ✅ CORREGIDO: resetear todo el estado al parar
+            syncFrameCount = 0;
+            receivingData = false;
+            receivedBits = '';
+            expectedLength = 0;
+
             const btn = document.getElementById('listen-btn');
             btn.textContent = '👂 ESCUCHAR';
             btn.classList.remove('listening');
-
-            if (timeoutTimer) {
-                clearTimeout(timeoutTimer);
-                timeoutTimer = null;
-            }
 
             if (window.currentStream) {
                 window.currentStream.getTracks().forEach(track => track.stop());
@@ -686,152 +622,83 @@
                 microphone.disconnect();
                 microphone = null;
             }
+
+            hideStatus('listen-status');
         }
 
         function detectFSK() {
             if (!isListening) return;
 
-            const now = performance.now();
-            
-            // Muestrear cada CONFIG.sampleInterval ms
-            if (now - lastSampleTime >= CONFIG.sampleInterval) {
-                lastSampleTime = now;
-                
-                const bufferLength = analyser.frequencyBinCount;
-                const dataArray = new Uint8Array(bufferLength);
-                analyser.getByteFrequencyData(dataArray);
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
 
-                const freqResolution = audioContext.sampleRate / analyser.fftSize;
-                
-                const idx0 = Math.floor(CONFIG.freq0 / freqResolution);
-                const idx1 = Math.floor(CONFIG.freq1 / freqResolution);
-                const idxSync = Math.floor(CONFIG.freqSync / freqResolution);
+            const freqResolution = CONFIG.sampleRate / analyser.fftSize;
 
-                const amp0 = dataArray[idx0];
-                const amp1 = dataArray[idx1];
-                const ampSync = dataArray[idxSync];
+            const idx0    = Math.floor(CONFIG.freq0    / freqResolution);
+            const idx1    = Math.floor(CONFIG.freq1    / freqResolution);
+            const idxSync = Math.floor(CONFIG.freqSync / freqResolution);
 
-                // Detectar SYNC inicial
-                if (!syncDetected && ampSync > CONFIG.detectionThreshold) {
-                    syncDetected = true;
-                    syncEndTime = now + (CONFIG.syncDuration * 1000);
-                    debugLog(`🎯 SYNC inicial detectado! (amp: ${ampSync})`);
-                    showStatus('listen-status', '📡 Señal detectada - Recibiendo...', 'info');
-                    
-                    // Reset timeout
-                    if (timeoutTimer) {
-                        clearTimeout(timeoutTimer);
-                        timeoutTimer = setTimeout(() => {
-                            if (isListening && receivingData) {
-                                debugLog('⏱️ Timeout durante recepción');
-                                finishReception('timeout');
-                            }
-                        }, CONFIG.timeout);
+            const amp0    = dataArray[idx0];
+            const amp1    = dataArray[idx1];
+            const ampSync = dataArray[idxSync];
+
+            const threshold = 255 * CONFIG.detectionThreshold;
+
+            // ✅ CORREGIDO: el SYNC debe sostenerse varios frames seguidos
+            // para evitar que un clic o estática lo disparen
+            if (!receivingData) {
+                if (ampSync > threshold) {
+                    syncFrameCount++;
+                    if (syncFrameCount >= SYNC_FRAMES_REQUIRED) {
+                        console.log('🎯 SYNC sostenido detectado - Iniciando recepción');
+                        receivingData = true;
+                        syncFrameCount = 0;
+                        receivedBits = '';
+                        expectedLength = 0;
+                        showStatus('listen-status', '📡 Recibiendo datos...', 'info');
                     }
+                } else {
+                    syncFrameCount = 0; // si se interrumpe, reinicia la cuenta
+                }
+            }
+
+            // Recibir bits
+            if (receivingData) {
+                if (amp1 > threshold && amp1 > amp0) {
+                    receivedBits += '1';
+                } else if (amp0 > threshold && amp0 > amp1) {
+                    receivedBits += '0';
                 }
 
-                // Después del SYNC inicial, empezar a recibir datos
-                if (syncDetected && now > syncEndTime && !receivingData) {
-                    receivingData = true;
-                    lastBitTime = now;
-                    debugLog('📡 Iniciando recepción de datos');
+                // Leer longitud (primeros 8 bits)
+                if (expectedLength === 0 && receivedBits.length >= 8) {
+                    expectedLength = parseInt(receivedBits.substr(0, 8), 2);
+                    console.log('📏 Longitud esperada:', expectedLength, 'caracteres');
                 }
 
-                // Recibir bits
-                if (receivingData && !syncFinalDetectionWindow) {
-                    let bit = null;
-                    
-                    if (amp1 > CONFIG.detectionThreshold && amp1 > amp0 * 1.5) {
-                        bit = '1';
-                        lastBitTime = now;
-                    } else if (amp0 > CONFIG.detectionThreshold && amp0 > amp1 * 1.5) {
-                        bit = '0';
-                        lastBitTime = now;
-                    }
-
-                    if (bit !== null) {
-                        receivedBits += bit;
-                        debugLog(`📊 Bit: ${bit} (0:${amp0}, 1:${amp1}) - Total: ${receivedBits.length}`);
-
-                        // Leer longitud (primeros 8 bits)
-                        if (expectedLength === 0 && receivedBits.length >= 8) {
-                            expectedLength = parseInt(receivedBits.substr(0, 8), 2);
-                            debugLog(`📏 Longitud esperada: ${expectedLength} caracteres`);
-                            
-                            if (expectedLength === 0 || expectedLength > 200) {
-                                debugLog('❌ Longitud inválida');
-                                finishReception('error');
-                                return;
-                            }
-                        }
-
-                        // Verificar si hemos recibido todos los bits esperados
-                        if (expectedLength > 0) {
-                            const expectedBits = 8 + (expectedLength * 8);
-                            const progress = Math.floor((receivedBits.length / expectedBits) * 100);
-                            debugLog(`Progress: ${receivedBits.length}/${expectedBits} bits (${progress}%)`);
-                            
-                            if (receivedBits.length >= expectedBits) {
-                                debugLog('✅ Todos los bits recibidos - Esperando SYNC final...');
-                                syncFinalDetectionWindow = true;
-                            }
+                // Verificar si hemos recibido todo
+                if (expectedLength > 0) {
+                    const expectedBits = 8 + (expectedLength * 8);
+                    if (receivedBits.length >= expectedBits) {
+                        const text = binaryToText(receivedBits);
+                        if (text) {
+                            console.log('✅ Recibido:', text);
+                            handleReceivedData(text);
+                            stopListening();
+                            return;
                         }
                     }
-
-                    // Timeout si pasa mucho tiempo sin recibir bits
-                    if (expectedLength > 0 && (now - lastBitTime) > 2000) {
-                        debugLog('⏱️ Timeout esperando más bits');
-                        finishReception('timeout');
-                    }
-                }
-
-                // Detectar SYNC final
-                if (syncFinalDetectionWindow && ampSync > CONFIG.detectionThreshold) {
-                    debugLog(`🎯 SYNC final detectado! (amp: ${ampSync})`);
-                    finishReception('complete');
                 }
             }
 
             requestAnimationFrame(detectFSK);
         }
 
-        function finishReception(reason) {
-            debugLog(`🏁 Finalizando recepción: ${reason}`);
-
-            if (reason === 'complete' || reason === 'timeout') {
-                const text = binaryToText(receivedBits);
-                if (text) {
-                    debugLog(`✅ Decodificado: "${text}"`);
-                    handleReceivedData(text);
-                    stopListening();
-                } else {
-                    debugLog('❌ Error decodificando texto');
-                    showStatus('listen-status', '❌ Error en la recepción - Intenta de nuevo', 'error');
-                    setTimeout(() => {
-                        receivingData = false;
-                        receivedBits = '';
-                        expectedLength = 0;
-                        syncDetected = false;
-                        syncFinalDetectionWindow = false;
-                    }, 2000);
-                }
-            } else {
-                showStatus('listen-status', '❌ Error en la recepción', 'error');
-                stopListening();
-            }
-        }
-
         function binaryToText(binary) {
             try {
-                // Extraer longitud
                 const length = parseInt(binary.substr(0, 8), 2);
-                
-                if (length === 0 || length > 200) {
-                    console.error('Longitud inválida:', length);
-                    return null;
-                }
-                
-                // Extraer datos
+
                 let text = '';
                 for (let i = 0; i < length; i++) {
                     const start = 8 + (i * 8);
@@ -841,7 +708,7 @@
                         text += String.fromCharCode(charCode);
                     }
                 }
-                
+
                 return text;
             } catch (error) {
                 console.error('Error decodificando:', error);
@@ -857,7 +724,7 @@
             const isURL = /^https?:\/\//i.test(text);
             document.getElementById('open-url-btn').style.display = isURL ? 'block' : 'none';
 
-            showStatus('listen-status', '✅ Recibido correctamente - Auto-detenido', 'success');
+            showStatus('listen-status', '✅ Recibido correctamente', 'success');
         }
 
         function visualize() {
@@ -879,60 +746,18 @@
                 ctx.fillStyle = '#1a1a1a';
                 ctx.fillRect(0, 0, canvas.width / 2, canvas.height / 2);
 
-                // Dibujar espectro
                 const barWidth = (canvas.width / 2) / bufferLength * 2;
                 let x = 0;
 
                 for (let i = 0; i < bufferLength; i++) {
                     const barHeight = (dataArray[i] / 255) * (canvas.height / 2);
-
                     ctx.fillStyle = `rgba(0, 255, 136, ${dataArray[i] / 255})`;
                     ctx.fillRect(x, (canvas.height / 2) - barHeight, barWidth, barHeight);
-
                     x += barWidth + 1;
                 }
-
-                // Marcar frecuencias clave
-                const freqResolution = audioContext.sampleRate / analyser.fftSize;
-                const idx0 = Math.floor(CONFIG.freq0 / freqResolution);
-                const idx1 = Math.floor(CONFIG.freq1 / freqResolution);
-                const idxSync = Math.floor(CONFIG.freqSync / freqResolution);
-
-                // Líneas de referencia
-                ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(idx0 * barWidth, 0);
-                ctx.lineTo(idx0 * barWidth, canvas.height / 2);
-                ctx.stroke();
-
-                ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
-                ctx.beginPath();
-                ctx.moveTo(idx1 * barWidth, 0);
-                ctx.lineTo(idx1 * barWidth, canvas.height / 2);
-                ctx.stroke();
-
-                ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
-                ctx.beginPath();
-                ctx.moveTo(idxSync * barWidth, 0);
-                ctx.lineTo(idxSync * barWidth, canvas.height / 2);
-                ctx.stroke();
             }
 
             draw();
-        }
-
-        let debugMessages = [];
-        function debugLog(msg) {
-            console.log(msg);
-            debugMessages.push(`[${new Date().toLocaleTimeString()}] ${msg}`);
-            if (debugMessages.length > 15) debugMessages.shift();
-            
-            const debugEl = document.getElementById('debug-info');
-            if (debugEl) {
-                debugEl.innerHTML = debugMessages.join('<br>');
-                debugEl.scrollTop = debugEl.scrollHeight;
-            }
         }
 
         // ============================================
@@ -941,9 +766,7 @@
         function copyResult() {
             navigator.clipboard.writeText(receivedData).then(() => {
                 showStatus('listen-status', '✅ Copiado al portapapeles', 'success');
-                setTimeout(() => {
-                    if (!isListening) hideStatus('listen-status');
-                }, 2000);
+                setTimeout(() => hideStatus('listen-status'), 2000);
             });
         }
 
