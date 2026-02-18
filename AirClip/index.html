@@ -5,830 +5,870 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirClip</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #0a0a0a;
-            color: #ffffff;
-            min-height: 100vh;
+            color: #fff;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
         }
 
-        .container {
+        .app {
+            width: 100%;
             max-width: 500px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 0.9em;
-        }
-
-        .mode-switch {
+            height: 100vh;
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
+            flex-direction: column;
         }
 
-        .mode-btn {
-            flex: 1;
-            padding: 20px;
+        /* Header */
+        .header { padding: 16px 20px 10px; text-align: center; flex-shrink: 0; }
+        h1 { font-size: 1.9em; font-weight: 300; letter-spacing: 3px; }
+        .subtitle { color: #555; font-size: 0.75em; margin-top: 3px; }
+
+        /* Estado */
+        .state-bar {
+            margin: 0 20px 8px;
+            padding: 9px 14px;
             background: #1a1a1a;
-            border: 1px solid #333;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
-            color: #666;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 400;
+            font-size: 0.8em;
+            color: #888;
+            text-align: center;
+            flex-shrink: 0;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .state-bar.connected { color: #00ff88; border-color: rgba(0,255,136,0.4); }
+
+        /* Bandas */
+        .band-meter { margin: 0 20px 8px; display: flex; gap: 6px; flex-shrink: 0; }
+        .band-indicator {
+            flex: 1; padding: 5px 6px;
+            background: #111; border: 1px solid #222;
+            border-radius: 6px; font-size: 0.65em;
+            text-align: center; color: #444;
+            transition: all 0.25s;
+        }
+        .band-indicator .snr { font-size: 0.85em; color: #333; display: block; margin-top: 1px; }
+        .band-indicator.syncing  { border-color: #ffc107; color: #ffc107; background: rgba(255,193,7,0.05); }
+        .band-indicator.active   { border-color: #4da3ff; color: #4da3ff; background: rgba(77,163,255,0.05); }
+        .band-indicator.selected { border-color: #00ff88; color: #00ff88; background: rgba(0,255,136,0.08); font-weight: 600; }
+        .band-indicator.weak     { border-color: #ff6b35; color: #ff6b35; }
+
+        /* Mensajes */
+        .messages {
+            flex: 1; overflow-y: auto;
+            padding: 8px 20px;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        .msg-system { text-align: center; color: #444; font-size: 0.76em; padding: 2px 0; }
+        .msg { display: flex; flex-direction: column; max-width: 80%; }
+        .msg-local  { align-self: flex-end;  align-items: flex-end; }
+        .msg-remote { align-self: flex-start; align-items: flex-start; }
+        .msg-text {
+            padding: 8px 13px; border-radius: 16px;
+            font-size: 0.91em; word-break: break-word; line-height: 1.4;
+        }
+        .msg-local  .msg-text { background: #00ff88; color: #000; border-bottom-right-radius: 4px; }
+        .msg-remote .msg-text { background: #1e1e1e; color: #fff; border-bottom-left-radius: 4px; }
+        .msg-meta { display: flex; gap: 6px; align-items: center; margin-top: 2px; padding: 0 4px; }
+        .msg-time  { font-size: 0.67em; color: #444; }
+        .msg-state { font-size: 0.67em; }
+        .msg-state.sent      { color: #888; }
+        .msg-state.delivered { color: #00ff88; }
+        .msg-state.failed    { color: #ff4444; }
+        .msg-state.retrying  { color: #ffc107; }
+
+        /* Barra de progreso TX */
+        .tx-progress {
+            margin: 0 20px 6px;
+            height: 3px; background: #1a1a1a;
+            border-radius: 2px; overflow: hidden;
+            display: none; flex-shrink: 0;
+        }
+        .tx-progress.active { display: block; }
+        .tx-progress-fill {
+            height: 100%; background: #00ff88;
+            width: 0%; transition: width 0.1s linear;
         }
 
-        .mode-btn:hover {
-            border-color: #555;
-            color: #aaa;
-        }
-
-        .mode-btn.active {
-            background: #2a2a2a;
-            border-color: #00ff88;
-            color: #00ff88;
-        }
-
-        .panel {
-            display: none;
-        }
-
-        .panel.active {
-            display: block;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 150px;
-            padding: 20px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1em;
-            font-family: 'Courier New', monospace;
-            resize: vertical;
-            margin-bottom: 20px;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #00ff88;
-        }
-
-        textarea::placeholder {
-            color: #444;
-        }
-
-        .big-btn {
-            width: 100%;
-            padding: 25px;
-            background: #00ff88;
-            border: none;
-            border-radius: 8px;
-            color: #0a0a0a;
-            font-size: 1.2em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 15px;
-        }
-
-        .big-btn:hover {
-            background: #00dd77;
-            transform: translateY(-2px);
-        }
-
-        .big-btn:active {
-            transform: translateY(0);
-        }
-
-        .big-btn:disabled {
-            background: #333;
-            color: #666;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .big-btn.listening {
-            background: #ff4444;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
+        /* Status flash */
         .status {
-            text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            display: none;
+            text-align: center; padding: 6px 14px;
+            border-radius: 6px; margin: 0 20px 6px;
+            font-size: 0.8em; display: none; flex-shrink: 0;
         }
+        .status.active  { display: block; }
+        .status.info    { background: rgba(0,123,255,0.1);  border: 1px solid rgba(0,123,255,0.3);  color: #4da3ff; }
+        .status.success { background: rgba(0,255,136,0.1);  border: 1px solid rgba(0,255,136,0.3);  color: #00ff88; }
+        .status.error   { background: rgba(255,68,68,0.1);  border: 1px solid rgba(255,68,68,0.3);  color: #ff4444; }
+        .status.warning { background: rgba(255,193,7,0.1);  border: 1px solid rgba(255,193,7,0.3);  color: #ffc107; }
 
-        .status.active {
-            display: block;
+        /* Input */
+        .input-area { padding: 6px 20px 8px; display: flex; gap: 10px; flex-shrink: 0; }
+        .msg-input {
+            flex: 1; padding: 12px 15px;
+            background: #1a1a1a; border: 1px solid #333;
+            border-radius: 22px; color: #fff;
+            font-size: 0.91em; outline: none;
+            transition: border-color 0.2s;
         }
+        .msg-input:focus    { border-color: #00ff88; }
+        .msg-input:disabled { opacity: 0.35; cursor: not-allowed; }
+        .msg-input::placeholder { color: #444; }
+        .char-hint { font-size: 0.65em; color: #333; text-align: right; padding: 0 24px 4px; flex-shrink: 0; }
 
-        .status.info {
-            background: rgba(0, 123, 255, 0.1);
-            border: 1px solid rgba(0, 123, 255, 0.3);
-            color: #4da3ff;
+        .send-btn {
+            width: 44px; height: 44px; background: #00ff88;
+            border: none; border-radius: 50%; color: #000;
+            font-size: 1em; cursor: pointer;
+            transition: background 0.2s; flex-shrink: 0;
         }
+        .send-btn:hover    { background: #00dd77; }
+        .send-btn:disabled { background: #222; color: #555; cursor: not-allowed; }
 
-        .status.success {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            color: #00ff88;
+        /* Botón conectar */
+        .connect-btn {
+            margin: 0 20px 10px; padding: 14px;
+            background: #00ff88; border: none;
+            border-radius: 8px; color: #000;
+            font-size: 0.95em; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
         }
+        .connect-btn:hover   { background: #00dd77; }
+        .connect-btn.warning { background: transparent; border: 1px solid #ffc107; color: #ffc107; }
+        .connect-btn.warning:hover { background: rgba(255,193,7,0.08); }
+        .connect-btn.danger  { background: transparent; border: 1px solid #ff4444; color: #ff4444; }
+        .connect-btn.danger:hover  { background: rgba(255,68,68,0.08); }
 
-        .status.error {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid rgba(255, 68, 68, 0.3);
-            color: #ff4444;
-        }
-
-        .status.warning {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            color: #ffc107;
-        }
-
-        .result-box {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            word-break: break-all;
-            font-family: 'Courier New', monospace;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .result-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .secondary-btn {
-            flex: 1;
-            padding: 15px;
-            background: #1a1a1a;
-            border: 1px solid #00ff88;
-            border-radius: 8px;
-            color: #00ff88;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .secondary-btn:hover {
-            background: #2a2a2a;
-        }
-
-        .visualizer {
-            width: 100%;
-            height: 80px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .visualizer canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        .footer {
-            text-align: center;
-            color: #333;
-            margin-top: 40px;
-            font-size: 0.85em;
-        }
-
-        .char-counter {
-            text-align: right;
-            color: #666;
-            font-size: 0.85em;
-            margin-top: -15px;
-            margin-bottom: 15px;
-        }
-
-        .char-counter.warning {
-            color: #ffc107;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #1a1a1a;
-            border-radius: 2px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            display: none;
-        }
-
-        .progress-bar.active {
-            display: block;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #00ff88;
-            width: 0%;
-            transition: width 0.3s;
-        }
+        .footer { text-align: center; color: #252525; font-size: 0.68em; padding: 0 20px 8px; flex-shrink: 0; }
     </style>
 </head>
 <body>
-    <div class="container">
+<div class="app">
+    <div class="header">
         <h1>AIRCLIP</h1>
-        <p class="subtitle">Transmisión de datos por audio</p>
-
-        <div class="mode-switch">
-            <button class="mode-btn active" onclick="switchMode('transmit')">
-                TRANSMITIR
-            </button>
-            <button class="mode-btn" onclick="switchMode('listen')">
-                ESCUCHAR
-            </button>
-        </div>
-
-        <!-- TRANSMIT PANEL -->
-        <div class="panel active" id="transmit-panel">
-            <textarea 
-                id="input-text"
-                placeholder="Escribe o pega tu texto, URL..."
-                oninput="updateCharCounter()"
-            ></textarea>
-            
-            <div class="char-counter" id="char-counter">0 caracteres</div>
-
-            <div class="progress-bar" id="transmit-progress">
-                <div class="progress-fill" id="transmit-progress-fill"></div>
-            </div>
-
-            <div class="status" id="transmit-status"></div>
-
-            <button class="big-btn" id="transmit-btn" onclick="transmit()">
-                🔊 TRANSMITIR
-            </button>
-        </div>
-
-        <!-- LISTEN PANEL -->
-        <div class="panel" id="listen-panel">
-            <div class="visualizer">
-                <canvas id="visualizer-canvas"></canvas>
-            </div>
-
-            <div class="status" id="listen-status"></div>
-
-            <button class="big-btn" id="listen-btn" onclick="toggleListen()">
-                👂 ESCUCHAR
-            </button>
-
-            <div id="debug-panel" style="display:none; background:#111; border:1px solid #333; border-radius:8px; padding:15px; margin-bottom:15px; font-family:monospace; font-size:0.8em; color:#888; line-height:1.8;">
-                <div>Sync (3000Hz): <span id="dbg-sync" style="color:#00ff88">-</span> &nbsp;|&nbsp; Umbral: <span id="dbg-threshold" style="color:#ffc107">-</span></div>
-                <div>Media espectro: <span id="dbg-avg" style="color:#4da3ff">-</span> &nbsp;|&nbsp; Ratio sync/avg: <span id="dbg-ratio" style="color:#ff88ff">-</span></div>
-                <div>Frames SYNC consecutivos: <span id="dbg-frames" style="color:#ff8844">-</span> / 10</div>
-            </div>
-
-            <div id="result-container" style="display: none;">
-                <div class="result-box" id="result-text"></div>
-                <div class="result-actions">
-                    <button class="secondary-btn" onclick="copyResult()">
-                        📋 COPIAR
-                    </button>
-                    <button class="secondary-btn" id="open-url-btn" onclick="openURL()" style="display: none;">
-                        🔗 ABRIR
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            Sin instalación · Open source · FSK encoding
-        </div>
+        <p class="subtitle">FSK ultrasónico · Multiband · Bidireccional · v3</p>
     </div>
 
-    <script>
-        // ============================================
-        // CONFIGURACIÓN FSK
-        // ============================================
-        const CONFIG = {
-            sampleRate: 44100,
-            freq0: 1000,        // Frecuencia para bit 0
-            freq1: 2000,        // Frecuencia para bit 1
-            freqSync: 3000,     // Frecuencia de sincronización
-            bitDuration: 0.05,  // 50ms por bit = 20 bits/segundo
-            syncDuration: 0.5,  // Duración del tono de sincronización (500ms — más fácil de detectar)
-            volume: 0.3,
-            maxDirectLength: 100,
-            detectionThreshold: 0.40   // Umbral alto para ignorar ruido ambiente
-        };
+    <div class="state-bar" id="state-bar">⚪ Sin conexión</div>
 
-        // ============================================
-        // GLOBAL STATE
-        // ============================================
-        let audioContext = null;
-        let isListening = false;
-        let receivedData = '';
-        let analyser = null;
-        let microphone = null;
+    <div class="band-meter">
+        <div class="band-indicator" id="band-0">18-20 kHz<span class="snr" id="snr-0">—</span></div>
+        <div class="band-indicator" id="band-1">15-17 kHz<span class="snr" id="snr-1">—</span></div>
+        <div class="band-indicator" id="band-2">12-14 kHz<span class="snr" id="snr-2">—</span></div>
+    </div>
 
-        let receivingData = false;
-        let receivedBits = '';
-        let expectedLength = 0;
+    <div class="messages" id="messages">
+        <div class="msg-system">Pulsa CONECTAR en ambos dispositivos para iniciar</div>
+    </div>
 
-        // ✅ NUEVO: contador de frames para validar el SYNC
-        let syncFrameCount = 0;
-        // SYNC dura 500ms = ~30 frames a 60fps. Pedimos 10 consecutivos.
-        const SYNC_FRAMES_REQUIRED = 10;
+    <div class="tx-progress" id="tx-progress"><div class="tx-progress-fill" id="tx-fill"></div></div>
+    <div class="status" id="status"></div>
 
-        // ============================================
-        // MODE SWITCHING
-        // ============================================
-        function switchMode(mode) {
-            document.querySelectorAll('.mode-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+    <div class="char-hint" id="char-hint"></div>
+    <div class="input-area">
+        <input type="text" id="msg-input" class="msg-input"
+               placeholder="Escribe un mensaje..." disabled
+               oninput="updateCharHint()" onkeydown="handleKeyDown(event)">
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>&#10148;</button>
+    </div>
 
-            document.querySelectorAll('.panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            document.getElementById(mode + '-panel').classList.add('active');
+    <button class="connect-btn" id="connect-btn" onclick="handleConnectBtn()">🔗 CONECTAR</button>
+    <div class="footer">Sin instalación · FSK ultrasónico 12-20 kHz · Open source</div>
+</div>
 
-            hideStatus('transmit-status');
-            hideStatus('listen-status');
-            
-            if (isListening) {
-                stopListening();
-            }
+<script>
+'use strict';
+
+// ================================================================
+// CONFIGURACIÓN
+// ================================================================
+const BANDS = [
+    { id: 0, name: '18-20kHz', sync: 20000, f0: 18000, f1: 19000 },
+    { id: 1, name: '15-17kHz', sync: 17000, f0: 15000, f1: 16000 },
+    { id: 2, name: '12-14kHz', sync: 14000, f0: 12000, f1: 13000 },
+];
+
+const CFG = {
+    sampleRate:      44100,
+    bitDuration:     0.05,   // 50ms/bit → 20 bits/s (fiable y fácil de decodificar)
+    syncDuration:    0.40,   // 400ms de tono SYNC
+    volume:          0.50,
+    threshold:       0.18,   // fracción de 255 — bajo porque en ultrasonidos hay poco ruido ambiente
+    syncDominance:   2.0,    // SYNC debe ser 2× mayor que f0 y f1 para validarse
+    fftSize:         8192,
+    smoothing:       0.05,   // casi sin suavizado: un clic = 1 muestra, no se propaga
+    sampleMs:        10,     // tick RX cada 10ms
+    syncSamplesReq:  30,     // 30 × 10ms = 300ms sostenido para confirmar SYNC
+    samplesPerBit:   5,      // 5 × 10ms = 50ms = 1 bit con voto por mayoría
+    helloInterval:   3000,   // ms entre beacons HELLO durante discovery
+    txGuard:         600,    // ms de silencio post-TX — aumentado para absorber reverb
+    dataTimeout:     8000,   // ms esperando DATA_ACK antes de reintentar
+    dataMaxRetries:  3,      // intentos máximos antes de declarar fallo
+    maxPayloadBytes: 200,    // límite de payload UTF-8 en bytes
+    snrWindowMs:     500,    // ventana de medición SNR (en ticks de 10ms = 50 muestras)
+};
+
+// Tipos de paquete
+const PKT = {
+    HELLO:    0x01,
+    ACK:      0x02,
+    CONFIRM:  0x03,
+    DATA:     0x04,
+    DATA_ACK: 0x05,
+    BYE:      0x06,
+};
+
+// ================================================================
+// FIX 1: IDs de 16 bits — evita colisiones (1/65536 vs 1/256 anterior)
+// Formato del paquete:
+//   [TYPE(8)] [ID_HI(8)] [ID_LO(8)] [PAYLOAD_LEN(8)] [PAYLOAD(n×8)] [CHK(8)]
+//   CHK = XOR de todos los bytes anteriores
+// ================================================================
+const myId  = Math.floor(Math.random() * 65536); // 16 bits
+const myHi  = (myId >> 8) & 0xFF;
+const myLo  =  myId       & 0xFF;
+
+// ================================================================
+// ESTADO GLOBAL
+// ================================================================
+let appState   = 'IDLE';   // IDLE | DISCOVERING | HANDSHAKING | CONNECTED
+let peerId     = null;     // 16 bits
+let activeBand = null;
+let txLock     = false;
+
+let audioCtx  = null;
+let analyser  = null;
+let mic       = null;
+let micStream = null;
+
+let sampleTimer   = null;
+let helloTimer    = null;
+let statusTimeout = null;
+
+// FIX 4: retry de mensajes DATA
+let pendingMsg  = null;   // { msgId, payload, retries, timer, bandIds }
+let txSeq       = 0;      // número de secuencia del mensaje actual
+
+// FIX 3: medición SNR por banda durante discovery
+const snrData = BANDS.map(() => ({ sum: 0, count: 0, peak: 0 }));
+
+// Estado de recepción por banda
+const rx = BANDS.map(() => ({
+    syncCount:  0,
+    active:     false,
+    samples:    [],
+    bits:       '',
+    payloadLen: -1,
+}));
+
+// Encoder/Decoder UTF-8 (FIX 2)
+const utf8Enc = new TextEncoder();
+const utf8Dec = new TextDecoder('utf-8', { fatal: false });
+
+// ================================================================
+// UTILIDADES
+// ================================================================
+const sleep    = ms => new Promise(r => setTimeout(r, ms));
+const pktName  = t  => Object.keys(PKT).find(k => PKT[k] === t) ?? ('0x' + t.toString(16));
+const idStr    = id => id !== null ? id.toString(16).toUpperCase().padStart(4, '0') : '?';
+
+// ================================================================
+// GENERACIÓN DE AUDIO FSK
+// ================================================================
+function writeTone(buf, offset, freq, nSamples) {
+    for (let i = 0; i < nSamples; i++) {
+        buf[offset + i] = Math.sin(2 * Math.PI * freq * (offset + i) / CFG.sampleRate) * CFG.volume;
+    }
+    return offset + nSamples;
+}
+
+function makeFSKBuffer(bits, bandId) {
+    const b     = BANDS[bandId];
+    const syncN = Math.floor(CFG.sampleRate * CFG.syncDuration);
+    const bitN  = Math.floor(CFG.sampleRate * CFG.bitDuration);
+    const buf   = audioCtx.createBuffer(1, syncN * 2 + bits.length * bitN, CFG.sampleRate);
+    const data  = buf.getChannelData(0);
+    let off = 0;
+    off = writeTone(data, off, b.sync, syncN);
+    for (const bit of bits) off = writeTone(data, off, bit === '1' ? b.f1 : b.f0, bitN);
+    writeTone(data, off, b.sync, syncN);
+    return buf;
+}
+
+// FIX 5: duración calculada para barra de progreso
+function txDurationMs(nBits) {
+    return (CFG.syncDuration * 2 + nBits * CFG.bitDuration) * 1000 + CFG.txGuard;
+}
+
+// ================================================================
+// CODIFICACIÓN / DECODIFICACIÓN
+// ================================================================
+function encodePacket(type, payload) {
+    // payload: Uint8Array o array de bytes
+    const bytes = [type, myHi, myLo, payload.length, ...payload];
+    bytes.push(bytes.reduce((a, b) => a ^ b, 0));
+    return bytes.map(b => b.toString(2).padStart(8, '0')).join('');
+}
+
+function decodePacket(bits) {
+    const bytes = [];
+    for (let i = 0; i + 8 <= bits.length; i += 8)
+        bytes.push(parseInt(bits.substr(i, 8), 2));
+    if (bytes.length < 5) return null;
+
+    const type       = bytes[0];
+    const senderId   = (bytes[1] << 8) | bytes[2];  // 16 bits
+    const payloadLen = bytes[3];
+    if (bytes.length < 4 + payloadLen + 1) return null;
+
+    const payload = bytes.slice(4, 4 + payloadLen);
+    const rxChk   = bytes[4 + payloadLen];
+    const expChk  = bytes.slice(0, 4 + payloadLen).reduce((a, b) => a ^ b, 0);
+    if (rxChk !== expChk) {
+        console.warn('[PKT] Checksum fail — got', rxChk, 'expected', expChk);
+        return null;
+    }
+    return { type, senderId, payload };
+}
+
+// ================================================================
+// TRANSMISIÓN con progreso visual
+// ================================================================
+async function txPacket(type, payload, bandIds) {
+    if (!audioCtx) return;
+    payload = payload ?? [];
+    bandIds = bandIds ?? [0, 1, 2];
+    txLock  = true;
+
+    const bits     = encodePacket(type, payload);
+    const duration = txDurationMs(bits.length);
+
+    // Barra de progreso solo para DATA (paquetes largos)
+    let progressInterval = null;
+    if (type === PKT.DATA) {
+        const start = Date.now();
+        const bar   = document.getElementById('tx-progress');
+        const fill  = document.getElementById('tx-fill');
+        bar.classList.add('active');
+        fill.style.width = '0%';
+        progressInterval = setInterval(() => {
+            const pct = Math.min(((Date.now() - start) / duration) * 100, 99);
+            fill.style.width = pct + '%';
+        }, 80);
+    }
+
+    const sources = bandIds.map(i => {
+        const src = audioCtx.createBufferSource();
+        src.buffer = makeFSKBuffer(bits, i);
+        src.connect(audioCtx.destination);
+        return src;
+    });
+    sources.forEach(s => s.start());
+    await new Promise(r => { sources[0].onended = r; });
+
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        document.getElementById('tx-fill').style.width = '100%';
+        await sleep(150);
+        document.getElementById('tx-progress').classList.remove('active');
+        document.getElementById('tx-fill').style.width = '0%';
+    }
+
+    await sleep(CFG.txGuard);
+    txLock = false;
+}
+
+// ================================================================
+// RECEPCIÓN — muestreo cada 10ms
+// ================================================================
+function getAmps() {
+    const arr = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(arr);
+    const res = CFG.sampleRate / CFG.fftSize;
+    return BANDS.map(b => ({
+        sync: arr[Math.min(Math.round(b.sync / res), arr.length - 1)],
+        f0:   arr[Math.min(Math.round(b.f0   / res), arr.length - 1)],
+        f1:   arr[Math.min(Math.round(b.f1   / res), arr.length - 1)],
+    }));
+}
+
+function startDetection() {
+    stopDetection();
+    snrData.forEach(s => { s.sum = 0; s.count = 0; s.peak = 0; });
+    sampleTimer = setInterval(sampleTick, CFG.sampleMs);
+}
+
+function stopDetection() {
+    if (sampleTimer) { clearInterval(sampleTimer); sampleTimer = null; }
+    rx.forEach((r, i) => {
+        r.syncCount = 0; r.active = false;
+        r.samples = []; r.bits = ''; r.payloadLen = -1;
+        setBandUI(i, 'none');
+    });
+}
+
+// FIX 3: acumula SNR durante discovery
+function updateSNR(amps) {
+    if (appState !== 'DISCOVERING') return;
+    BANDS.forEach((_, i) => {
+        const { sync, f0, f1 } = amps[i];
+        const noise = (f0 + f1) / 2 + 1;
+        const snr   = sync / noise;
+        snrData[i].sum   += snr;
+        snrData[i].count += 1;
+        if (snr > snrData[i].peak) snrData[i].peak = snr;
+        // Actualizar indicador visual de SNR cada 10 ticks
+        if (snrData[i].count % 10 === 0) {
+            const avg = snrData[i].sum / snrData[i].count;
+            const el  = document.getElementById('snr-' + i);
+            if (el) el.textContent = 'SNR ' + avg.toFixed(1) + 'x';
         }
+    });
+}
 
-        // ============================================
-        // TRANSMIT
-        // ============================================
-        async function transmit() {
-            let text = document.getElementById('input-text').value.trim();
+// Devuelve la banda con mejor SNR acumulado
+function bestBandBySNR() {
+    let best = 0;
+    let bestScore = -1;
+    snrData.forEach((s, i) => {
+        const avg = s.count > 0 ? s.sum / s.count : 0;
+        if (avg > bestScore) { bestScore = avg; best = i; }
+    });
+    return best;
+}
 
-            if (!text) {
-                showStatus('transmit-status', 'Escribe algo primero', 'warning');
-                return;
-            }
+function sampleTick() {
+    if (txLock || !analyser) return;
+    const amps = getAmps();
+    const thr  = 255 * CFG.threshold;
 
-            const btn = document.getElementById('transmit-btn');
-            btn.disabled = true;
+    updateSNR(amps);
 
-            try {
-                const isURL = /^https?:\/\//i.test(text);
+    BANDS.forEach((_, i) => {
+        const { sync, f0, f1 } = amps[i];
+        const r = rx[i];
 
-                if (text.length > CONFIG.maxDirectLength) {
-                    showStatus('transmit-status', `Texto largo detectado (${text.length} chars). Generando URL temporal...`, 'info');
-                    
-                    const shortURL = await uploadAndShorten(text);
-                    
-                    if (shortURL) {
-                        text = shortURL;
-                        showStatus('transmit-status', `✅ URL generada. Transmitiendo ${text}...`, 'info');
-                    } else {
-                        showStatus('transmit-status', 'Error generando URL. Prueba con texto más corto.', 'error');
-                        btn.disabled = false;
-                        return;
-                    }
-                } else if (isURL && text.length > 50) {
-                    showStatus('transmit-status', 'Acortando URL...', 'info');
-                    const shortened = await shortenURL(text);
-                    if (shortened && shortened.length < text.length) {
-                        text = shortened;
-                    }
+        if (!r.active) {
+            // Esperando SYNC — debe ser dominante sobre las frecuencias de datos
+            const dominant = sync > thr
+                          && sync > f0 * CFG.syncDominance
+                          && sync > f1 * CFG.syncDominance;
+            if (dominant) {
+                r.syncCount++;
+                if (r.syncCount === 5)               setBandUI(i, 'syncing');
+                if (r.syncCount >= CFG.syncSamplesReq) {
+                    r.active = true; r.syncCount = 0;
+                    r.samples = []; r.bits = ''; r.payloadLen = -1;
+                    setBandUI(i, 'active');
+                    console.log('[Band', i, '] SYNC confirmado');
                 }
-
-                showStatus('transmit-status', '🔊 Transmitiendo... Acerca el otro dispositivo', 'info');
-                document.getElementById('transmit-progress').classList.add('active');
-
-                await transmitFSK(text);
-
-                showStatus('transmit-status', '✅ Transmisión completada', 'success');
-
-            } catch (error) {
-                showStatus('transmit-status', '❌ Error: ' + error.message, 'error');
-                console.error(error);
-            } finally {
-                btn.disabled = false;
-                document.getElementById('transmit-progress').classList.remove('active');
-                document.getElementById('transmit-progress-fill').style.width = '0%';
-            }
-        }
-
-        async function transmitFSK(text) {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            const binary = textToBinary(text);
-            console.log('Transmitiendo:', text);
-            console.log('Binario:', binary);
-
-            const syncSamples = CONFIG.sampleRate * CONFIG.syncDuration;
-            const bitSamples = CONFIG.sampleRate * CONFIG.bitDuration;
-            const totalSamples = syncSamples * 2 + (binary.length * bitSamples);
-
-            const buffer = audioContext.createBuffer(1, totalSamples, CONFIG.sampleRate);
-            const data = buffer.getChannelData(0);
-
-            let offset = 0;
-
-            // SYNC inicial
-            offset = generateTone(data, offset, CONFIG.freqSync, syncSamples);
-
-            // Bits de datos
-            for (let i = 0; i < binary.length; i++) {
-                const bit = binary[i];
-                const freq = bit === '1' ? CONFIG.freq1 : CONFIG.freq0;
-                offset = generateTone(data, offset, freq, bitSamples);
-
-                const progress = ((i + 1) / binary.length) * 100;
-                document.getElementById('transmit-progress-fill').style.width = progress + '%';
-            }
-
-            // SYNC final
-            offset = generateTone(data, offset, CONFIG.freqSync, syncSamples);
-
-            const source = audioContext.createBufferSource();
-            source.buffer = buffer;
-            source.connect(audioContext.destination);
-            source.start();
-
-            return new Promise(resolve => {
-                source.onended = resolve;
-            });
-        }
-
-        function generateTone(buffer, offset, frequency, samples) {
-            for (let i = 0; i < samples; i++) {
-                const t = (offset + i) / CONFIG.sampleRate;
-                buffer[offset + i] = Math.sin(2 * Math.PI * frequency * t) * CONFIG.volume;
-            }
-            return offset + samples;
-        }
-
-        function textToBinary(text) {
-            let binary = '';
-            binary += text.length.toString(2).padStart(8, '0');
-            for (let i = 0; i < text.length; i++) {
-                const charCode = text.charCodeAt(i);
-                binary += charCode.toString(2).padStart(8, '0');
-            }
-            return binary;
-        }
-
-        // ============================================
-        // URL SHORTENING & UPLOAD
-        // ============================================
-        async function shortenURL(url) {
-            try {
-                const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
-                const shortURL = await response.text();
-                return shortURL || url;
-            } catch (error) {
-                console.error('Error acortando URL:', error);
-                return url;
-            }
-        }
-
-        async function uploadAndShorten(text) {
-            try {
-                const formData = new FormData();
-                formData.append('content', text);
-                formData.append('syntax', 'text');
-                formData.append('expiry_days', 1);
-
-                const response = await fetch('https://dpaste.com/api/', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    const url = await response.text();
-                    const cleanURL = url.trim() + '.txt';
-                    return await shortenURL(cleanURL);
-                }
-
-                return null;
-
-            } catch (error) {
-                console.error('Error subiendo contenido:', error);
-                return null;
-            }
-        }
-
-        // ============================================
-        // LISTEN
-        // ============================================
-        async function toggleListen() {
-            if (isListening) {
-                stopListening();
             } else {
-                startListening();
+                if (r.syncCount > 0 && appState !== 'CONNECTED') setBandUI(i, 'none');
+                r.syncCount = 0;
             }
-        }
 
-        async function startListening() {
-            try {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } else {
+            // Recibiendo bits — detectar SYNC_END (solo tras leer cabecera completa)
+            if (r.bits.length >= 32) {  // 4 bytes de cabecera = 32 bits
+                const syncEnd = sync > thr
+                             && sync > f0 * CFG.syncDominance
+                             && sync > f1 * CFG.syncDominance;
+                if (syncEnd) {
+                    if (r.samples.length >= Math.ceil(CFG.samplesPerBit / 2)) commitBit(r);
+                    finishPacket(i);
+                    return;
+                }
+            }
+
+            // Acumular muestra del bit en curso
+            if      (f1 > thr && f1 > f0) r.samples.push(1);
+            else if (f0 > thr && f0 > f1) r.samples.push(0);
+            else                           r.samples.push(-1);  // ambiguo
+
+            if (r.samples.length >= CFG.samplesPerBit) {
+                commitBit(r);
+
+                // Leer payloadLen cuando tengamos los 4 bytes de cabecera (32 bits)
+                if (r.payloadLen < 0 && r.bits.length >= 32) {
+                    r.payloadLen = parseInt(r.bits.substr(24, 8), 2);
+                    console.log('[Band', i, '] payloadLen =', r.payloadLen);
                 }
 
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    audio: {
-                        echoCancellation: false,
-                        noiseSuppression: false,
-                        autoGainControl: false,
-                        sampleRate: CONFIG.sampleRate
-                    }
+                // Paquete completo: cabecera(4) + payload + checksum(1) = 5 + payloadLen bytes
+                if (r.payloadLen >= 0 && r.bits.length >= (5 + r.payloadLen) * 8) {
+                    finishPacket(i);
+                }
+
+                // Overflow: protección
+                if (r.bits.length > 3000) {
+                    console.warn('[Band', i, '] Overflow — reset');
+                    r.active = false; r.bits = ''; r.payloadLen = -1;
+                    setBandUI(i, 'none');
+                }
+            }
+        }
+    });
+}
+
+function commitBit(r) {
+    const valid = r.samples.filter(s => s !== -1);
+    if (valid.length >= Math.ceil(CFG.samplesPerBit / 2)) {
+        r.bits += valid.filter(s => s === 1).length >= valid.length / 2 ? '1' : '0';
+    }
+    r.samples = [];
+}
+
+function finishPacket(bi) {
+    const r   = rx[bi];
+    const pkt = decodePacket(r.bits);
+    r.active = false; r.bits = ''; r.payloadLen = -1;
+    setBandUI(bi, bi === activeBand ? 'selected' : 'none');
+    if (pkt) {
+        console.log('[Band', bi, '] PKT', pktName(pkt.type), 'de', idStr(pkt.senderId));
+        handlePacket(pkt, bi);
+    } else {
+        console.warn('[Band', bi, '] Paquete inválido o checksum fallido');
+    }
+}
+
+// ================================================================
+// PROTOCOLO — MÁQUINA DE ESTADOS
+// Handshake:
+//   Ambos → HELLO (broadcast)
+//   Receptor (ID mayor)  → ACK  [banda_detectada, dst_hi, dst_lo]
+//   Iniciador (ID menor) → CONFIRM [banda] → CONNECTED
+//   Receptor             → CONNECTED al recibir CONFIRM
+// ================================================================
+function handlePacket(pkt, bi) {
+    if (pkt.senderId === myId) return; // ignorar eco propio (IDs 16 bits, colisión 1/65536)
+
+    switch (appState) {
+
+        case 'DISCOVERING':
+            if (pkt.type === PKT.HELLO) {
+                // El de ID mayor actúa de responder; el menor espera su ACK
+                if (pkt.senderId < myId) return;
+                peerId = pkt.senderId;
+                clearHelloTimer();
+                setState('HANDSHAKING');
+                addMsg('system', '📶 Dispositivo ' + idStr(peerId) + ' detectado en ' + BANDS[bi].name + '. Negociando...');
+                // FIX 3: incluimos la banda con mejor SNR acumulado, no solo la que llegó el HELLO
+                const suggestedBand = bestBandBySNR();
+                // ACK payload: [banda_sugerida, dst_hi, dst_lo]
+                txPacket(PKT.ACK, [suggestedBand, (pkt.senderId >> 8) & 0xFF, pkt.senderId & 0xFF]);
+            }
+
+            if (pkt.type === PKT.ACK) {
+                const dstId = (pkt.payload[1] << 8) | pkt.payload[2];
+                if (dstId !== myId) return;
+                peerId     = pkt.senderId;
+                activeBand = pkt.payload[0];
+                clearHelloTimer();
+                setState('HANDSHAKING');
+                addMsg('system', '📶 ACK recibido. Confirmando en ' + BANDS[activeBand].name + '...');
+                txPacket(PKT.CONFIRM, [activeBand], [activeBand]).then(() => {
+                    onConnected();
                 });
-
-                microphone = audioContext.createMediaStreamSource(stream);
-                analyser = audioContext.createAnalyser();
-                analyser.fftSize = 8192;
-                analyser.smoothingTimeConstant = 0.1; // Suavizado mínimo: amortigua clics sin prolongarlos
-
-                microphone.connect(analyser);
-
-                isListening = true;
-                const btn = document.getElementById('listen-btn');
-                btn.textContent = '⏹️ DETENER';
-                btn.classList.add('listening');
-
-                showStatus('listen-status', '👂 Escuchando... Reproduce el sonido', 'info');
-                document.getElementById('debug-panel').style.display = 'block';
-
-                visualize();
-                detectFSK();
-
-                window.currentStream = stream;
-
-            } catch (error) {
-                showStatus('listen-status', '❌ Error: ' + error.message, 'error');
-                console.error(error);
-                isListening = false;
             }
-        }
+            break;
 
-        function stopListening() {
-            isListening = false;
+        case 'HANDSHAKING':
+            if (pkt.type === PKT.CONFIRM && pkt.senderId === peerId) {
+                activeBand = pkt.payload[0];
+                onConnected();
+            }
+            // ACK tardío por colisión simultánea de HELLOs
+            if (pkt.type === PKT.ACK && peerId === null) {
+                const dstId = (pkt.payload[1] << 8) | pkt.payload[2];
+                if (dstId !== myId) return;
+                peerId     = pkt.senderId;
+                activeBand = pkt.payload[0];
+                txPacket(PKT.CONFIRM, [activeBand], [activeBand]).then(() => {
+                    onConnected();
+                });
+            }
+            break;
 
-            // ✅ CORREGIDO: resetear todo el estado al parar
-            syncFrameCount = 0;
-            receivingData = false;
-            receivedBits = '';
-            expectedLength = 0;
+        case 'CONNECTED':
+            if (pkt.senderId !== peerId) return;
 
-            const btn = document.getElementById('listen-btn');
-            btn.textContent = '👂 ESCUCHAR';
-            btn.classList.remove('listening');
-
-            if (window.currentStream) {
-                window.currentStream.getTracks().forEach(track => track.stop());
-                window.currentStream = null;
+            // FIX 2: UTF-8 decode
+            if (pkt.type === PKT.DATA) {
+                const seq  = pkt.payload[0];
+                const text = utf8Dec.decode(new Uint8Array(pkt.payload.slice(1)));
+                addMsg('remote', text);
+                // Confirmar recepción
+                txPacket(PKT.DATA_ACK, [seq], [activeBand]);
             }
 
-            if (microphone) {
-                microphone.disconnect();
-                microphone = null;
-            }
-
-            document.getElementById('debug-panel').style.display = 'none';
-            hideStatus('listen-status');
-        }
-
-        function detectFSK() {
-            if (!isListening) return;
-
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            analyser.getByteFrequencyData(dataArray);
-
-            const freqResolution = CONFIG.sampleRate / analyser.fftSize;
-
-            const idx0    = Math.floor(CONFIG.freq0    / freqResolution);
-            const idx1    = Math.floor(CONFIG.freq1    / freqResolution);
-            const idxSync = Math.floor(CONFIG.freqSync / freqResolution);
-
-            const amp0    = dataArray[idx0];
-            const amp1    = dataArray[idx1];
-            const ampSync = dataArray[idxSync];
-
-            const threshold = 255 * CONFIG.detectionThreshold;
-
-            // ✅ CORREGIDO: el SYNC debe sostenerse Y ser dominante sobre las demás frecuencias.
-            // En un clic o estática, TODA la banda recibe energía por igual → ampSync no destaca.
-            // En un tono puro de 3000Hz, ampSync es mucho mayor que amp0 y amp1.
-            // Energía media de TODO el espectro
-            // Clic/estática: toda la banda recibe energía → ampSync ≈ avgEnergy → ratio ~1
-            // Tono puro 3000Hz: solo esa frecuencia tiene energía → ratio >> 4
-            const avgEnergy = dataArray.reduce((sum, v) => sum + v, 0) / dataArray.length;
-            const syncIsDominant = ampSync > threshold &&
-                                   ampSync > avgEnergy * 4.0;
-
-            // Actualizar debug
-            const ratio = avgEnergy > 0 ? (ampSync / avgEnergy).toFixed(2) : '0';
-            document.getElementById('dbg-sync').textContent = ampSync.toFixed(0);
-            document.getElementById('dbg-threshold').textContent = threshold.toFixed(0);
-            document.getElementById('dbg-avg').textContent = avgEnergy.toFixed(1);
-            document.getElementById('dbg-ratio').textContent = ratio + 'x (necesita >4x)';
-            document.getElementById('dbg-frames').textContent = syncFrameCount;
-
-            if (!receivingData) {
-                if (syncIsDominant) {
-                    syncFrameCount++;
-                    if (syncFrameCount >= SYNC_FRAMES_REQUIRED) {
-                        console.log('🎯 SYNC sostenido y dominante - Iniciando recepción');
-                        receivingData = true;
-                        syncFrameCount = 0;
-                        receivedBits = '';
-                        expectedLength = 0;
-                        showStatus('listen-status', '📡 Recibiendo datos...', 'info');
-                    }
-                } else {
-                    syncFrameCount = 0; // si se interrumpe o no es dominante, reinicia
+            // FIX 4: confirmar entrega y cancelar retry timer
+            if (pkt.type === PKT.DATA_ACK) {
+                const seq = pkt.payload[0];
+                if (pendingMsg && pendingMsg.seq === seq) {
+                    clearTimeout(pendingMsg.timer);
+                    setMsgState(pendingMsg.msgId, 'delivered', '✓✓');
+                    pendingMsg = null;
+                    flash('✅ Entregado', 'success', 2000);
                 }
             }
 
-            // Recibir bits
-            if (receivingData) {
-                if (amp1 > threshold && amp1 > amp0) {
-                    receivedBits += '1';
-                } else if (amp0 > threshold && amp0 > amp1) {
-                    receivedBits += '0';
-                }
-
-                // Leer longitud (primeros 8 bits)
-                if (expectedLength === 0 && receivedBits.length >= 8) {
-                    expectedLength = parseInt(receivedBits.substr(0, 8), 2);
-                    console.log('📏 Longitud esperada:', expectedLength, 'caracteres');
-                }
-
-                // Verificar si hemos recibido todo
-                if (expectedLength > 0) {
-                    const expectedBits = 8 + (expectedLength * 8);
-                    if (receivedBits.length >= expectedBits) {
-                        const text = binaryToText(receivedBits);
-                        if (text) {
-                            console.log('✅ Recibido:', text);
-                            handleReceivedData(text);
-                            stopListening();
-                            return;
-                        }
-                    }
-                }
+            if (pkt.type === PKT.BYE) {
+                addMsg('system', '🔌 ' + idStr(peerId) + ' se ha desconectado');
+                doDisconnect(false);
             }
+            break;
+    }
+}
 
-            requestAnimationFrame(detectFSK);
+// ================================================================
+// FIX: visibilidad iOS — reanudar AudioContext si se suspende
+// ================================================================
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().then(() => {
+            if (appState !== 'IDLE') flash('▶ Audio reanudado', 'info', 2000);
+        });
+    }
+});
+
+// En iOS el AudioContext puede suspenderse al minimizar o bloquear pantalla
+window.addEventListener('focus', () => {
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+});
+
+// ================================================================
+// HELPERS DE PROTOCOLO
+// ================================================================
+function onConnected() {
+    setState('CONNECTED');
+    BANDS.forEach((_, i) => setBandUI(i, i === activeBand ? 'selected' : 'none'));
+    addMsg('system', '✅ Conectado · ' + BANDS[activeBand].name + ' · Par: ' + idStr(peerId));
+}
+
+function clearHelloTimer() {
+    if (helloTimer) { clearInterval(helloTimer); helloTimer = null; }
+}
+
+// ================================================================
+// CONECTAR / DESCONECTAR
+// ================================================================
+async function doConnect() {
+    try {
+        audioCtx  = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: CFG.sampleRate });
+        micStream = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        });
+        mic      = audioCtx.createMediaStreamSource(micStream);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize               = CFG.fftSize;
+        analyser.smoothingTimeConstant = CFG.smoothing;
+        mic.connect(analyser);
+
+        setState('DISCOVERING');
+        startDetection();
+        addMsg('system', '📡 Buscando dispositivos... (ID: ' + idStr(myId) + ')');
+
+        const sendHello = () => { if (appState === 'DISCOVERING') txPacket(PKT.HELLO, []); };
+        sendHello();
+        helloTimer = setInterval(sendHello, CFG.helloInterval);
+
+    } catch (e) {
+        flash('❌ ' + e.message, 'error', 6000);
+        setState('IDLE');
+    }
+}
+
+async function doDisconnect(sendBye) {
+    if (pendingMsg) {
+        clearTimeout(pendingMsg.timer);
+        setMsgState(pendingMsg.msgId, 'failed', '✗');
+        pendingMsg = null;
+    }
+    if (sendBye && appState === 'CONNECTED' && activeBand !== null) {
+        await txPacket(PKT.BYE, [], [activeBand]);
+    }
+    clearHelloTimer();
+    stopDetection();
+    if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+    if (mic)       { mic.disconnect(); mic = null; }
+    if (audioCtx)  { audioCtx.close().catch(() => {}); audioCtx = null; }
+    analyser = null; peerId = null; activeBand = null; txLock = false;
+    setState('IDLE');
+    addMsg('system', '🔌 Desconectado');
+}
+
+// ================================================================
+// ENVÍO CON RETRY (FIX 4) + UTF-8 (FIX 2)
+// ================================================================
+async function sendMessage() {
+    const input = document.getElementById('msg-input');
+    const text  = input.value.trim();
+    if (!text || appState !== 'CONNECTED') return;
+
+    // FIX 2: codificar en UTF-8 (soporta emojis, acentos, cualquier idioma)
+    const textBytes = utf8Enc.encode(text);
+    if (textBytes.length > CFG.maxPayloadBytes - 1) {
+        flash('⚠ Mensaje demasiado largo (' + textBytes.length + ' bytes UTF-8, máx ' + (CFG.maxPayloadBytes - 1) + ')', 'warning', 4000);
+        return;
+    }
+
+    input.value = '';
+    updateCharHint();
+
+    const seq   = (txSeq++) & 0xFF;
+    const msgId = addMsg('local', text);
+
+    // FIX 4: lanzar con retry
+    await dispatchData(msgId, seq, textBytes, 0);
+}
+
+async function dispatchData(msgId, seq, textBytes, attempt) {
+    if (appState !== 'CONNECTED') return;
+
+    if (attempt === 0) {
+        setMsgState(msgId, 'sent', '⏳');
+        flash('📡 Enviando...', 'info', 0);
+    } else {
+        setMsgState(msgId, 'retrying', '↻ ' + attempt + '/' + CFG.dataMaxRetries);
+        flash('🔄 Reintento ' + attempt + '/' + CFG.dataMaxRetries + '...', 'warning', 0);
+    }
+
+    // Payload: [seq, ...textBytes]
+    const payload = [seq, ...textBytes];
+    const bands   = [activeBand, (activeBand + 1) % 3, (activeBand + 2) % 3];
+
+    if (pendingMsg) clearTimeout(pendingMsg.timer);
+
+    await txPacket(PKT.DATA, payload, bands);
+
+    // Esperar DATA_ACK con timeout
+    const timer = setTimeout(() => {
+        if (attempt < CFG.dataMaxRetries) {
+            dispatchData(msgId, seq, textBytes, attempt + 1);
+        } else {
+            setMsgState(msgId, 'failed', '✗');
+            pendingMsg = null;
+            flash('❌ No se pudo entregar el mensaje', 'error', 5000);
         }
+    }, CFG.dataTimeout);
 
-        function binaryToText(binary) {
-            try {
-                const length = parseInt(binary.substr(0, 8), 2);
+    pendingMsg = { msgId, seq, timer };
+}
 
-                let text = '';
-                for (let i = 0; i < length; i++) {
-                    const start = 8 + (i * 8);
-                    const byte = binary.substr(start, 8);
-                    if (byte.length === 8) {
-                        const charCode = parseInt(byte, 2);
-                        text += String.fromCharCode(charCode);
-                    }
-                }
+function handleConnectBtn() {
+    if      (appState === 'IDLE')      doConnect();
+    else if (appState === 'CONNECTED') doDisconnect(true);
+    else                               doDisconnect(false);
+}
 
-                return text;
-            } catch (error) {
-                console.error('Error decodificando:', error);
-                return null;
-            }
-        }
+function handleKeyDown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
 
-        function handleReceivedData(text) {
-            receivedData = text;
-            document.getElementById('result-text').textContent = text;
-            document.getElementById('result-container').style.display = 'block';
+// ================================================================
+// UI
+// ================================================================
+let msgCounter = 0;
+const msgMap   = {};  // id → elemento DOM del estado
 
-            const isURL = /^https?:\/\//i.test(text);
-            document.getElementById('open-url-btn').style.display = isURL ? 'block' : 'none';
+function setState(s) { appState = s; updateUI(); }
 
-            showStatus('listen-status', '✅ Recibido correctamente', 'success');
-        }
+function updateUI() {
+    const btn   = document.getElementById('connect-btn');
+    const input = document.getElementById('msg-input');
+    const send  = document.getElementById('send-btn');
+    const bar   = document.getElementById('state-bar');
 
-        function visualize() {
-            const canvas = document.getElementById('visualizer-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.offsetWidth * 2;
-            canvas.height = canvas.offsetHeight * 2;
-            ctx.scale(2, 2);
+    const cfg = {
+        'IDLE':        { label: '🔗 CONECTAR',    cls: '',        en: false },
+        'DISCOVERING': { label: '⏹ CANCELAR',     cls: 'warning', en: false },
+        'HANDSHAKING': { label: '⏹ CANCELAR',     cls: 'warning', en: false },
+        'CONNECTED':   { label: '🔌 DESCONECTAR', cls: 'danger',  en: true  },
+    }[appState] ?? { label: '🔗 CONECTAR', cls: '', en: false };
 
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
+    btn.textContent = cfg.label;
+    btn.className   = 'connect-btn ' + cfg.cls;
+    input.disabled  = !cfg.en;
+    send.disabled   = !cfg.en;
 
-            function draw() {
-                if (!isListening) return;
+    bar.className = 'state-bar' + (appState === 'CONNECTED' ? ' connected' : '');
+    bar.textContent = {
+        'IDLE':        '⚪ Sin conexión',
+        'DISCOVERING': '🔍 Escaneando todas las bandas...',
+        'HANDSHAKING': '🤝 Negociando con ' + idStr(peerId) + '...',
+        'CONNECTED':   '🟢 Conectado · ' + (activeBand !== null ? BANDS[activeBand].name : '?') + ' · Par: ' + idStr(peerId),
+    }[appState] ?? '';
+}
 
-                requestAnimationFrame(draw);
-                analyser.getByteFrequencyData(dataArray);
+function setBandUI(i, mode) {
+    const el = document.getElementById('band-' + i);
+    if (el) el.className = 'band-indicator' + (mode !== 'none' ? ' ' + mode : '');
+}
 
-                ctx.fillStyle = '#1a1a1a';
-                ctx.fillRect(0, 0, canvas.width / 2, canvas.height / 2);
+// Devuelve el msgId del mensaje creado
+function addMsg(role, text) {
+    const id  = 'msg-' + (msgCounter++);
+    const c   = document.getElementById('messages');
+    const t   = new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+    const div = document.createElement('div');
 
-                const barWidth = (canvas.width / 2) / bufferLength * 2;
-                let x = 0;
+    if (role === 'system') {
+        div.className   = 'msg-system';
+        div.textContent = text;
+    } else {
+        div.className = 'msg ' + (role === 'local' ? 'msg-local' : 'msg-remote');
+        const stateEl = role === 'local' ? '<span class="msg-state" id="state-' + id + '"></span>' : '';
+        div.innerHTML  =
+            '<span class="msg-text">' + escHtml(text) + '</span>' +
+            '<div class="msg-meta"><span class="msg-time">' + t + '</span>' + stateEl + '</div>';
+        if (role === 'local') msgMap[id] = id;
+    }
 
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = (dataArray[i] / 255) * (canvas.height / 2);
-                    ctx.fillStyle = `rgba(0, 255, 136, ${dataArray[i] / 255})`;
-                    ctx.fillRect(x, (canvas.height / 2) - barHeight, barWidth, barHeight);
-                    x += barWidth + 1;
-                }
-            }
+    c.appendChild(div);
+    c.scrollTop = c.scrollHeight;
+    return id;
+}
 
-            draw();
-        }
+function setMsgState(msgId, cls, label) {
+    const el = document.getElementById('state-' + msgId);
+    if (!el) return;
+    el.className   = 'msg-state ' + cls;
+    el.textContent = label;
+}
 
-        // ============================================
-        // RESULT ACTIONS
-        // ============================================
-        function copyResult() {
-            navigator.clipboard.writeText(receivedData).then(() => {
-                showStatus('listen-status', '✅ Copiado al portapapeles', 'success');
-                setTimeout(() => hideStatus('listen-status'), 2000);
-            });
-        }
+function updateCharHint() {
+    const input = document.getElementById('msg-input');
+    const hint  = document.getElementById('char-hint');
+    const text  = input.value;
+    if (!text) { hint.textContent = ''; return; }
+    const bytes = utf8Enc.encode(text).length;
+    const max   = CFG.maxPayloadBytes - 1;
+    const secs  = Math.ceil(((4 + 1 + bytes) * 8 * CFG.bitDuration + CFG.syncDuration * 2) * 10) / 10;
+    hint.textContent = bytes + '/' + max + ' bytes · ~' + secs + 's de transmisión';
+    hint.style.color = bytes > max ? '#ff4444' : '#333';
+}
 
-        function openURL() {
-            if (receivedData && /^https?:\/\//i.test(receivedData)) {
-                window.open(receivedData, '_blank');
-            }
-        }
+function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
-        // ============================================
-        // UI HELPERS
-        // ============================================
-        function updateCharCounter() {
-            const text = document.getElementById('input-text').value;
-            const counter = document.getElementById('char-counter');
-            const len = text.length;
+function flash(msg, type, duration) {
+    if (statusTimeout) { clearTimeout(statusTimeout); statusTimeout = null; }
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    el.className   = 'status active ' + type;
+    if (duration > 0) statusTimeout = setTimeout(() => { el.className = 'status'; }, duration);
+}
 
-            counter.textContent = `${len} caracteres`;
-
-            if (len > CONFIG.maxDirectLength) {
-                counter.textContent += ` (se generará URL temporal)`;
-                counter.classList.add('warning');
-            } else {
-                counter.classList.remove('warning');
-            }
-        }
-
-        function showStatus(id, message, type) {
-            const el = document.getElementById(id);
-            el.textContent = message;
-            el.className = `status active ${type}`;
-        }
-
-        function hideStatus(id) {
-            const el = document.getElementById(id);
-            el.className = 'status';
-        }
-    </script>
+// Init
+updateUI();
+</script>
 </body>
 </html>
